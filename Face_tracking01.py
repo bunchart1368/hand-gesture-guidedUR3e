@@ -323,6 +323,7 @@ def move_to_face(list_of_facepos,robot_pos):
 
     robot_target_xy = check_max_xy(robot_target_xy)
     prev_robot_pos = robot_target_xy
+    print("Robot Target: ", robot_target_xy)
 
     # x = robot_target_xy[0]
     # y = robot_target_xy[1]

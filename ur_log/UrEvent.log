@@ -1,0 +1,82 @@
+2024-11-18 13:55:14,507 - URBasic_dashboardEvent - ERROR - Dashboard server interface stopped running
+2024-11-18 13:55:14,508 - URBasic_rtdeEvent - ERROR - RTDE interface stopped running
+2024-11-18 13:55:16,519 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-18 13:55:18,533 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-18 14:27:28,599 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 14:27:34,817 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:27:34,835 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 3475.462 - 10.000000000218279 milliseconds since last package
+2024-11-18 14:27:35,069 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:27:35,324 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:27:35,577 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:27:35,830 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:29:45,565 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 14:29:52,591 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 3613.2169999999996 - 9.999999999763531 milliseconds since last package
+2024-11-18 14:29:52,594 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:29:52,847 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:29:53,099 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:29:53,353 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:29:53,605 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:29:53,859 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:29:54,111 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:29:54,364 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:29:54,618 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:29:54,869 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:31:23,901 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 14:31:30,465 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 3711.0919999999996 - 9.999999999763531 milliseconds since last package
+2024-11-18 14:31:30,474 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:31:30,726 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:31:30,989 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:31:31,241 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:31:31,493 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:31:31,746 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:31:31,999 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:31:32,250 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:31:32,503 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:31:32,756 - URBasic_realTimeClientEvent - ERROR - SendProgram: Safety Stop
+2024-11-18 14:37:30,038 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 14:38:00,910 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 14:39:26,450 - URBasic_dashboardEvent - ERROR - Dashboard server interface stopped running
+2024-11-18 14:39:26,451 - URBasic_rtdeEvent - ERROR - RTDE interface stopped running
+2024-11-18 14:39:28,460 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-18 14:39:30,473 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-18 14:40:22,147 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 14:52:26,302 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 14:52:41,667 - URBasic_realTimeClientEvent - WARNING - Could not send program!
+2024-11-18 14:54:18,594 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 14:54:40,109 - URBasic_realTimeClientEvent - WARNING - Could not send program!
+2024-11-18 14:57:39,407 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 14:57:54,296 - URBasic_realTimeClientEvent - WARNING - Could not send program!
+2024-11-18 14:58:30,569 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 14:58:41,944 - URBasic_realTimeClientEvent - WARNING - Could not send program!
+2024-11-18 14:59:07,586 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 14:59:17,937 - URBasic_realTimeClientEvent - WARNING - Could not send program!
+2024-11-18 15:00:44,285 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 15:00:59,190 - URBasic_realTimeClientEvent - WARNING - Could not send program!
+2024-11-18 15:09:06,877 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 15:10:46,434 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 15:13:41,173 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 15:15:26,249 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 15:15:29,481 - URBasic_realTimeClientEvent - WARNING - Could not send program!
+2024-11-18 15:17:07,361 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 15:17:12,277 - URBasic_realTimeClientEvent - WARNING - Could not send program!
+2024-11-18 15:17:28,672 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 15:17:38,057 - URBasic_realTimeClientEvent - WARNING - Could not send program!
+2024-11-18 15:19:21,144 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 15:19:48,707 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 15:19:51,480 - URBasic_realTimeClientEvent - WARNING - Could not send program!
+2024-11-18 15:20:08,135 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 15:20:17,540 - URBasic_realTimeClientEvent - WARNING - Could not send program!
+2024-11-18 15:20:34,228 - URBasic_realTimeClientEvent - ERROR - Program re-sending timed out - Could not send program!
+2024-11-18 15:20:43,616 - URBasic_realTimeClientEvent - WARNING - Could not send program!
+2024-11-23 22:35:35,091 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!
+2024-11-23 23:21:02,358 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!
+2024-11-23 23:43:03,518 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!
+2024-11-23 23:55:23,548 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!
+2024-11-24 00:15:52,479 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!
+2024-11-24 00:15:52,535 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 3914.604 - 10.000000000218279 milliseconds since last package
+2024-11-24 00:18:12,686 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!
+2024-11-24 00:31:19,708 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!
+2024-11-24 00:44:55,465 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!
+2024-11-24 13:15:15,578 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!
+2024-11-24 13:24:51,253 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 1469.562 - 9.999999999990905 milliseconds since last package
+2024-11-24 13:25:41,256 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 1511.9299999999998 - 9.999999999990905 milliseconds since last package

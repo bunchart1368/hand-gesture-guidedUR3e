@@ -8,7 +8,8 @@ import math
 
 def UR_set_up():
         global tcp, joint_rad, joint_deg, joint_rev
-        robot = '10.10.0.61'
+        # robot = '10.10.0.61'
+        robot = '192.168.1.112'
         port = 30003
         gripper_port    = 63352
         tcp = {}
@@ -102,15 +103,11 @@ def robot_turn(input_int):
                 s.send(b'movel(pose_add(get_actual_tcp_pose(),p[-0.03,0,0,0,0,0]),0.5,0.2,0,0)\n')
                 time.sleep(0.5)
 def home():
-        count = 0
-        while count < 5000:
-                print("First command")
-                radians_list = [round(math.radians(degree), 3) for degree in [-90, -90, -90, -90, 90, 0]]
-                cmd_move = str.encode(f'servoj({radians_list}, 0, 0,0.01, 0.1, 200)\n')
-                s.send(cmd_move)
-                print("Done send command")
-                count += 1
-        print("Home command")
+        radians_list = [round(math.radians(degree), 3) for degree in [90, -90, -90, -45, 90, 360]] #Home2
+        cmd_move = str.encode(f'movej({radians_list},1, 1)\n')
+        s.send(cmd_move)
+        time.sleep(2)
+        print("Home command done")
 
 #####################################################################################################################
 

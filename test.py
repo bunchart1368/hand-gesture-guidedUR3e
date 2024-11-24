@@ -1,9 +1,16 @@
-import math
+import URBasic
 
-# List of angles in degrees
-degrees_list = [0, -90, -90, 60, 90, 180]
+import time, math
+# import math3d as m3d
+from gripper import Gripper
+import numpy as np
 
-# Convert each degree to radians
-radians_list = [round(math.radians(degree), 3) for degree in degrees_list]
 
-print(str(radians_list))
+x = np.array([-0.1710,  0.3119,  0.5579,   -1.7456,  0.6407,  1.8717])
+y = np.array([0.1,0.1,0.1,0.1,0.1,0.1])
+gg = np.add(x, y)
+
+print(gg)
+
+jj = list.round([-0.1710,  0.3119,  0.5579,   -1.7456,  0.6407,  1.8717],2)
+print(jj)

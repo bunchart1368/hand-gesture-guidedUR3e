@@ -42,7 +42,7 @@ VELOCITY = 0.8  # Robot speed value
 #                     math.radians(-20),
 #                     math.radians(88),
 #                     math.radians(0))
-robot_startposition = [round(math.radians(degree), 3) for degree in [90, -90, -90, -45, 90, 360]]
+robot_startposition = [round(math.radians(degree), 3) for degree in [90, -90, -90, -45, 90, 45]]
 # Path to the face-detection model:
 pretrained_model = cv2.dnn.readNetFromCaffe("MODELS/deploy.prototxt.txt", "MODELS/res10_300x300_ssd_iter_140000.caffemodel")
 
@@ -326,10 +326,10 @@ def move_to_face(list_of_facepos,robot_pos):
 
     # x = robot_target_xy[0]
     # y = robot_target_xy[1]
-    # z = 0
+    z = 0
     x = 0
     y = 0
-    z = robot_target_xy[0]
+    # z = robot_target_xy[0] #(-50,50)
     xyz_coords = m3d.Vector(x, y, z)
 
     x_pos_perc = x / max_x
@@ -339,8 +339,11 @@ def move_to_face(list_of_facepos,robot_pos):
     y_rot = y_pos_perc * vert_rot_max * -1
 
     # tcp_rotation_rpy = [y_rot, x_rot, 0]
-    tcp_rotation_rpy = [0, 0, 0]
-    # tcp_rotation_rvec = convert_rpy(tcp_rotation_rpy)
+    # tcp_rotation_rpy = [0, 0, 0]
+    # tcp_rotation_rpy = [0, 0, robot_target_xy[0]]
+    tcp_rotation_rpy = [robot_target_xy[0], 0, 0]
+    # tcp_rotation_rpy = [0, robot_target_xy[0], 0]
+
     tcp_orient = m3d.Orientation.new_euler(tcp_rotation_rpy, encoding='xyz')
     position_vec_coords = m3d.Transform(tcp_orient, xyz_coords)
     print("Position: ", position_vec_coords)

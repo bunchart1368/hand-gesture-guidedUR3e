@@ -42,15 +42,7 @@ VELOCITY = 0.8  # Robot speed value
 #                     math.radians(-20),
 #                     math.radians(88),
 #                     math.radians(0))
-robot_startposition = [round(math.radians(degree), 3) for degree in [90, -90, -90, -45, 90, 45]]
-# Path to the face-detection model:
-pretrained_model = cv2.dnn.readNetFromCaffe("MODELS/deploy.prototxt.txt", "MODELS/res10_300x300_ssd_iter_140000.caffemodel")
-
-video_resolution = (700, 400)  # resolution the video capture will be resized to, smaller sizes can speed up detection
-video_midpoint = (int(video_resolution[0]/2),
-                  int(video_resolution[1]/2))
-video_asp_ratio  = video_resolution[0] / video_resolution[1]  # Aspect ration of each frame
-video_viewangle_hor = math.radians(25)  # Camera FOV (field of fiew) angle in radians in horizontal direction
+robot_startposition = [round(math.radians(degree), 3) for degree in [90, -90, -90, -45, 90, 0]]
 
 # Variable which scales the robot movement from pixels to meters.
 m_per_pixel = 00.00009  
@@ -66,12 +58,6 @@ vert_rot_max = math.radians(25)
 
 
 """FUNCTIONS _____________________________________________________________________________"""
-
-def server_connection():
-    global client_socket
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.connect(('localhost', 12345))
-    print("Connected to the server.")
 
 def check_max_xy(xy_coord):
     """
@@ -138,7 +124,7 @@ def extract_coordinates_from_orientation(oriented_xyz):
     coordinates = [float(num) for num in numbers]
     return coordinates
 
-def move_to_face(list_of_facepos,robot_pos):
+def move_to_face(position,robot_pos):
     """
     Function that moves the robot to the position of the face
 
@@ -151,13 +137,19 @@ def move_to_face(list_of_facepos,robot_pos):
     """
 
 
-    face_from_center = list(list_of_facepos[0])  # TODO: find way of making the selected face persistent
+    # face_from_center = list(list_of_facepos[0])  # TODO: find way of making the selected face persistent
+    print("HI")
 
     prev_robot_pos = robot_pos
-    scaled_face_pos = [c * m_per_pixel for c in face_from_center]
+    # scaled_face_pos = [c * m_per_pixel for c in face_from_center]
+    print("prev_robot_pos: ", prev_robot_pos[0])
+    print("position: ", position)
+    
 
-    robot_target_xy = [a + b for a, b in zip(prev_robot_pos, scaled_face_pos)]
-    # print("..", robot_target_xy)
+    # robot_target_xy = [a + b for a, b in zip(prev_robot_pos, scaled_face_pos)]
+    robot_target_xy = int(position)*m_per_pixel + prev_robot_pos[0]
+    print("..", robot_target_xy)
+    print("HI")
 
     robot_target_xy = check_max_xy(robot_target_xy)
     prev_robot_pos = robot_target_xy
@@ -198,7 +190,12 @@ def move_to_face(list_of_facepos,robot_pos):
     # robot.set_realtime_pose([-0.1610,  0.3119,  0.5579,   -1.4006, -0.6485,  0.7004])
 
     return prev_robot_pos
-
+def server_connection():
+    global client_socket
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect(('localhost', 12345))
+    print("Connected to the server.")
+    
 def get_from_server():
     data = client_socket.recv(1024).decode()
     print("Received from server: ", data)
@@ -219,39 +216,133 @@ def robot_set_up():
 
 def home():
     robot.movej(q=robot_startposition, a= ACCELERATION, v= VELOCITY )
+def compute_target_pose(prev_pose, position, scale_factor=m_per_pixel):
+    """
+    Computes the target pose for the robot based on the previous pose and the current position input.
 
-def strat_hand_tracking():
-    robot_position = [0,0]
-    origin = set_lookorigin()
+    Args:
+        prev_pose (list): Previous position of the robot [x, y].
+        position (float): Position received from the server to adjust movement.
+        scale_factor (float): Scaling factor for converting input to real-world measurements.
 
-    robot.init_realtime_control()  # starts the realtime control loop on the Universal-Robot Controller
-    time.sleep(1) # just a short wait to make sure everything is initialised
+    Returns:
+        list: Target position [x, y].
+    """
+    target_pose = prev_pose[:]
+    # Convert server input to meters and add to previous pose
+    target_pose[0] += int(position) * scale_factor  # Modify x based on input
+    # Clamp to ensure within max bounds
+    target_pose = check_max_xy(target_pose)
+    return target_pose
+
+
+def apply_target_pose(robot, target_pose, origin, command):
+    """
+    Applies the target pose by computing the required transformation and sending it to the robot.
+
+    Args:
+        robot (object): Robot object for real-time control.
+        target_pose (list): Target position [x, y].
+        origin (Transform): Reference origin for transformations.
+    """
+    if command == 1:
+        x = 0
+        y = 0
+        z = target_pose[0]  # Assuming flat movement plane
+        # Compute percentage-based rotation limits
+        x_rot = (x / max_x) * hor_rot_max
+        y_rot = (y / max_y) * vert_rot_max * -1
+        # Create orientation
+        tcp_rotation_rpy = [0, 0, 0]
+    elif command == 2:
+        x = 0
+        y = 0
+        z = 0  # Assuming flat movement plane
+        # Compute percentage-based rotation limits
+        x_rot = (target_pose[0] / max_x) * hor_rot_max
+        y_rot = (y / max_y) * vert_rot_max * -1
+        # Create orientation
+        tcp_rotation_rpy = [0, 0, x_rot]
+    elif command == 3:
+        x = 0
+        y = 0
+        z = 0  # Assuming flat movement plane
+        # Compute percentage-based rotation limits
+        x_rot = (target_pose[0] / max_x) * hor_rot_max
+        y_rot = (y / max_y) * vert_rot_max * -1
+        # Create orientation
+        tcp_rotation_rpy = [x_rot, 0, 0]
+    elif command == 4:
+        x = 0
+        y = 0
+        z = target_pose[0]  # Assuming flat movement plane
+        # Compute percentage-based rotation limits
+        x_rot = (x / max_x) * hor_rot_max
+        y_rot = (y / max_y) * vert_rot_max * -1
+        # Create orientation
+        tcp_rotation_rpy = [0, x_rot, 0]
+    
+    # Create vector for position
+    xyz_coords = m3d.Vector(x, y, z)
+    tcp_orient = m3d.Orientation.new_euler(tcp_rotation_rpy, encoding='xyz')
+    position_vec_coords = m3d.Transform(tcp_orient, xyz_coords)
+
+    # Transform based on origin
+    oriented_xyz = origin * position_vec_coords
+    coordinates = extract_coordinates_from_orientation(oriented_xyz)
+
+    # Send target pose to robot
+    robot.set_realtime_pose(coordinates)
+
+def extract_last_tuple(s):
+    # Find all tuples in the string, including those with floating-point numbers
+    tuples = re.findall(r'\(-?\d+\.?\d*,-?\d+\.?\d*\)', s)
+    # Return the last tuple if any are found
+    if tuples:
+        last_tuple_str = tuples[-1]
+        # Remove parentheses and split by ','
+        last_tuple = last_tuple_str.strip('()').split(',')
+        # Convert to floats and return as a tuple
+        return tuple(map(float, last_tuple))
+    return None
+def start_hand_tracking():
+    """
+    Main loop for receiving server input and moving the robot based on hand tracking.
+    """
+    global origin
+    robot_position = [0, 0]  # Initialize position in 2D plane
+    origin = set_lookorigin()  # Set the origin
+
+    robot.init_realtime_control()
+    time.sleep(1)  # Allow time for initialization
 
     try:
-        print("starting loop")
+        print("Starting hand tracking loop...")
         while True:
-
-            # ret, frame = cap.read()
-            # if not ret:
-            #     print("Error: Could not read frame from camera.")
-            #     break
-            server_connection()
-            position = get_from_server()
-            print("frame shown")
-            if position:
-                robot_position = move_to_face(position,robot_position)
+            position,command = extract_last_tuple(get_from_server())
+            position = int(position)
+            command = int(command)
+            print(f"Received position: {position}")
+            if isinstance(position, int):  # Ensure valid numeric input
+                print(f"Received position: {position}")
+                robot_position = compute_target_pose(robot_position, position)
+                apply_target_pose(robot, robot_position, origin, command)
+                print("Robot moved to target position.")
             else:
-                print("No face found")
-            print("robot moved")
-
-        print("exiting loop")
+                print("Invalid or no input received.")
     except KeyboardInterrupt:
-        print("closing robot connection")
-        # Remember to always close the robot connection, otherwise it is not possible to reconnect
+        print("Stopping hand tracking...")
+    finally:
         robot.close()
-
-    except:
-        robot.close()
+        print("Robot connection closed.")
 
 if __name__ == '__main__':
-    main()
+    robot_set_up()
+    home()
+    server_connection()
+    start_hand_tracking()
+    robot.close()
+    print("Robot Connection Closed")
+    client_socket.close()
+    print("Client Connection Closed")
+    print("Program Ended")

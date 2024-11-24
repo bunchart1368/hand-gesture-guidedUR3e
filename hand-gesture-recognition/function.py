@@ -381,22 +381,22 @@ def draw_info(image, fps, mode, number):
 #                        cv.FONT_HERSHEY_SIMPLEX, 0.7, (255, 0, 0), 2, cv.LINE_AA)
 #     return image
 
-def draw_finger_angles(image, results, joint_dict):
-    # Loop through hands
-    for hand in results.multi_hand_landmarks:
-        #Loop through joint sets 
-        for command in joint_dict.keys():
-            joint = joint_dict[command]
-            a = np.array([hand.landmark[joint[0]].x, hand.landmark[joint[0]].y]) # First coord
-            b = np.array([hand.landmark[joint[1]].x, hand.landmark[joint[1]].y]) # Second coord
-            c = np.array([hand.landmark[joint[2]].x, hand.landmark[joint[2]].y]) # Third coord
+# def draw_finger_angles(image, results, joint_dict):
+#     # Loop through hands
+#     for hand in results.multi_hand_landmarks:
+#         #Loop through joint sets 
+#         for command in joint_dict.keys():
+#             joint = joint_dict[command]
+#             a = np.array([hand.landmark[joint[0]].x, hand.landmark[joint[0]].y]) # First coord
+#             b = np.array([hand.landmark[joint[1]].x, hand.landmark[joint[1]].y]) # Second coord
+#             c = np.array([hand.landmark[joint[2]].x, hand.landmark[joint[2]].y]) # Third coord
             
-            radians = np.arctan2(c[1] - b[1], c[0]-b[0]) - np.arctan2(a[1]-b[1], a[0]-b[0])
-            angle = np.abs(radians*180.0/np.pi)
+#             radians = np.arctan2(c[1] - b[1], c[0]-b[0]) - np.arctan2(a[1]-b[1], a[0]-b[0])
+#             angle = np.abs(radians*180.0/np.pi)
             
-            if angle > 180.0:
-                angle = 360-angle
+#             if angle > 180.0:
+#                 angle = 360-angle
                 
-            cv.putText(image, command      +str(round(angle, 2)), tuple(np.multiply(b, [640, 480]).astype(int)),
-                       cv.FONT_HERSHEY_SIMPLEX, 0.7, (255, 0, 0), 2, cv.LINE_AA)
-    return image
+#             cv.putText(image, command      +str(round(angle, 2)), tuple(np.multiply(b, [640, 480]).astype(int)),
+#                        cv.FONT_HERSHEY_SIMPLEX, 0.7, (255, 0, 0), 2, cv.LINE_AA)
+#     return image

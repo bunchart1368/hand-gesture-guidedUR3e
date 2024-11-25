@@ -13,8 +13,8 @@ def start_server():
 
     while True:
         # Generate a random command (replace this with actual hand detection logic)
-        command = str(random.randint(-50, 50))
-        command = f'({command},2);'
+        command = str(random.randint(10, 70))
+        command = f'(1,{command});'
         conn.send(command.encode())
         print(f"Sent Command: {command}")
         time.sleep(0.1)  # Simulate delay for real-time command sending

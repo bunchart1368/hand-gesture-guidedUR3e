@@ -36,4 +36,8 @@ class Gripper:
         print('Gripper Pos = ' + g_recv)
 
 if __name__ == "__main__":
-    gripper = Gripper()
+    gripper = Gripper('10.10.0.61', 63352)
+    gripper.connection()
+    gripper.control(0)
+    time.sleep(3)
+    gripper.control(255)

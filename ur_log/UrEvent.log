@@ -80,3 +80,384 @@
 2024-11-24 13:15:15,578 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!
 2024-11-24 13:24:51,253 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 1469.562 - 9.999999999990905 milliseconds since last package
 2024-11-24 13:25:41,256 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 1511.9299999999998 - 9.999999999990905 milliseconds since last package
+2024-11-25 12:40:59,599 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:00,648 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:01,650 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:02,666 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:03,673 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:04,679 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:05,684 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:06,691 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:07,699 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:08,703 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:09,716 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:10,729 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:11,731 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:12,743 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:13,751 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:14,766 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:15,772 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:16,779 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:17,787 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:18,797 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:19,802 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:20,806 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:21,817 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:22,822 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:23,830 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:24,836 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:25,847 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:26,853 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:27,857 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:28,857 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:29,866 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:30,868 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:31,875 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:32,884 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:33,887 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:34,893 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:35,897 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:36,908 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:37,910 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:38,918 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:39,927 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:40,936 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:41,947 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:42,947 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:43,955 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:44,960 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:45,967 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:46,975 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:47,989 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:49,004 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:50,012 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:51,020 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:52,025 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:53,035 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:54,040 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:55,050 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:56,055 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:57,070 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:41:58,075 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:11,407 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:12,414 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:13,419 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:14,425 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:15,431 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:16,437 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:17,448 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:18,457 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:19,465 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:20,471 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:21,476 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:22,483 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:23,499 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:24,505 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:25,507 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:26,508 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:27,517 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:28,519 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:29,522 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:30,533 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:31,542 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:32,550 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:33,556 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:34,564 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:35,568 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:36,571 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:37,578 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:38,580 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 12:43:39,592 - URBasic_realTimeClientEvent - ERROR - RTC connecting
+2024-11-25 13:57:27,272 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!
+2024-11-25 13:57:33,121 - URBasic_dashboardEvent - ERROR - Dashboard server interface stopped running
+2024-11-25 13:57:33,121 - URBasic_rtdeEvent - ERROR - RTDE interface stopped running
+2024-11-25 13:57:33,180 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:33,221 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:33,264 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:33,315 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:33,355 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:33,401 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:33,449 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:33,495 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:33,542 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:33,589 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:33,634 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:33,682 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:33,726 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:33,775 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:33,821 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:33,864 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:33,911 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:33,957 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,003 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,048 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,093 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,140 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,185 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,233 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,281 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,328 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,371 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,416 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,462 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,505 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,555 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,599 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,646 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,693 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,738 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,785 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,833 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,877 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,924 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:34,970 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,016 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,060 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,106 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,143 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-25 13:57:35,151 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,195 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,243 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,286 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,333 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,380 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,425 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,474 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,519 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,564 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,614 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,659 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,709 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,754 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,798 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,847 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,892 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,938 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:35,984 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,032 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,079 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,125 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,176 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,230 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,264 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,309 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,357 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,403 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,448 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,495 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,540 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,589 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,633 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,682 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,727 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,773 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,819 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,866 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,912 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:36,958 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,003 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,051 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,097 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,143 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,151 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-25 13:57:37,190 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,236 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,281 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,329 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,375 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,421 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,464 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,510 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,560 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,602 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,649 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,696 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,741 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,788 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,832 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,880 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,926 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:37,973 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,021 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,064 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,113 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,158 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,208 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,252 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,299 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,343 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,390 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,435 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,480 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,526 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,572 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,620 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,665 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,710 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,757 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,804 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,904 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,943 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:38,989 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,033 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,082 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,127 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,173 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,219 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,269 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,316 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,359 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,406 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,449 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,496 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,543 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,590 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,636 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,682 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,730 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,774 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,822 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,870 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,917 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:39,962 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,006 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,052 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,100 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,147 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,191 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,239 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,285 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,329 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,379 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,424 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,475 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,518 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,565 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,609 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,655 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,702 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,750 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,795 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,840 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,890 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,938 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:40,981 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,029 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,075 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,121 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,167 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,213 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,258 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,306 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,351 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,396 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,449 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,491 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,536 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,580 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,632 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,678 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,721 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,766 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,812 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,858 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,908 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,954 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:41,998 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,045 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,092 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,138 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,185 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,233 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,279 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,323 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,370 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,438 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,480 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,527 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,574 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,619 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,664 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,709 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,757 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,804 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,847 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,896 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,941 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:42,990 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,033 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,080 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,126 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,173 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,221 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,267 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,313 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,361 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,407 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,454 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,502 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,545 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,592 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,639 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,685 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,730 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,779 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,826 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,873 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,918 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:43,966 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:44,013 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:44,057 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:44,104 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:44,154 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:44,198 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:44,244 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:44,288 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:44,339 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:44,383 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:44,430 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:46,321 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:46,433 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:46,472 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:46,708 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:46,750 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:46,797 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:46,844 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:47,293 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:47,333 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:47,380 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:50,735 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:50,770 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:50,817 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:50,864 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:50,912 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:50,956 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,002 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,049 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,092 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,141 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,188 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,232 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,278 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,323 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,370 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,415 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,461 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,507 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,554 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,599 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,647 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,693 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,738 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,785 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,833 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,882 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,929 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:51,979 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:52,025 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:52,074 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:52,118 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:52,166 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:52,209 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:52,257 - URBasic_urScriptExtEvent - WARNING - RTDE is not running
+2024-11-25 13:57:52,303 - URBasic_urScriptExtEvent - WARNING - RTDE is not running

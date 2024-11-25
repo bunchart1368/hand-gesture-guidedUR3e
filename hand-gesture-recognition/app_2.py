@@ -259,7 +259,7 @@ def draw_angles_command(image, results, command):
             command_no = list(joint_dict.keys()).index(command) + 1
             info_to_send = f"({command_no},{angle})"
             print(info_to_send)
-        # conn.send(info_to_send.encode())
+        conn.send(info_to_send.encode())
     return image
 
 

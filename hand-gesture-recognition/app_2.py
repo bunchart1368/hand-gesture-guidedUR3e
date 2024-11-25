@@ -22,13 +22,13 @@ from function import ( select_mode, calc_bounding_rect, calc_landmark_list,
 
 
 # Server connection
-# server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# server_socket.bind(('localhost', 12345))
-# server_socket.listen(1)
-# print("Server is waiting for a connection...")
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_socket.bind(('localhost', 12345))
+server_socket.listen(1)
+print("Server is waiting for a connection...")
 
-# conn, addr = server_socket.accept()
-# print(f"Connected to {addr}")
+conn, addr = server_socket.accept()
+print(f"Connected to {addr}")
 
 
 def get_args():
@@ -235,9 +235,9 @@ def main():
 def draw_angles_command(image, results, command):
     # Loop through hands
     joint_dict = {
-                    'zoom': [8, 2, 4], #
-                    'rotate' : [4, 0, 17],
-                    'tilt (LR)': [4, 0, 17]
+                    'zoom': [8, 2, 4], #zoom
+                    'rotate' : [4, 0, 17], #rotate
+                    'tilt (LR)': [4, 0, 17] #tilt (LR)
                     # ,'tilt (UD)': [8, 5, 12]
                 }
     for hand in results.multi_hand_landmarks:
@@ -255,8 +255,10 @@ def draw_angles_command(image, results, command):
 
         cv.putText(image, command      +str(round(angle, 2)), tuple(np.multiply(b, [640, 480]).astype(int)),
                     cv.FONT_HERSHEY_SIMPLEX, 0.7, (255, 0, 0), 2, cv.LINE_AA)
-        info_to_send = f"({command},{angle})"
-        print(info_to_send)
+        if command:
+            command_no = list(joint_dict.keys()).index(command) + 1
+            info_to_send = f"({command_no},{angle})"
+            print(info_to_send)
         # conn.send(info_to_send.encode())
     return image
 

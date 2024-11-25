@@ -235,9 +235,10 @@ def main():
 def draw_angles_command(image, results, command):
     # Loop through hands
     joint_dict = {
-                    'zoom': [8, 2, 4],
+                    'zoom': [8, 2, 4], #
                     'rotate' : [4, 0, 17],
-                    'tilt (LR)': [12, 10, 9]
+                    'tilt (LR)': [4, 0, 17]
+                    # ,'tilt (UD)': [8, 5, 12]
                 }
     for hand in results.multi_hand_landmarks:
         #Loop through joint sets 

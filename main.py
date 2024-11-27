@@ -51,7 +51,7 @@ m_per_pixel = 00.000009 #Add more 0
 
 # Size of the robot view-window
 # The robot will at most move this distance in each direction
-max_x = 0.1
+max_x = 0.2
 max_y = 0.2
 max_z = 0.2
 
@@ -187,7 +187,7 @@ def compute_target_pose(prev_pose, position,command, scale_factor=m_per_pixel):
         position = -50 + (50 - (-50)) * (position - 10) / (70 - 10)
     target_pose[0] += int(position) * scale_factor  # Modify x based on input
     # Clamp to ensure within max bounds
-    # target_pose = check_max_xy(target_pose)
+    target_pose = check_max_xy(target_pose)
     return target_pose
 
 

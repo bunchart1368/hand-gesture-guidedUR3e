@@ -51,14 +51,14 @@ m_per_pixel = 00.000009 #Add more 0
 
 # Size of the robot view-window
 # The robot will at most move this distance in each direction
-max_x = 0.2
+max_x = 0.1
 max_y = 0.2
 max_z = 0.2
 
 # Maximum Rotation of the robot at the edge of the view window
-hor_rot_max = math.radians(90)
-vert_rot_max = math.radians(90)
-z_rot_max = math.radians(90)
+hor_rot_max = math.radians(45)
+vert_rot_max = math.radians(45)
+# z_rot_max = math.radians(90)
 
 
 """FUNCTIONS _____________________________________________________________________________"""
@@ -154,7 +154,8 @@ def robot_set_up():
 
 def home():
     robot.movej(q=robot_startposition, a= ACCELERATION, v= VELOCITY )
-def compute_target_pose(prev_pose, position, scale_factor=m_per_pixel):
+
+def compute_target_pose(prev_pose, position,command, scale_factor=m_per_pixel):
     """
     Computes the target pose for the robot based on the previous pose and the current position input.
 
@@ -169,14 +170,28 @@ def compute_target_pose(prev_pose, position, scale_factor=m_per_pixel):
     target_pose = prev_pose[:]
     # Convert server input to meters and add to previous pose
     position = int(position)
-    position = -300 + (250 - (-300)) * (position - 10) / (70 - 10)
+    if command ==1:
+        position = -25 + (25 - (-25)) * (position - 10) / (70 - 10)
+        print('Enter first command')
+        print('Amplitude: ',position)
+
+    elif command ==2:
+        position = -30 + (40 - (-30)) * (position - 10) / (60 - 5)  
+        print('Enter second command')
+        print('Amplitude: ',position)
+    elif command ==3:
+        position = -50 + (20 - (-50)) * (position - 10) / (60 - 25)  
+        print('Enter third command')
+        print('Amplitude: ',position)
+    else:
+        position = -50 + (50 - (-50)) * (position - 10) / (70 - 10)
     target_pose[0] += int(position) * scale_factor  # Modify x based on input
     # Clamp to ensure within max bounds
-    target_pose = check_max_xy(target_pose)
+    # target_pose = check_max_xy(target_pose)
     return target_pose
 
 
-def apply_target_pose(robot, target_pose, origin, command):
+def apply_target_pose(robot, target_pose, origin, command, previous_command):
     """
     Applies the target pose by computing the required transformation and sending it to the robot.
 
@@ -185,13 +200,18 @@ def apply_target_pose(robot, target_pose, origin, command):
         target_pose (list): Target position [x, y].
         origin (Transform): Reference origin for transformations.
     """
+    # print('Amplitude: ',target_pose[0] )
+    if previous_command != command:
+        print('previous_command', previous_command)
+        print('command', command)
+        origin = set_lookorigin()
+        print("Set new tcp")
+        # target_pose[0] = 0
+
     if command == 1:
         x = 0
         y = 0
         z = target_pose[0]  # Assuming flat movement plane
-        # Compute percentage-based rotation limits
-        x_rot = (x / max_x) * hor_rot_max
-        y_rot = (y / max_y) * vert_rot_max * -1
         # Create orientation
         tcp_rotation_rpy = [0, 0, 0]
     elif command == 2:
@@ -199,8 +219,7 @@ def apply_target_pose(robot, target_pose, origin, command):
         y = 0
         z = 0  # Assuming flat movement plane
         # Compute percentage-based rotation limits
-        x_rot = (target_pose[0] / max_x) * hor_rot_max
-        y_rot = (y / max_y) * vert_rot_max * -1
+        x_rot = target_pose[0]
         # Create orientation
         tcp_rotation_rpy = [0, 0, x_rot]
     elif command == 3:
@@ -209,21 +228,22 @@ def apply_target_pose(robot, target_pose, origin, command):
         z = 0  # Assuming flat movement plane
         # Compute percentage-based rotation limits
         # x_rot = (target_pose[0] / max_x) * hor_rot_max
-        x_rot = (target_pose[0] / max_x) * hor_rot_max* 0.4
-        y_rot = (y / max_y) * vert_rot_max * -1
+        x_rot = target_pose[0] 
+        # print('rotation angle: ',x_rot)
         # Create orientation
         tcp_rotation_rpy = [x_rot, 0, 0]
     elif command == 4:
         x = 0
         y = 0
-        z = target_pose[0]  # Assuming flat movement plane
+        z = 0  # Assuming flat movement plane
         # Compute percentage-based rotation limits
         # x_rot = (x / max_x) * hor_rot_max 
         x_rot = (x / max_x) * hor_rot_max * 0.4
-        y_rot = (y / max_y) * vert_rot_max * -1
         # Create orientation
         tcp_rotation_rpy = [0, x_rot, 0]
     
+    previous_command = command
+    origin = set_lookorigin()
     # Create vector for position
     xyz_coords = m3d.Vector(x, y, z)
     tcp_orient = m3d.Orientation.new_euler(tcp_rotation_rpy, encoding='xyz')
@@ -235,6 +255,8 @@ def apply_target_pose(robot, target_pose, origin, command):
 
     # Send target pose to robot
     robot.set_realtime_pose(coordinates)
+
+    return previous_command
 
 def extract_last_tuple(s):
     # Find all tuples in the string, including those with floating-point numbers
@@ -251,7 +273,8 @@ def start_hand_tracking():
     """
     Main loop for receiving server input and moving the robot based on hand tracking.
     """
-    global origin
+    global origin, previous_command
+    previous_command = 0
     robot_position = [0, 0]  # Initialize position in 2D plane
     origin = set_lookorigin()  # Set the origin
 
@@ -264,12 +287,12 @@ def start_hand_tracking():
             command,position = extract_last_tuple(get_from_server())
             position = int(position)
             command = int(command)
-            print(f"Received position: {position}")
+            # print(f"Received position: {position}")
             if isinstance(position, int):  # Ensure valid numeric input
-                print(f"Received position: {position}")
-                robot_position = compute_target_pose(robot_position, position)
-                apply_target_pose(robot, robot_position, origin, command)
-                print("Robot moved to target position.")
+                # print(f"Received position: {position}")
+                robot_position = compute_target_pose(robot_position, position, command)
+                previous_command = apply_target_pose(robot, robot_position, origin, command, previous_command)
+                # print("Robot moved to target position.")
             else:
                 print("Invalid or no input received.")
     except KeyboardInterrupt:

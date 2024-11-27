@@ -263,9 +263,9 @@ def move_to_face(list_of_facepos,robot_pos):
     y_rot = y_pos_perc * vert_rot_max * -1
 
     # tcp_rotation_rpy = [y_rot, x_rot, 0]
-    tcp_rotation_rpy = [0, 0, 0]
-    # tcp_rotation_rpy = [0, 0, robot_target_xy[0]]
-    # tcp_rotation_rpy = [robot_target_xy[0], 0, 0]
+    # tcp_rotation_rpy = [0, 0, 0]
+    # tcp_rotation_rpy = [0, 0, x_rot]
+    tcp_rotation_rpy = [robot_target_xy[0], 0, 0]
     # tcp_rotation_rpy = [0, robot_target_xy[0], 0]
 
     tcp_orient = m3d.Orientation.new_euler(tcp_rotation_rpy, encoding='xyz')

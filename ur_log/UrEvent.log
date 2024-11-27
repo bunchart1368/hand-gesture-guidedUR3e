@@ -890,3 +890,14 @@
 2024-11-27 17:17:55,852 - URBasic_rtdeEvent - ERROR - RTDE interface stopped running
 2024-11-27 17:17:57,858 - URBasic_dashboardEvent - ERROR - Dashboard connecting
 2024-11-27 17:17:59,867 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-27 18:06:27,138 - URBasic_rtdeEvent - ERROR - RTDE interface stopped running
+2024-11-27 18:06:27,139 - URBasic_dashboardEvent - ERROR - Dashboard server interface stopped running
+2024-11-27 18:06:29,179 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-27 18:06:31,193 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-27 18:53:22,807 - URBasic_dashboardEvent - ERROR - Dashboard server interface stopped running
+2024-11-27 18:53:22,808 - URBasic_rtdeEvent - ERROR - RTDE interface stopped running
+2024-11-27 18:53:24,821 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-27 18:53:26,835 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-27 18:59:53,701 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!
+2024-11-27 19:03:05,619 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!
+2024-11-27 19:03:06,376 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!

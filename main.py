@@ -206,7 +206,7 @@ def apply_target_pose(robot, target_pose, origin, command, previous_command):
         print('command', command)
         origin = set_lookorigin()
         print("Set new tcp")
-        # target_pose[0] = 0
+        target_pose[0] = 0
 
     if command == 1:
         x = 0

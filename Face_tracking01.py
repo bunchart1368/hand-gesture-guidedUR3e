@@ -210,6 +210,7 @@ def set_lookorigin():
 
     """
     position = robot.get_actual_tcp_pose()
+    print(position)
     orig = m3d.Transform(position)
     return orig
 
@@ -332,3 +333,4 @@ except KeyboardInterrupt:
 
 except:
     robot.close()
+

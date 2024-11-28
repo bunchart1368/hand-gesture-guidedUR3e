@@ -41,3 +41,5 @@ if __name__ == "__main__":
     gripper.control(0)
     time.sleep(3)
     gripper.control(255)
+
+    

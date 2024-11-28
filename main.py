@@ -23,12 +23,6 @@ import re, socket
 """SETTINGS AND VARIABLES ________________________________________________________________"""
 
 RASPBERRY_BOOL = False
-# If this is run on a linux system, a picamera will be used.
-# If you are using a linux system, with a webcam instead of a raspberry pi delete the following if-statement
-if sys.platform == "linux":
-    import picamera
-    from picamera.array import PiRGBArray
-    RASPBERRY_BOOL = True
 
 # ROBOT_IP = '192.168.1.112'
 ROBOT_IP = '10.10.0.61'
@@ -46,6 +40,7 @@ robot_startposition = [round(math.radians(degree), 3) for degree in [90, -90, -9
 
 # Variable which scales the robot movement from pixels to meters.
 # m_per_pixel = 00.00009  
+# m_per_pixel = 00.000045
 m_per_pixel = 00.000009 #Add more 0  
 
 
@@ -58,7 +53,6 @@ max_z = 0.2
 # Maximum Rotation of the robot at the edge of the view window
 hor_rot_max = math.radians(45)
 vert_rot_max = math.radians(45)
-# z_rot_max = math.radians(90)
 
 
 """FUNCTIONS _____________________________________________________________________________"""
@@ -128,6 +122,14 @@ def extract_coordinates_from_orientation(oriented_xyz):
     coordinates = [float(num) for num in numbers]
     return coordinates
 
+def detect_sign_change(previous, current):
+    if previous > 0 and current < 0:
+        return True
+    elif previous < 0 and current > 0:
+        return True
+    else:
+        return False
+
 def server_connection():
     global client_socket
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -155,7 +157,7 @@ def robot_set_up():
 def home():
     robot.movej(q=robot_startposition, a= ACCELERATION, v= VELOCITY )
 
-def compute_target_pose(prev_pose, position,command, scale_factor=m_per_pixel):
+def compute_target_pose(prev_pose, position,command,prev_ampli, scale_factor=m_per_pixel):
     """
     Computes the target pose for the robot based on the previous pose and the current position input.
 
@@ -170,25 +172,46 @@ def compute_target_pose(prev_pose, position,command, scale_factor=m_per_pixel):
     target_pose = prev_pose[:]
     # Convert server input to meters and add to previous pose
     position = int(position)
-    if command ==1:
-        position = -25 + (25 - (-25)) * (position - 10) / (70 - 10)
-        print('Enter first command')
-        print('Amplitude: ',position)
+    # if command ==1:
+    #     position = -25 + (25 - (-25)) * (position - 10) / (70 - 10)
+    #     print('Enter first command')
+    #     print('Amplitude: ',position)
 
-    elif command ==2:
-        position = -30 + (40 - (-30)) * (position - 10) / (60 - 5)  
+    # elif command ==2:
+    #     position = -30 + (40 - (-30)) * (position - 10) / (60 - 5)  
+    #     print('Enter second command')
+    #     print('Amplitude: ',position)
+    # elif command ==3:
+    #     position = -50 + (20 - (-50)) * (position - 10) / (60 - 25)  
+    #     print('Enter third command')
+    #     print('Amplitude: ',position)
+    # else:
+    #     position = -50 + (50 - (-50)) * (position - 10) / (70 - 10)
+    if command == 1:
+        position = -25 + (25 - (-25)) * (position - 10) / (60 - 10)
+        print('Enter first command')
+        print('Amplitude: ', position)
+    elif command == 2:
+        position = -30 + (30 - (-30)) * (position - 5) / (50 - 5)
         print('Enter second command')
-        print('Amplitude: ',position)
-    elif command ==3:
-        position = -50 + (20 - (-50)) * (position - 10) / (60 - 25)  
+        print('Amplitude: ', position)
+    elif command == 3:
+        position = -30 + (30 - (-30)) * (position - 25) / (60 - 25)
+        position = position * 1.5
         print('Enter third command')
-        print('Amplitude: ',position)
+        print('Amplitude: ', position)
     else:
-        position = -50 + (50 - (-50)) * (position - 10) / (70 - 10)
+        position = -50 + (50 - (-50)) * (position - 10) / (60 - 10)
+
     target_pose[0] += int(position) * scale_factor  # Modify x based on input
+    if (detect_sign_change(prev_ampli,position)):
+        print('prev_ampli', prev_ampli)
+        print('Current ampli',position)
+        target_pose[0] = 0
+    prev_ampli = position
     # Clamp to ensure within max bounds
     target_pose = check_max_xy(target_pose)
-    return target_pose
+    return target_pose, prev_ampli
 
 
 def apply_target_pose(robot, target_pose, origin, command, previous_command):
@@ -228,7 +251,7 @@ def apply_target_pose(robot, target_pose, origin, command, previous_command):
         z = 0  # Assuming flat movement plane
         # Compute percentage-based rotation limits
         # x_rot = (target_pose[0] / max_x) * hor_rot_max
-        x_rot = target_pose[0] 
+        x_rot = target_pose[0]
         # print('rotation angle: ',x_rot)
         # Create orientation
         tcp_rotation_rpy = [x_rot, 0, 0]
@@ -238,7 +261,8 @@ def apply_target_pose(robot, target_pose, origin, command, previous_command):
         z = 0  # Assuming flat movement plane
         # Compute percentage-based rotation limits
         # x_rot = (x / max_x) * hor_rot_max 
-        x_rot = (x / max_x) * hor_rot_max * 0.4
+        # x_rot = (x / max_x) * hor_rot_max * 0.4
+        x_rot = target_pose[0] 
         # Create orientation
         tcp_rotation_rpy = [0, x_rot, 0]
     
@@ -275,6 +299,7 @@ def start_hand_tracking():
     """
     global origin, previous_command
     previous_command = 0
+    prev_ampli = 0
     robot_position = [0, 0]  # Initialize position in 2D plane
     origin = set_lookorigin()  # Set the origin
 
@@ -290,7 +315,7 @@ def start_hand_tracking():
             # print(f"Received position: {position}")
             if isinstance(position, int):  # Ensure valid numeric input
                 # print(f"Received position: {position}")
-                robot_position = compute_target_pose(robot_position, position, command)
+                robot_position, prev_ampli = compute_target_pose(robot_position, position, command, prev_ampli)
                 previous_command = apply_target_pose(robot, robot_position, origin, command, previous_command)
                 # print("Robot moved to target position.")
             else:

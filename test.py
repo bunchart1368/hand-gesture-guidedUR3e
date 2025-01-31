@@ -1,9 +1,15 @@
-import math
+def detect_sign_change(previous, current):
+    if previous >= 0 and current < 0:
+        return 'positive_to_negative'
+    elif previous < 0 and current >= 0:
+        return 'negative_to_positive'
+    else:
+        return 'no_change'
 
-# List of angles in degrees
-degrees_list = [0, -90, -90, 60, 90, 180]
 
-# Convert each degree to radians
-radians_list = [round(math.radians(degree), 3) for degree in degrees_list]
+# Example usage
+previous_number = 3
+current_number = -5
 
-print(str(radians_list))
+result = detect_sign_change(previous_number, current_number)
+print(f"Sign change: {result}")

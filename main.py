@@ -213,7 +213,7 @@ def apply_target_pose(
     tcp_orient = m3d.Orientation.new_euler(tcp_rotation_rpy, encoding='xyz')
     position_vec_coords = m3d.Transform(tcp_orient, xyz_coords)
 
-    oriented_xyz = origin * position_vec_coords
+    oriented_xyz = origin * position_vec_coords + m3d.Transform(tcp_orient, m3d.Vector(0, 0, 1))
     coordinates = extract_coordinates_from_orientation(oriented_xyz)
 
     robot.set_realtime_pose(coordinates)

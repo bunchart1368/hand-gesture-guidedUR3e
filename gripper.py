@@ -39,7 +39,6 @@ if __name__ == "__main__":
     gripper = Gripper('10.10.0.61', 63352)
     gripper.connection()
     gripper.control(0)
-    time.sleep(3)
+    time.sleep(6)
     gripper.control(255)
 
-    

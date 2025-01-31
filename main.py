@@ -24,8 +24,8 @@ import re, socket
 
 RASPBERRY_BOOL = False
 
-# ROBOT_IP = '192.168.1.112'
-ROBOT_IP = '10.10.0.61'
+ROBOT_IP = '192.168.1.120'
+# ROBOT_IP = '10.10.0.61'
 ACCELERATION = 0.9  # Robot acceleration value
 VELOCITY = 0.8  # Robot speed value
 
@@ -46,7 +46,7 @@ m_per_pixel = 00.000009 #Add more 0
 
 # Size of the robot view-window
 # The robot will at most move this distance in each direction
-max_x = 0.2
+max_x = 0.1
 max_y = 0.2
 max_z = 0.2
 
@@ -156,6 +156,7 @@ def robot_set_up():
 
 def home():
     robot.movej(q=robot_startposition, a= ACCELERATION, v= VELOCITY )
+    print("Set home")
 
 def compute_target_pose(prev_pose, position,command,prev_ampli, scale_factor=m_per_pixel):
     """
@@ -172,30 +173,15 @@ def compute_target_pose(prev_pose, position,command,prev_ampli, scale_factor=m_p
     target_pose = prev_pose[:]
     # Convert server input to meters and add to previous pose
     position = int(position)
-    # if command ==1:
-    #     position = -25 + (25 - (-25)) * (position - 10) / (70 - 10)
-    #     print('Enter first command')
-    #     print('Amplitude: ',position)
-
-    # elif command ==2:
-    #     position = -30 + (40 - (-30)) * (position - 10) / (60 - 5)  
-    #     print('Enter second command')
-    #     print('Amplitude: ',position)
-    # elif command ==3:
-    #     position = -50 + (20 - (-50)) * (position - 10) / (60 - 25)  
-    #     print('Enter third command')
-    #     print('Amplitude: ',position)
-    # else:
-    #     position = -50 + (50 - (-50)) * (position - 10) / (70 - 10)
     if command == 1:
-        position = -25 + (25 - (-25)) * (position - 10) / (60 - 10)
+        position = -30 + (30 - (-30)) * (position - 10) / (60 - 10)
         print('Enter first command')
         print('Amplitude: ', position)
     elif command == 2:
         position = -30 + (30 - (-30)) * (position - 5) / (50 - 5)
         print('Enter second command')
         print('Amplitude: ', position)
-    elif command == 3:
+    elif command == 3 or command == 4:
         position = -30 + (30 - (-30)) * (position - 25) / (60 - 25)
         position = position * 1.5
         print('Enter third command')
@@ -266,6 +252,7 @@ def apply_target_pose(robot, target_pose, origin, command, previous_command):
         # Create orientation
         tcp_rotation_rpy = [0, x_rot, 0]
     
+    
     previous_command = command
     origin = set_lookorigin()
     # Create vector for position
@@ -300,6 +287,10 @@ def start_hand_tracking():
     global origin, previous_command
     previous_command = 0
     prev_ampli = 0
+    # count = 0
+    # total_amplitude = 0
+    # unique_command = list()
+    # unique_command.append(0)
     robot_position = [0, 0]  # Initialize position in 2D plane
     origin = set_lookorigin()  # Set the origin
 
@@ -316,8 +307,15 @@ def start_hand_tracking():
             if isinstance(position, int):  # Ensure valid numeric input
                 # print(f"Received position: {position}")
                 robot_position, prev_ampli = compute_target_pose(robot_position, position, command, prev_ampli)
+                # count += 1
+                # total_amplitude += prev_ampli
+                # if command != unique_command[-1]:
+                #     unique_command.append(command)
                 previous_command = apply_target_pose(robot, robot_position, origin, command, previous_command)
                 # print("Robot moved to target position.")
+                # print('Count: ',count)
+                # print('total_amplitude',total_amplitude)
+                # print('unique_command',unique_command)
             else:
                 print("Invalid or no input received.")
     except KeyboardInterrupt:

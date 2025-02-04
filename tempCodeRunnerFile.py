@@ -1,3 +1,1 @@
-rver_connection()
-    # start_hand_tracking()
-    # end()
+robot_set_up

@@ -31,13 +31,13 @@ import URBasic
 
 RASPBERRY_BOOL = False
 
-ROBOT_IP = '192.168.1.120'
-# ROBOT_IP = '10.10.0.61'
+# ROBOT_IP = '192.168.1.120'
+ROBOT_IP = '10.10.0.61'
 ACCELERATION = 0.9  # Robot acceleration value
 VELOCITY = 0.8  # Robot speed value
 
 # The Joint position the robot starts at
-robot_startposition = [round(math.radians(degree), 3) for degree in [90, -90, -90, -45, 90, 0]]
+robot_startposition = [round(math.radians(degree), 3) for degree in [-90, -90, -90, -30, 90, 0]]
 
 # Variable which scales the robot movement from pixels to meters.
 m_per_pixel = 0.000009  # Add more 0  
@@ -99,6 +99,7 @@ def set_lookorigin() -> m3d.Transform:
             characterises location and rotation of the new coordinate system in reference to the base coordinate system
     """
     position = robot.get_actual_tcp_pose()
+    print("position", position)
     orig = m3d.Transform(position)
     return orig
 
@@ -130,6 +131,7 @@ def robot_set_up():
     print("initialising robot")
     robotModel = URBasic.robotModel.RobotModel()
     robot = URBasic.urScriptExt.UrScriptExt(host=ROBOT_IP, robotModel=robotModel)
+    print("robotModel initialised")
     robot.reset_error()
     print("robot initialised")
     time.sleep(1)
@@ -137,6 +139,19 @@ def robot_set_up():
 def home():
     robot.movej(q=robot_startposition, a=ACCELERATION, v=VELOCITY)
     print("Set home")
+
+def set_new_tcp(offset: float):
+    print("Offset: ", offset)
+    xyz_coords = m3d.Vector(0, 0, offset)
+    tcp_orient = m3d.Orientation.new_euler([0,0,0], encoding='xyz')
+    position_vec_coords = m3d.Transform(tcp_orient, xyz_coords)
+    origin = set_lookorigin()
+    oriented_xyz = origin * position_vec_coords 
+    coordinates = extract_coordinates_from_orientation(oriented_xyz)
+    print("Original Coordinates: ", extract_coordinates_from_orientation(origin))
+    print("TCP Coordinates: ", coordinates)
+    robot.set_tcp(coordinates)
+    print("Set new tcp")
 
 def compute_target_pose(
     prev_pose: List[float],
@@ -213,7 +228,7 @@ def apply_target_pose(
     tcp_orient = m3d.Orientation.new_euler(tcp_rotation_rpy, encoding='xyz')
     position_vec_coords = m3d.Transform(tcp_orient, xyz_coords)
 
-    oriented_xyz = origin * position_vec_coords + m3d.Transform(tcp_orient, m3d.Vector(0, 0, 1))
+    oriented_xyz = origin * position_vec_coords 
     coordinates = extract_coordinates_from_orientation(oriented_xyz)
 
     robot.set_realtime_pose(coordinates)
@@ -235,14 +250,14 @@ def compute_pose_and_orientation(
     """
     x, y, z = 0, 0, 0
     if command == 1:
-        x_rot = target_pose[0]
-        tcp_rotation_rpy = [x_rot, 0, 0]
-    elif command == 2:
-        x_rot = target_pose[0]
-        tcp_rotation_rpy = [0, x_rot, 0]
-    elif command == 3:
         z = target_pose[0]
         tcp_rotation_rpy = [0, 0, 0]
+    elif command == 2:
+        x_rot = target_pose[0]
+        tcp_rotation_rpy = [0, 0, x_rot]
+    elif command == 3:
+        x_rot = target_pose[0]
+        tcp_rotation_rpy = [x_rot, 0, 0]
     elif command == 4:
         x_rot = target_pose[0]
         tcp_rotation_rpy = [0, 0, x_rot]
@@ -299,6 +314,7 @@ def end():
 if __name__ == '__main__':
     robot_set_up()
     home()
+    # set_new_tcp(offset= -0.00000015)
     server_connection()
     start_hand_tracking()
     end()

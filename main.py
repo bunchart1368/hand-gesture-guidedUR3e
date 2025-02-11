@@ -33,11 +33,12 @@ RASPBERRY_BOOL = False
 
 # ROBOT_IP = '192.168.1.120'
 ROBOT_IP = '10.10.0.61'
-ACCELERATION = 0.9  # Robot acceleration value
-VELOCITY = 0.8  # Robot speed value
+ACCELERATION = 0.5  # Robot acceleration value
+VELOCITY = 0.4  # Robot speed value
 
 # The Joint position the robot starts at
-robot_startposition = [round(math.radians(degree), 3) for degree in [-90, -90, -90, -30, 90, 0]]
+# robot_startposition = [round(math.radians(degree), 3) for degree in [90, -90, -90, -30, 90, 0]]
+robot_startposition = [round(math.radians(degree), 3) for degree in [128.08, -108.61, -80.04, -64.12, 57.74, 7.07]]
 
 # Variable which scales the robot movement from pixels to meters.
 m_per_pixel = 0.000009  # Add more 0  
@@ -172,13 +173,13 @@ def compute_target_pose(
         list: Target position [x, y].
     """
     target_pose = prev_pose[:]
-    position = int(position)
+    position = int(position) 
     if command == 1:
-        position = -30 + (30 - (-30)) * (position - 10) / (60 - 10)
+        position = -10 + (10 - (-10)) * (position - 10) / (60 - 10)
     elif command == 2:
-        position = -30 + (30 - (-30)) * (position - 5) / (50 - 5)
+        position = -30 + (30 - (-30)) * (position - 20) / (50 - 5)
     elif command == 3 or command == 4:
-        position = -30 + (30 - (-30)) * (position - 25) / (60 - 25)
+        position = -10 + (10 - (-10)) * (position - 25) / (60 - 25)
         position = position * 1.5
     else:
         position = -50 + (50 - (-50)) * (position - 10) / (60 - 10)
@@ -250,8 +251,10 @@ def compute_pose_and_orientation(
     """
     x, y, z = 0, 0, 0
     if command == 1:
-        z = target_pose[0]
-        tcp_rotation_rpy = [0, 0, 0]
+        # z = target_pose[0]
+        # tcp_rotation_rpy = [0, 0, 0]
+        x_rot = target_pose[0]
+        tcp_rotation_rpy = [0, x_rot, 0]
     elif command == 2:
         x_rot = target_pose[0]
         tcp_rotation_rpy = [0, 0, x_rot]
@@ -313,7 +316,7 @@ def end():
 
 if __name__ == '__main__':
     robot_set_up()
-    home()
+    # home()
     # set_new_tcp(offset= -0.00000015)
     server_connection()
     start_hand_tracking()

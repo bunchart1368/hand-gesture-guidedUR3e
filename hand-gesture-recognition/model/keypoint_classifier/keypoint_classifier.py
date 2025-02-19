@@ -8,7 +8,7 @@ class KeyPointClassifier(object):
     def __init__(
         self,
         # model_path='model/keypoint_classifier/keypoint_classifier.tflite',
-        model_path='model/keypoint_classifier/keypoint_27nov/keypoint_classifier_hvc.tflite',     # model used for classification
+        model_path='model/keypoint_classifier/keypoint_27nov/keypoint_classifier_pinky(2).tflite',     # model used for classification
         num_threads=1,
     ):
         self.interpreter = tf.lite.Interpreter(model_path=model_path,           # running the TFlite model

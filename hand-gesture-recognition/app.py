@@ -19,27 +19,16 @@ from model import PointHistoryClassifier
 from function import ( select_mode, calc_bounding_rect, calc_landmark_list, 
                       pre_process_landmark, pre_process_point_history, logging_csv, draw_bounding_rect, 
                       draw_landmarks, draw_info_text, draw_point_history, draw_info )
-# from utils.config import settings
 
-# model_path = settings.model_path
-# print('wqrfqergq3regqe',model_path)
-
-# Server connection
-# server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# server_socket.bind(('localhost', 12345))
-# server_socket.listen(1)
-# print("Server is waiting for a connection...")
-
-# conn, addr = server_socket.accept()
-# print(f"Connected to {addr}")
-
+from utils.config import settings
 
 # model path hand gesture
-model_label_path = 'model/keypoint_classifier/keypoint_27nov/keypoint_classifier_label.csv'
+model_path = settings.keypoint_classifier.model_path
+model_label_path = settings.keypoint_classifier.lable_path
 
 # model path finger gesture
-model_point_label_path = 'model/point_history_classifier/point_history_classifier_label.csv'
-
+model_point_path = settings.point_history_classifier.model_path
+model_point_label_path = settings.point_history_classifier.lable_path
 
 def get_args():
     parser = argparse.ArgumentParser()

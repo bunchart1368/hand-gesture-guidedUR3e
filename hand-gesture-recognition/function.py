@@ -3,6 +3,8 @@ import numpy as np
 import itertools
 import copy
 import csv
+from utils.config import settings
+
 
 
 def select_mode(key, mode):
@@ -106,14 +108,12 @@ def logging_csv(number, mode, landmark_list, point_history_list):
     if mode == 0:
         pass
     if mode == 1 and (0 <= number <= 9):
-        # csv_path = 'model/keypoint_classifier/keypoint.csv'
-        csv_path = 'model/keypoint_classifier/keypoint_27nov/keypoint2.csv'
-
+        csv_path = settings.keypoint_classifier.keypoint_csv_path
         with open(csv_path, 'a', newline="") as f:
             writer = csv.writer(f)
             writer.writerow([number, *landmark_list])
     if mode == 2 and (0 <= number <= 9):
-        csv_path = 'model/point_history_classifier/point_history.csv'
+        csv_path = settings.point_history_classifier.keypoint_csv_path
         with open(csv_path, 'a', newline="") as f:
             writer = csv.writer(f)
             writer.writerow([number, *point_history_list])

@@ -1,0 +1,13 @@
+default:
+  Title: hand gesture regconigtion
+
+model:
+  keypoint_classifier: 
+    lable_path: model/keypoint_classifier/keypoint_classifier_label.csv
+    model_path: model/keypoint_classifier/keypoint_classifier.tflite
+    keypoint_path: model/keypoint_classifier/keypoint.csv
+
+  point_kistory_classifier:
+    lable_path: model/point_history_classifier/point_history_classifier_label.csv
+    model_path: model/point_history_classifier/point_history_classifier.tflite
+    keypoint_path: model/point_history_classifier/point_history.csv

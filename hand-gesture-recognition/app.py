@@ -24,16 +24,16 @@ from utils.config import settings
 
 # model path hand gesture
 model_path = settings.keypoint_classifier.model_path
-model_label_path = settings.keypoint_classifier.lable_path
+model_label_path = settings.keypoint_classifier.label_path
 
 # model path finger gesture
 model_point_path = settings.point_history_classifier.model_path
-model_point_label_path = settings.point_history_classifier.lable_path
+model_point_label_path = settings.point_history_classifier.label_path
 
 def get_args():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--device", type=int, default=0)
+    parser.add_argument("--device", type=int, default=1)
     parser.add_argument("--width", help='cap width', type=int, default=960)
     parser.add_argument("--height", help='cap height', type=int, default=540)
 
@@ -75,7 +75,7 @@ def main():
     mp_hands = mp.solutions.hands
     hands = mp_hands.Hands(
         static_image_mode=use_static_image_mode,
-        max_num_hands=1,
+        max_num_hands=2,
         min_detection_confidence=min_detection_confidence,
         min_tracking_confidence=min_tracking_confidence,
     )
@@ -134,6 +134,7 @@ def main():
         image.flags.writeable = False
         results = hands.process(image)     # create hand landmark
         image.flags.writeable = True
+        print('results', results.multi_hand_landmarks)
         
         #  ####################################################################
         if results.multi_hand_landmarks is not None:
@@ -161,10 +162,10 @@ def main():
                 hand_sign_id = keypoint_classifier(pre_processed_landmark_list)
 
                 if hand_sign_id == 0:  # Rock gesture
-                    command = 'tilt (LR)'
+                    command = 'none'
                     print(f"Set Command: {command}")
                 elif hand_sign_id == 1:  # Scissors gesture
-                    command = 'rotate'
+                    command = 'pinky'
                     print(f"Set Command: {command}")
                 elif hand_sign_id == 2:  # Point gesture
                     command = 'zoom'
@@ -210,34 +211,25 @@ def main():
     cap.release()
     cv.destroyAllWindows()
 
-# def draw_finger_angles(image, results, joint_dict):
-#     # Loop through hands
-#     for hand in results.multi_hand_landmarks:
-#         #Loop through joint sets 
-#         for command in joint_dict.keys():
-#             joint = joint_dict[command]
-#             a = np.array([hand.landmark[joint[0]].x, hand.landmark[joint[0]].y]) # First coord
-#             b = np.array([hand.landmark[joint[1]].x, hand.landmark[joint[1]].y]) # Second coord
-#             c = np.array([hand.landmark[joint[2]].x, hand.landmark[joint[2]].y]) # Third coord
-            
-#             radians = np.arctan2(c[1] - b[1], c[0]-b[0]) - np.arctan2(a[1]-b[1], a[0]-b[0])
-#             angle = np.abs(radians*180.0/np.pi)
-            
-#             if angle > 180.0:
-#                 angle = 360-angle
-                
-#             cv.putText(image, command      +str(round(angle, 2)), tuple(np.multiply(b, [640, 480]).astype(int)),
-#                        cv.FONT_HERSHEY_SIMPLEX, 0.7, (255, 0, 0), 2, cv.LINE_AA)
-#     return image
 
+def draw_angel_lines(image, a, b, c):
+    a_pos = tuple(np.multiply(a, [640, 480]).astype(int))
+    b_pos = tuple(np.multiply(b, [640, 480]).astype(int))
+    c_pos = tuple(np.multiply(c, [640, 480]).astype(int))
+    
+    cv.line(image, a_pos, b_pos, (0, 255, 0), 2)
+    cv.line(image, b_pos, c_pos, (0, 255, 0), 2)
+    
+    return image
 
 def draw_angles_command(image, results, command):
     # Loop through hands
     joint_dict = {
-                    'zoom': [8, 2, 4], #zoom
-                    'rotate' : [4, 0, 17], #rotate
-                    'tilt (LR)': [4, 0, 17] #tilt (LR)
-                    # ,'tilt (UD)': [8, 5, 12]
+                    # 'zoom': [8, 2, 4], 
+                    # 'rotate' : [4, 0, 17], 
+                    # 'tilt (LR)': [4, 0, 17], 
+                    'none': [15,18,20],
+                    'pinky': [15,18,20]
                 }
     for hand in results.multi_hand_landmarks:
         #Loop through joint sets 
@@ -252,15 +244,22 @@ def draw_angles_command(image, results, command):
         if angle > 180.0:
             angle = 360-angle
 
+        image = draw_angel_lines(image, a, b, c)
+
         cv.putText(image, command      +str(round(angle, 2)), tuple(np.multiply(b, [640, 480]).astype(int)),
                     cv.FONT_HERSHEY_SIMPLEX, 0.7, (255, 0, 0), 2, cv.LINE_AA)
-        if command:
-            command_no = list(joint_dict.keys()).index(command) + 1
-            info_to_send = f"({command_no},{angle})"
-            print(info_to_send)
-        # conn.send(info_to_send.encode())
+        
+        #send command to robot
+        send_command(command, angle)
     return image
 
+def send_command(command, angle):
+    # if command:
+    #         command_no = list(joint_dict.keys()).index(command) + 1
+    #         info_to_send = f"({command_no},{angle})"
+    #         print(info_to_send)
+        # conn.send(info_to_send.encode())
+    return
 
 if __name__ == '__main__':
     main()

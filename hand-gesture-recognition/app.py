@@ -231,7 +231,7 @@ def main():
                     point_history_classifier_labels[most_common_fg_id[0][0]],
                 )
                 #send command to robot
-                send_command(command, magnitude_angle)
+                send_command(command_id, magnitude_angle)
         else:
             point_history.append([0, 0])
 

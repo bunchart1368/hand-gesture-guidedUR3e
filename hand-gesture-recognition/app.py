@@ -23,13 +23,13 @@ from function import ( select_mode, calc_bounding_rect, calc_landmark_list,
 from utils.config import settings
 
 # Server connection
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.bind(('localhost', 12345))
-server_socket.listen(1)
-print("Server is waiting for a connection...")
+# server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# server_socket.bind(('localhost', 12345))
+# server_socket.listen(1)
+# print("Server is waiting for a connection...")
 
-conn, addr = server_socket.accept()
-print(f"Connected to {addr}")
+# conn, addr = server_socket.accept()
+# print(f"Connected to {addr}")
 
 # model path hand gesture
 model_path = settings.keypoint_classifier.model_path
@@ -186,52 +186,52 @@ def main():
                 print('hand_sign_id_left', hand_sign_id_left)
                 
 
-                        # Gesture-based commands
-                if hand_sign_id_right == 1 and hand_sign_id_left == 0 :  # Right hand Scissors gesture
-                    command = 'Right' # Right 
-                    command_id = 0
-                elif hand_sign_id_right == 0 and hand_sign_id_left == 1:  # Left hand Point gesture
-                    command = 'Left' # Left
-                    command_id = 1
-                    point_history.append(landmark_list[8])
-                elif hand_sign_id_right == 1 and hand_sign_id_left == 1:
-                    command = 'Up' # Up
-                    command_id = 2
-                elif hand_sign_id_right == 0 and hand_sign_id_left == 0:
-                    command = 'Down' # Down
-                    command_id = 3
-                    point_history.append([0, 0])
+            # Gesture-based commands
+            if hand_sign_id_right == 1 and hand_sign_id_left == 0 :  # Right hand Scissors gesture
+                command = 'Right' # Right 
+                command_id = 1
+            elif hand_sign_id_right == 0 and hand_sign_id_left == 1:  # Left hand Point gesture
+                command = 'Left' # Left
+                command_id = 2
+                point_history.append(landmark_list[8])
+            elif hand_sign_id_right == 1 and hand_sign_id_left == 1:
+                command = 'Up' # Up
+                command_id = 3
+            elif hand_sign_id_right == 0 and hand_sign_id_left == 0:
+                command = 'Down' # Down
+                command_id = 4
+                point_history.append([0, 0])
 
-                print('command', command)
+            print('command', command)
 
-                # # Finger gesture classification
-                finger_gesture_id = 0
-                point_history_len = len(pre_processed_point_history_list)
-                if point_history_len == (history_length * 2):
-                    finger_gesture_id = point_history_classifier(
-                        pre_processed_point_history_list)
+            # # Finger gesture classification
+            finger_gesture_id = 0
+            point_history_len = len(pre_processed_point_history_list)
+            if point_history_len == (history_length * 2):
+                finger_gesture_id = point_history_classifier(
+                    pre_processed_point_history_list)
 
-                # # Calculates the gesture IDs in the latest detection
-                finger_gesture_history.append(finger_gesture_id)
-                most_common_fg_id = Counter(
-                    finger_gesture_history).most_common()
+            # # Calculates the gesture IDs in the latest detection
+            finger_gesture_history.append(finger_gesture_id)
+            most_common_fg_id = Counter(
+                finger_gesture_history).most_common()
 
-                # Drawing part
-                debug_image = draw_bounding_rect(use_brect, debug_image, brect)
-                debug_image = draw_landmarks(debug_image, landmark_list)
+            # Drawing part
+            debug_image = draw_bounding_rect(use_brect, debug_image, brect)
+            debug_image = draw_landmarks(debug_image, landmark_list)
 
-                # Draw angle
-                # debug_image = draw_finger_angles(debug_image, results, command) 
-                debug_image, magnitude_angle = draw_angles_command(debug_image, results, command)       
-                debug_image = draw_info_text(
-                    debug_image,
-                    brect,
-                    handedness,
-                    keypoint_classifier_labels[hand_sign_id],
-                    point_history_classifier_labels[most_common_fg_id[0][0]],
-                )
-                #send command to robot
-                send_command(command_id, magnitude_angle)
+            # Draw angle
+            # debug_image = draw_finger_angles(debug_image, results, command) 
+            debug_image, magnitude_angle = draw_angles_command(debug_image, results, command)       
+            debug_image = draw_info_text(
+                debug_image,
+                brect,
+                handedness,
+                keypoint_classifier_labels[hand_sign_id],
+                point_history_classifier_labels[most_common_fg_id[0][0]],
+            )
+            #send command to robot
+            send_command(command_id, magnitude_angle)
         else:
             point_history.append([0, 0])
 
@@ -288,7 +288,7 @@ def draw_angles_command(image, results, command):
 def send_command(command_id, angle):
     info_to_send = f"({command_id},{angle})"
     print(info_to_send)
-    conn.send(info_to_send.encode())
+    # conn.send(info_to_send.encode())
 
 if __name__ == '__main__':
     main()

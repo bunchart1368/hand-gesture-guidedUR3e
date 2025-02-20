@@ -1,5 +1,7 @@
+
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 import csv
 import copy
 import argparse
@@ -19,10 +21,8 @@ from model import PointHistoryClassifier
 from function import ( select_mode, calc_bounding_rect, calc_landmark_list, 
                       pre_process_landmark, pre_process_point_history, logging_csv, draw_bounding_rect, 
                       draw_landmarks, draw_info_text, draw_point_history, draw_info )
-# from utils.config import settings
 
-# model_path = settings.model_path
-# print('wqrfqergq3regqe',model_path)
+
 
 # Server connection
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -34,17 +34,10 @@ conn, addr = server_socket.accept()
 print(f"Connected to {addr}")
 
 
-# model path hand gesture
-model_label_path = 'model/keypoint_classifier/keypoint_27nov/keypoint_classifier_label.csv'
-
-# model path finger gesture
-model_point_label_path = 'model/point_history_classifier/point_history_classifier_label.csv'
-
-
 def get_args():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--device", type=int, default=1)
+    parser.add_argument("--device", type=int, default=0)
     parser.add_argument("--width", help='cap width', type=int, default=960)
     parser.add_argument("--height", help='cap height', type=int, default=540)
 
@@ -96,14 +89,14 @@ def main():
     point_history_classifier = PointHistoryClassifier()
 
     # Read labels ###########################################################
-    with open(model_label_path,
+    with open('model/keypoint_classifier/keypoint_classifier_label.csv',
               encoding='utf-8-sig') as f:
         keypoint_classifier_labels = csv.reader(f)
         keypoint_classifier_labels = [
             row[0] for row in keypoint_classifier_labels
         ]
     with open(
-            model_point_label_path,
+            'model/point_history_classifier/point_history_classifier_label.csv',
             encoding='utf-8-sig') as f:
         point_history_classifier_labels = csv.reader(f)
         point_history_classifier_labels = [

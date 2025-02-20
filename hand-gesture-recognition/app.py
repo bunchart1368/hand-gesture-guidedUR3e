@@ -23,13 +23,13 @@ from function import ( select_mode, calc_bounding_rect, calc_landmark_list,
 from utils.config import settings
 
 # Server connection
-# server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# server_socket.bind(('localhost', 12345))
-# server_socket.listen(1)
-# print("Server is waiting for a connection...")
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_socket.bind(('localhost', 12345))
+server_socket.listen(1)
+print("Server is waiting for a connection...")
 
-# conn, addr = server_socket.accept()
-# print(f"Connected to {addr}")
+conn, addr = server_socket.accept()
+print(f"Connected to {addr}")
 
 # model path hand gesture
 model_path = settings.keypoint_classifier.model_path
@@ -286,7 +286,7 @@ def draw_angles_command(image, results, command):
 def send_command(command_id, angle):
     info_to_send = f"({command_id},{angle})"
     print(info_to_send)
-    # conn.send(info_to_send.encode())
+    conn.send(info_to_send.encode())
 
 if __name__ == '__main__':
     main()

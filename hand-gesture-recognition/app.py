@@ -134,12 +134,13 @@ def main():
         image.flags.writeable = False
         results = hands.process(image)     # create hand landmark
         image.flags.writeable = True
-        print('results', results.multi_hand_landmarks)
+        print('results', results)
         
         #  ####################################################################
         if results.multi_hand_landmarks is not None:
             for hand_landmarks, handedness in zip(results.multi_hand_landmarks,
                                                   results.multi_handedness):
+                # print('handedness', handedness)
                 # print('hand landmarks',hand_landmarks)
                 # Bounding box calculation
                 brect = calc_bounding_rect(debug_image, hand_landmarks)
@@ -162,14 +163,14 @@ def main():
                 hand_sign_id = keypoint_classifier(pre_processed_landmark_list)
 
                 if hand_sign_id == 0:  # Rock gesture
-                    command = 'none'
-                    print(f"Set Command: {command}")
-                elif hand_sign_id == 1:  # Scissors gesture
-                    command = 'pinky'
-                    print(f"Set Command: {command}")
-                elif hand_sign_id == 2:  # Point gesture
-                    command = 'zoom'
-                    print(f"Set Command: {command}")
+                    command = 'None'
+                    # print(f"Set Command: {command}")
+                elif hand_sign_id == 1 and handedness.label == "Right":  # Scissors gesture
+                    command = 'Right'
+                    # print(f"Set Command: {command}")
+                elif hand_sign_id == 1 and handedness.label == "Left":  # Point gesture
+                    command = 'Left'
+                    # print(f"Set Command: {command}")
                     point_history.append(landmark_list[8])
                 else:
                     point_history.append([0, 0])
@@ -228,8 +229,9 @@ def draw_angles_command(image, results, command):
                     # 'zoom': [8, 2, 4], 
                     # 'rotate' : [4, 0, 17], 
                     # 'tilt (LR)': [4, 0, 17], 
-                    'none': [15,18,20],
-                    'pinky': [15,18,20]
+                    'None': [15,18,20],
+                    'Left': [15,18,20],
+                    'Right': [15,18,20],
                 }
     for hand in results.multi_hand_landmarks:
         #Loop through joint sets 

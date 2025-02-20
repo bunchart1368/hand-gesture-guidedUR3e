@@ -37,8 +37,8 @@ ACCELERATION = 0.5  # Robot acceleration value
 VELOCITY = 0.4  # Robot speed value
 
 # The Joint position the robot starts at
-# robot_startposition = [round(math.radians(degree), 3) for degree in [90, -90, -90, -30, 90, 0]]
-robot_startposition = [round(math.radians(degree), 3) for degree in [128.08, -108.61, -80.04, -64.12, 57.74, 7.07]]
+robot_startposition = [round(math.radians(degree), 3) for degree in [90, -90, -90, -30, 90, 0]]
+# robot_startposition = [round(math.radians(degree), 3) for degree in [128.08, -108.61, -80.04, -64.12, 57.74, 7.07]]
 
 # Variable which scales the robot movement from pixels to meters.
 m_per_pixel = 0.000009  # Add more 0  
@@ -316,8 +316,8 @@ def end():
 
 if __name__ == '__main__':
     robot_set_up()
-    # home()
+    home()
     # set_new_tcp(offset= -0.00000015)
-    server_connection()
-    start_hand_tracking()
+    # server_connection()
+    # start_hand_tracking()
     end()

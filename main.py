@@ -175,14 +175,17 @@ def compute_target_pose(
     target_pose = prev_pose[:]
     position = int(position) 
     if command == 1:
-        position = -10 + (10 - (-10)) * (position - 10) / (60 - 10)
+        position = -0 + (10 - (-0)) * (position - 50) / (130 - 50)
+        position = 10
     elif command == 2:
-        position = -30 + (30 - (-30)) * (position - 20) / (50 - 5)
-    elif command == 3 or command == 4:
-        position = -10 + (10 - (-10)) * (position - 25) / (60 - 25)
-        position = position * 1.5
+        position = -10 + (0 - (-10)) * (position - 50) / (130 - 50)
+        position = -10
+    elif command == 3:
+        position = 10
+    elif command == 4:
+        position = -10
     else:
-        position = -50 + (50 - (-50)) * (position - 10) / (60 - 10)
+        position = -10 + (10 - (-10)) * (position - 50) / (130 - 50)
 
     target_pose[0] += int(position) * scale_factor
     if detect_sign_change(prev_ampli, position):
@@ -257,13 +260,13 @@ def compute_pose_and_orientation(
         tcp_rotation_rpy = [0, x_rot, 0]
     elif command == 2:
         x_rot = target_pose[0]
-        tcp_rotation_rpy = [0, 0, x_rot]
+        tcp_rotation_rpy = [0, x_rot, 0]
     elif command == 3:
         x_rot = target_pose[0]
         tcp_rotation_rpy = [x_rot, 0, 0]
     elif command == 4:
         x_rot = target_pose[0]
-        tcp_rotation_rpy = [0, 0, x_rot]
+        tcp_rotation_rpy = [x_rot, 0, 0]
     else:
         tcp_rotation_rpy = [0, 0, 0]
     
@@ -318,6 +321,6 @@ if __name__ == '__main__':
     robot_set_up()
     home()
     # set_new_tcp(offset= -0.00000015)
-    # server_connection()
-    # start_hand_tracking()
+    server_connection()
+    start_hand_tracking()
     end()

@@ -992,3 +992,55 @@
 2024-11-28 13:09:12,558 - URBasic_dashboardEvent - ERROR - Dashboard server interface stopped running
 2024-11-28 13:09:14,605 - URBasic_dashboardEvent - ERROR - Dashboard connecting
 2024-11-28 13:09:16,621 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-28 16:09:54,359 - URBasic_rtdeEvent - ERROR - RTDE interface stopped running
+2024-11-28 16:09:54,359 - URBasic_dashboardEvent - ERROR - Dashboard server interface stopped running
+2024-11-28 16:09:56,372 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-28 16:09:58,373 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-28 16:51:04,281 - URBasic_rtdeEvent - ERROR - RTDE interface stopped running
+2024-11-28 16:51:04,281 - URBasic_dashboardEvent - ERROR - Dashboard server interface stopped running
+2024-11-28 16:51:06,292 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-28 16:51:08,308 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-28 19:25:46,512 - URBasic_rtdeEvent - ERROR - RTDE interface stopped running
+2024-11-28 19:25:46,512 - URBasic_dashboardEvent - ERROR - Dashboard server interface stopped running
+2024-11-28 19:25:48,555 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-28 19:25:50,562 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-28 19:49:02,140 - URBasic_dashboardEvent - ERROR - Dashboard server interface stopped running
+2024-11-28 19:49:02,140 - URBasic_rtdeEvent - ERROR - RTDE interface stopped running
+2024-11-28 19:49:04,157 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-28 19:49:06,165 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-28 19:56:33,550 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!
+2024-11-28 20:14:47,588 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 30600.164999999997 - 8.999999998195563 milliseconds since last package
+2024-11-28 20:47:50,043 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!
+2024-11-28 20:52:31,777 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!
+2024-11-28 20:55:47,463 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!
+2024-11-28 20:58:09,823 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!
+2024-11-28 21:48:37,730 - URBasic_rtdeEvent - ERROR - RTDE interface stopped running
+2024-11-28 21:48:37,730 - URBasic_dashboardEvent - ERROR - Dashboard server interface stopped running
+2024-11-28 21:48:39,738 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-28 21:48:41,749 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-28 22:08:01,749 - URBasic_dashboardEvent - ERROR - Dashboard server interface stopped running
+2024-11-28 22:08:01,749 - URBasic_dashboardEvent - ERROR - Dashboard server interface stopped running
+2024-11-28 22:08:01,750 - URBasic_rtdeEvent - ERROR - RTDE interface stopped running
+2024-11-28 22:08:03,754 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-28 22:08:03,754 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-28 22:08:05,763 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-28 22:08:05,763 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-28 22:11:34,141 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!
+2024-11-28 22:21:15,001 - URBasic_rtdeEvent - ERROR - RTDE interface stopped running
+2024-11-28 22:21:15,001 - URBasic_dashboardEvent - ERROR - Dashboard server interface stopped running
+2024-11-28 22:21:17,009 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-11-28 22:21:19,022 - URBasic_dashboardEvent - ERROR - Dashboard connecting
+2024-12-02 17:09:59,481 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 788.8539999999999 - 9.999999999990905 milliseconds since last package
+2024-12-02 17:10:03,591 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 792.438 - 9.999999999990905 milliseconds since last package
+2024-12-02 17:10:05,803 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 794.358 - 9.999999999990905 milliseconds since last package
+2024-12-02 17:10:52,186 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 834.52 - 12.000000000057298 milliseconds since last package
+2024-12-02 17:11:14,592 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 854.134 - 10.000000000104592 milliseconds since last package
+2024-12-02 17:11:20,714 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 859.502 - 9.999999999990905 milliseconds since last package
+2024-12-02 19:43:46,344 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 6429.826 - 10.000000000218279 milliseconds since last package
+2024-12-02 19:44:58,349 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 6474.914 - 10.000000000218279 milliseconds since last package
+2024-12-02 19:45:08,347 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 6483.138 - 10.000000000218279 milliseconds since last package
+2024-12-02 19:45:21,346 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 6492.73 - 10.000000000218279 milliseconds since last package
+2024-12-02 19:45:42,354 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 6507.6179999999995 - 10.000000000218279 milliseconds since last package
+2024-12-02 19:45:44,730 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 6509.353999999999 - 9.999999999308784 milliseconds since last package
+2024-12-02 19:45:44,793 - URBasic_rtdeEvent - ERROR - Lost some RTDE at 6509.3859999999995 - 10.000000000218279 milliseconds since last package
+2025-02-04 20:26:48,967 - URBasic_realTimeClientEvent - ERROR - SendProgram: Program Stopped but not finiched!!!

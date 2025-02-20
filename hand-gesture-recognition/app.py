@@ -184,8 +184,33 @@ def main():
 
                 print('hand_sign_id_right', hand_sign_id_right)
                 print('hand_sign_id_left', hand_sign_id_left)
-                
 
+                # # Finger gesture classification
+                finger_gesture_id = 0
+                point_history_len = len(pre_processed_point_history_list)
+                if point_history_len == (history_length * 2):
+                    finger_gesture_id = point_history_classifier(
+                        pre_processed_point_history_list)
+
+                # # Calculates the gesture IDs in the latest detection
+                finger_gesture_history.append(finger_gesture_id)
+                most_common_fg_id = Counter(
+                    finger_gesture_history).most_common()
+
+                # Drawing part
+                debug_image = draw_bounding_rect(use_brect, debug_image, brect)
+                debug_image = draw_landmarks(debug_image, landmark_list)
+
+                # Draw angle
+                # debug_image = draw_finger_angles(debug_image, results, command) 
+                debug_image, magnitude_angle = draw_angles_command(debug_image, results, command)       
+                debug_image = draw_info_text(
+                    debug_image,
+                    brect,
+                    handedness,
+                    keypoint_classifier_labels[hand_sign_id],
+                    point_history_classifier_labels[most_common_fg_id[0][0]],
+                )
             # Gesture-based commands
             if hand_sign_id_right == 1 and hand_sign_id_left == 0 :  # Right hand Scissors gesture
                 command = 'Right' # Right 
@@ -201,35 +226,8 @@ def main():
                 command = 'Down' # Down
                 command_id = 4
                 point_history.append([0, 0])
-
             print('command', command)
 
-            # # Finger gesture classification
-            finger_gesture_id = 0
-            point_history_len = len(pre_processed_point_history_list)
-            if point_history_len == (history_length * 2):
-                finger_gesture_id = point_history_classifier(
-                    pre_processed_point_history_list)
-
-            # # Calculates the gesture IDs in the latest detection
-            finger_gesture_history.append(finger_gesture_id)
-            most_common_fg_id = Counter(
-                finger_gesture_history).most_common()
-
-            # Drawing part
-            debug_image = draw_bounding_rect(use_brect, debug_image, brect)
-            debug_image = draw_landmarks(debug_image, landmark_list)
-
-            # Draw angle
-            # debug_image = draw_finger_angles(debug_image, results, command) 
-            debug_image, magnitude_angle = draw_angles_command(debug_image, results, command)       
-            debug_image = draw_info_text(
-                debug_image,
-                brect,
-                handedness,
-                keypoint_classifier_labels[hand_sign_id],
-                point_history_classifier_labels[most_common_fg_id[0][0]],
-            )
             #send command to robot
             send_command(command_id, magnitude_angle)
         else:

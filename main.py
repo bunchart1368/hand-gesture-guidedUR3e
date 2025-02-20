@@ -9,44 +9,42 @@ License: GPL v3 https://www.gnu.org/licenses/gpl-3.0.en.html
 
 """
 
-import URBasic
+# Standard library imports
 import math
-import numpy as np
 import sys
-import cv2
 import time
+import re
+import socket
+from typing import Tuple, List, Dict
+
+# Third-party library imports
+import numpy as np
+import cv2
 import imutils
 from imutils.video import VideoStream
 import math3d as m3d
-import re, socket
+
+# Project-specific imports
+import URBasic
 
 """SETTINGS AND VARIABLES ________________________________________________________________"""
 
 RASPBERRY_BOOL = False
 
-# ROBOT_IP = '192.168.1.112'
+# ROBOT_IP = '192.168.1.120'
 ROBOT_IP = '10.10.0.61'
-ACCELERATION = 0.9  # Robot acceleration value
-VELOCITY = 0.8  # Robot speed value
+ACCELERATION = 0.5  # Robot acceleration value
+VELOCITY = 0.4  # Robot speed value
 
 # The Joint position the robot starts at
-# robot_startposition = (math.radians(-218),
-#                     math.radians(-63),
-#                     math.radians(-93),
-#                     math.radians(-20),
-#                     math.radians(88),
-#                     math.radians(0))
-robot_startposition = [round(math.radians(degree), 3) for degree in [90, -90, -90, -45, 90, 0]]
+# robot_startposition = [round(math.radians(degree), 3) for degree in [90, -90, -90, -30, 90, 0]]
+robot_startposition = [round(math.radians(degree), 3) for degree in [128.08, -108.61, -80.04, -64.12, 57.74, 7.07]]
 
 # Variable which scales the robot movement from pixels to meters.
-# m_per_pixel = 00.00009  
-# m_per_pixel = 00.000045
-m_per_pixel = 00.000009 #Add more 0  
-
+m_per_pixel = 0.000009  # Add more 0  
 
 # Size of the robot view-window
-# The robot will at most move this distance in each direction
-max_x = 0.2
+max_x = 0.1
 max_y = 0.2
 max_z = 0.2
 
@@ -54,10 +52,9 @@ max_z = 0.2
 hor_rot_max = math.radians(45)
 vert_rot_max = math.radians(45)
 
-
 """FUNCTIONS _____________________________________________________________________________"""
 
-def check_max_xy(xy_coord):
+def check_max_xy(xy_coord: List[float]) -> List[float]:
     """
     Checks if the face is outside of the predefined maximum values on the lookaraound plane
 
@@ -70,12 +67,9 @@ def check_max_xy(xy_coord):
             if the values were within the maximum values (max_x and max_y) these are the same as the input.
             if one or both of the input values were over the maximum, the maximum will be returned instead
     """
-
     x_y = [0, 0]
-    #print("xy before conversion: ", xy_coord)
 
     if -max_x <= xy_coord[0] <= max_x:
-        # checks if the resulting position would be outside of max_x
         x_y[0] = xy_coord[0]
     elif -max_x > xy_coord[0]:
         x_y[0] = -max_x
@@ -85,7 +79,6 @@ def check_max_xy(xy_coord):
         raise Exception(" x is wrong somehow:", xy_coord[0], -max_x, max_x)
 
     if -max_y <= xy_coord[1] <= max_y:
-        # checks if the resulting position would be outside of max_y
         x_y[1] = xy_coord[1]
     elif -max_y > xy_coord[1]:
         x_y[1] = -max_y
@@ -93,11 +86,10 @@ def check_max_xy(xy_coord):
         x_y[1] = max_y
     else:
         raise Exception(" y is wrong somehow", xy_coord[1], max_y)
-    #print("xy after conversion: ", x_y)
 
     return x_y
 
-def set_lookorigin():
+def set_lookorigin() -> m3d.Transform:
     """
     Creates a new coordinate system at the current robot tcp position.
     This coordinate system is the basis of the face following.
@@ -106,29 +98,21 @@ def set_lookorigin():
     Return Value:
         orig: math3D Transform Object
             characterises location and rotation of the new coordinate system in reference to the base coordinate system
-
     """
     position = robot.get_actual_tcp_pose()
+    print("position", position)
     orig = m3d.Transform(position)
     return orig
 
-def extract_coordinates_from_orientation(oriented_xyz):
+def extract_coordinates_from_orientation(oriented_xyz: m3d.Transform) -> List[float]:
     oriented_xyz_coord = oriented_xyz.pose_vector
-
     coordinates_str = str(oriented_xyz_coord)
     numbers = re.findall(r"-?\d+\.\d+", coordinates_str)
-
-    # Convert extracted strings to float
     coordinates = [float(num) for num in numbers]
     return coordinates
 
-def detect_sign_change(previous, current):
-    if previous > 0 and current < 0:
-        return True
-    elif previous < 0 and current > 0:
-        return True
-    else:
-        return False
+def detect_sign_change(previous: float, current: float) -> bool:
+    return (previous > 0 and current < 0) or (previous < 0 and current > 0)
 
 def server_connection():
     global client_socket
@@ -136,7 +120,7 @@ def server_connection():
     client_socket.connect(('localhost', 12345))
     print("Connected to the server.")
     
-def get_from_server():
+def get_from_server() -> str:
     data = client_socket.recv(1024).decode()
     print("Received from server: ", data)
     return data
@@ -145,19 +129,38 @@ def get_from_server():
 
 def robot_set_up():
     global robot, robotModel
-    # initialise robot with URBasic
     print("initialising robot")
     robotModel = URBasic.robotModel.RobotModel()
-    robot = URBasic.urScriptExt.UrScriptExt(host=ROBOT_IP,robotModel=robotModel)
-
+    robot = URBasic.urScriptExt.UrScriptExt(host=ROBOT_IP, robotModel=robotModel)
+    print("robotModel initialised")
     robot.reset_error()
     print("robot initialised")
     time.sleep(1)
 
 def home():
-    robot.movej(q=robot_startposition, a= ACCELERATION, v= VELOCITY )
+    robot.movej(q=robot_startposition, a=ACCELERATION, v=VELOCITY)
+    print("Set home")
 
-def compute_target_pose(prev_pose, position,command,prev_ampli, scale_factor=m_per_pixel):
+def set_new_tcp(offset: float):
+    print("Offset: ", offset)
+    xyz_coords = m3d.Vector(0, 0, offset)
+    tcp_orient = m3d.Orientation.new_euler([0,0,0], encoding='xyz')
+    position_vec_coords = m3d.Transform(tcp_orient, xyz_coords)
+    origin = set_lookorigin()
+    oriented_xyz = origin * position_vec_coords 
+    coordinates = extract_coordinates_from_orientation(oriented_xyz)
+    print("Original Coordinates: ", extract_coordinates_from_orientation(origin))
+    print("TCP Coordinates: ", coordinates)
+    robot.set_tcp(coordinates)
+    print("Set new tcp")
+
+def compute_target_pose(
+    prev_pose: List[float],
+    position: float,
+    command: int,
+    prev_ampli: float,
+    scale_factor: float = m_per_pixel
+) -> Tuple[List[float], float]:
     """
     Computes the target pose for the robot based on the previous pose and the current position input.
 
@@ -170,51 +173,34 @@ def compute_target_pose(prev_pose, position,command,prev_ampli, scale_factor=m_p
         list: Target position [x, y].
     """
     target_pose = prev_pose[:]
-    # Convert server input to meters and add to previous pose
-    position = int(position)
-    # if command ==1:
-    #     position = -25 + (25 - (-25)) * (position - 10) / (70 - 10)
-    #     print('Enter first command')
-    #     print('Amplitude: ',position)
-
-    # elif command ==2:
-    #     position = -30 + (40 - (-30)) * (position - 10) / (60 - 5)  
-    #     print('Enter second command')
-    #     print('Amplitude: ',position)
-    # elif command ==3:
-    #     position = -50 + (20 - (-50)) * (position - 10) / (60 - 25)  
-    #     print('Enter third command')
-    #     print('Amplitude: ',position)
-    # else:
-    #     position = -50 + (50 - (-50)) * (position - 10) / (70 - 10)
+    position = int(position) 
     if command == 1:
-        position = -25 + (25 - (-25)) * (position - 10) / (60 - 10)
-        print('Enter first command')
-        print('Amplitude: ', position)
+        position = -10 + (10 - (-10)) * (position - 10) / (60 - 10)
     elif command == 2:
-        position = -30 + (30 - (-30)) * (position - 5) / (50 - 5)
-        print('Enter second command')
-        print('Amplitude: ', position)
-    elif command == 3:
-        position = -30 + (30 - (-30)) * (position - 25) / (60 - 25)
+        position = -30 + (30 - (-30)) * (position - 20) / (50 - 5)
+    elif command == 3 or command == 4:
+        position = -10 + (10 - (-10)) * (position - 25) / (60 - 25)
         position = position * 1.5
-        print('Enter third command')
-        print('Amplitude: ', position)
     else:
         position = -50 + (50 - (-50)) * (position - 10) / (60 - 10)
 
-    target_pose[0] += int(position) * scale_factor  # Modify x based on input
-    if (detect_sign_change(prev_ampli,position)):
+    target_pose[0] += int(position) * scale_factor
+    if detect_sign_change(prev_ampli, position):
         print('prev_ampli', prev_ampli)
-        print('Current ampli',position)
+        print('Current ampli', position)
         target_pose[0] = 0
     prev_ampli = position
-    # Clamp to ensure within max bounds
     target_pose = check_max_xy(target_pose)
     return target_pose, prev_ampli
 
-
-def apply_target_pose(robot, target_pose, origin, command, previous_command):
+# SECTION: Apply Target Pose
+def apply_target_pose(
+    robot: object,
+    target_pose: List[float],
+    origin: m3d.Transform,
+    command: int,
+    previous_command: int
+) -> int:
     """
     Applies the target pose by computing the required transformation and sending it to the robot.
 
@@ -222,8 +208,12 @@ def apply_target_pose(robot, target_pose, origin, command, previous_command):
         robot (object): Robot object for real-time control.
         target_pose (list): Target position [x, y].
         origin (Transform): Reference origin for transformations.
+        command (int): Command to determine the pose and orientation.
+        previous_command (int): Previous command to check for changes.
+    
+    Returns:
+        int: Updated previous command.
     """
-    # print('Amplitude: ',target_pose[0] )
     if previous_command != command:
         print('previous_command', previous_command)
         print('command', command)
@@ -231,68 +221,62 @@ def apply_target_pose(robot, target_pose, origin, command, previous_command):
         print("Set new tcp")
         target_pose[0] = 0
 
-    if command == 1:
-        x = 0
-        y = 0
-        z = target_pose[0]  # Assuming flat movement plane
-        # Create orientation
-        tcp_rotation_rpy = [0, 0, 0]
-    elif command == 2:
-        x = 0
-        y = 0
-        z = 0  # Assuming flat movement plane
-        # Compute percentage-based rotation limits
-        x_rot = target_pose[0]
-        # Create orientation
-        tcp_rotation_rpy = [0, 0, x_rot]
-    elif command == 3:
-        x = 0
-        y = 0
-        z = 0  # Assuming flat movement plane
-        # Compute percentage-based rotation limits
-        # x_rot = (target_pose[0] / max_x) * hor_rot_max
-        x_rot = target_pose[0]
-        # print('rotation angle: ',x_rot)
-        # Create orientation
-        tcp_rotation_rpy = [x_rot, 0, 0]
-    elif command == 4:
-        x = 0
-        y = 0
-        z = 0  # Assuming flat movement plane
-        # Compute percentage-based rotation limits
-        # x_rot = (x / max_x) * hor_rot_max 
-        # x_rot = (x / max_x) * hor_rot_max * 0.4
-        x_rot = target_pose[0] 
-        # Create orientation
-        tcp_rotation_rpy = [0, x_rot, 0]
-    
+    x, y, z, tcp_rotation_rpy = compute_pose_and_orientation(target_pose, command)
     previous_command = command
     origin = set_lookorigin()
-    # Create vector for position
+    
     xyz_coords = m3d.Vector(x, y, z)
     tcp_orient = m3d.Orientation.new_euler(tcp_rotation_rpy, encoding='xyz')
     position_vec_coords = m3d.Transform(tcp_orient, xyz_coords)
 
-    # Transform based on origin
-    oriented_xyz = origin * position_vec_coords
+    oriented_xyz = origin * position_vec_coords 
     coordinates = extract_coordinates_from_orientation(oriented_xyz)
 
-    # Send target pose to robot
     robot.set_realtime_pose(coordinates)
-
     return previous_command
 
-def extract_last_tuple(s):
-    # Find all tuples in the string, including those with floating-point numbers
+def compute_pose_and_orientation(
+    target_pose: List[float],
+    command: int
+) -> Tuple[float, float, float, List[float]]:
+    """
+    Computes the pose and orientation based on the command.
+
+    Args:
+        target_pose (list): Target position [x, y].
+        command (int): Command to determine the pose and orientation.
+
+    Returns:
+        tuple: x, y, z coordinates and tcp_rotation_rpy list.
+    """
+    x, y, z = 0, 0, 0
+    if command == 1:
+        # z = target_pose[0]
+        # tcp_rotation_rpy = [0, 0, 0]
+        x_rot = target_pose[0]
+        tcp_rotation_rpy = [0, x_rot, 0]
+    elif command == 2:
+        x_rot = target_pose[0]
+        tcp_rotation_rpy = [0, 0, x_rot]
+    elif command == 3:
+        x_rot = target_pose[0]
+        tcp_rotation_rpy = [x_rot, 0, 0]
+    elif command == 4:
+        x_rot = target_pose[0]
+        tcp_rotation_rpy = [0, 0, x_rot]
+    else:
+        tcp_rotation_rpy = [0, 0, 0]
+    
+    return x, y, z, tcp_rotation_rpy
+
+def extract_last_tuple(s: str) -> Tuple[float, float]:
     tuples = re.findall(r'\(-?\d+\.?\d*,-?\d+\.?\d*\)', s)
-    # Return the last tuple if any are found
     if tuples:
         last_tuple_str = tuples[-1]
-        # Remove parentheses and split by ','
         last_tuple = last_tuple_str.strip('()').split(',')
-        # Convert to floats and return as a tuple
         return tuple(map(float, last_tuple))
     return None
+
 def start_hand_tracking():
     """
     Main loop for receiving server input and moving the robot based on hand tracking.
@@ -300,24 +284,21 @@ def start_hand_tracking():
     global origin, previous_command
     previous_command = 0
     prev_ampli = 0
-    robot_position = [0, 0]  # Initialize position in 2D plane
-    origin = set_lookorigin()  # Set the origin
+    robot_position = [0, 0]
+    origin = set_lookorigin()
 
     robot.init_realtime_control()
-    time.sleep(1)  # Allow time for initialization
+    time.sleep(1)
 
     try:
         print("Starting hand tracking loop...")
         while True:
-            command,position = extract_last_tuple(get_from_server())
+            command, position = extract_last_tuple(get_from_server())
             position = int(position)
             command = int(command)
-            # print(f"Received position: {position}")
-            if isinstance(position, int):  # Ensure valid numeric input
-                # print(f"Received position: {position}")
+            if isinstance(position, int):
                 robot_position, prev_ampli = compute_target_pose(robot_position, position, command, prev_ampli)
                 previous_command = apply_target_pose(robot, robot_position, origin, command, previous_command)
-                # print("Robot moved to target position.")
             else:
                 print("Invalid or no input received.")
     except KeyboardInterrupt:
@@ -333,10 +314,10 @@ def end():
     print("Client Connection Closed")
     print("Program Ended")
 
-
 if __name__ == '__main__':
     robot_set_up()
-    home()
+    # home()
+    # set_new_tcp(offset= -0.00000015)
     server_connection()
     start_hand_tracking()
     end()

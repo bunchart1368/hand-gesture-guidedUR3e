@@ -1,5 +1,7 @@
+
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 import csv
 import copy
 import argparse
@@ -21,6 +23,7 @@ from function import ( select_mode, calc_bounding_rect, calc_landmark_list,
                       draw_landmarks, draw_info_text, draw_point_history, draw_info )
 
 
+
 # Server connection
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind(('localhost', 12345))
@@ -34,7 +37,7 @@ print(f"Connected to {addr}")
 def get_args():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--device", type=int, default=1)
+    parser.add_argument("--device", type=int, default=0)
     parser.add_argument("--width", help='cap width', type=int, default=960)
     parser.add_argument("--height", help='cap height', type=int, default=540)
 

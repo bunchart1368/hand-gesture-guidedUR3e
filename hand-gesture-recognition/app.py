@@ -23,13 +23,13 @@ from function import ( select_mode, calc_bounding_rect, calc_landmark_list,
 from utils.config import settings
 
 # Server connection
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.bind(('localhost', 12345))
-server_socket.listen(1)
-print("Server is waiting for a connection...")
+# server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# server_socket.bind(('localhost', 12345))
+# server_socket.listen(1)
+# print("Server is waiting for a connection...")
 
-conn, addr = server_socket.accept()
-print(f"Connected to {addr}")
+# conn, addr = server_socket.accept()
+# print(f"Connected to {addr}")
 
 # model path hand gesture
 model_path = settings.keypoint_classifier.model_path
@@ -200,17 +200,14 @@ def main():
                 # Drawing part
                 debug_image = draw_bounding_rect(use_brect, debug_image, brect)
                 debug_image = draw_landmarks(debug_image, landmark_list)
-
-                # Draw angle
-                # debug_image = draw_finger_angles(debug_image, results, command) 
-                debug_image, magnitude_angle = draw_angles_command(debug_image, results, command)       
                 debug_image = draw_info_text(
-                    debug_image,
-                    brect,
-                    handedness,
-                    keypoint_classifier_labels[hand_sign_id],
-                    point_history_classifier_labels[most_common_fg_id[0][0]],
-                )
+                debug_image,
+                brect,
+                handedness,
+                keypoint_classifier_labels[hand_sign_id],
+                point_history_classifier_labels[most_common_fg_id[0][0]],
+            )
+
             # Gesture-based commands
             if hand_sign_id_right == 1 and hand_sign_id_left == 0 :  # Right hand Scissors gesture
                 command = 'Right' # Right 
@@ -227,6 +224,10 @@ def main():
                 command_id = 4
                 point_history.append([0, 0])
             print('command', command)
+
+            # Draw angle
+            # debug_image = draw_finger_angles(debug_image, results, command) 
+            debug_image, magnitude_angle = draw_angles_command(debug_image, results, command)       
 
             #send command to robot
             send_command(command_id, magnitude_angle)
@@ -286,7 +287,7 @@ def draw_angles_command(image, results, command):
 def send_command(command_id, angle):
     info_to_send = f"({command_id},{angle})"
     print(info_to_send)
-    conn.send(info_to_send.encode())
+    # conn.send(info_to_send.encode())
 
 if __name__ == '__main__':
     main()

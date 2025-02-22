@@ -3,16 +3,24 @@ default:
 
 development:
   keypoint_classifier: 
+    # original
     # lable_path: model/keypoint_classifier/keypoint_classifier_label.csv
     # model_path: model/keypoint_classifier/keypoint_classifier.tflite
     # keypoint_csv_path: model/keypoint_classifier/keypoint.csv
+
+    # miew's
     label_path: model/keypoint_pinky_2class/keypoint_pinky_label.csv
     model_path: model/keypoint_pinky_2class/keypoint_classifier_pinky_2class.tflite
-    # keypoint_csv_path: model/keypoint_27nov/keypoint2.csv
     keypoint_csv_path: model/keypoint_pinky_2class/keypoint_pinky.csv
+
+    # kungkings's
+    # label_path: model/keypoint_pinky_2class/keypoint_pinky_label.csv
+    # model_path: model/keypoint_pinky_bigdata/keypoint_classifier_pinky_kk.tflite
+    # keypoint_csv_path: model/keypoint_pinky_bigdata/kk_keypoint.csv
     
 
   point_history_classifier:
     label_path: model/point_history_classifier/point_history_classifier_label.csv
     model_path: model/point_history_classifier/point_history_classifier.tflite
     keypoint_csv_path: model/point_history_classifier/point_history.csv
+    

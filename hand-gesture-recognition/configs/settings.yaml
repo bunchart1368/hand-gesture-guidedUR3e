@@ -9,14 +9,14 @@ development:
     # keypoint_csv_path: model/keypoint_classifier/keypoint.csv
 
     # miew's
-    label_path: model/keypoint_pinky_2class/keypoint_pinky_label.csv
-    model_path: model/keypoint_pinky_2class/keypoint_classifier_pinky_2class.tflite
-    keypoint_csv_path: model/keypoint_pinky_2class/keypoint_pinky.csv
+    # label_path: model/keypoint_pinky_2class/keypoint_pinky_label.csv
+    # model_path: model/keypoint_pinky_2class/keypoint_classifier_pinky_2class.tflite
+    # keypoint_csv_path: model/keypoint_pinky_2class/keypoint_pinky.csv
 
     # kungkings's
-    # label_path: model/keypoint_pinky_2class/keypoint_pinky_label.csv
-    # model_path: model/keypoint_pinky_bigdata/keypoint_classifier_pinky_kk.tflite
-    # keypoint_csv_path: model/keypoint_pinky_bigdata/kk_keypoint.csv
+    label_path: model/keypoint_pinky_2class_miew/keypoint_pinky_label.csv
+    model_path: model/keypoint23feb/keypoint_classifier.tflite
+    keypoint_csv_path: model/keypoint_pinky_2class_kk/kk_keypoint.csv
     
 
   point_history_classifier:

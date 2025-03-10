@@ -33,7 +33,7 @@ model_point_label_path = settings.point_history_classifier.label_path
 def get_args():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--device", type=int, default=1)
+    parser.add_argument("--device", type=int, default=0)
     parser.add_argument("--width", help='cap width', type=int, default=960)
     parser.add_argument("--height", help='cap height', type=int, default=540)
 
@@ -110,6 +110,17 @@ def main():
     finger_gesture_history = deque(maxlen=history_length)
 
     #  ########################################################################
+        # Server connection
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind(('localhost', 12345))
+    server_socket.listen(1)
+    print("Server is waiting for a connection...")
+
+    global conn
+    conn, addr = server_socket.accept()
+
+    #  ########################################################################
+    print(f"Connected to {addr}")
     mode = 0
 
     while True:
@@ -222,7 +233,7 @@ def main():
 
             #send command to robot
             print(command_id, magnitude_angle)
-            # send_command(command_id, magnitude_angle)
+            send_command(command_id, magnitude_angle)
         else:
             point_history.append([0, 0])
 
@@ -277,14 +288,6 @@ def draw_angles_command(image, results, command):
     return image, angle
 
 def send_command(command_id, angle):
-    # Server connection
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind(('localhost', 12345))
-    server_socket.listen(1)
-    print("Server is waiting for a connection...")
-
-    conn, addr = server_socket.accept()
-    print(f"Connected to {addr}")
     info_to_send = f"({command_id},{angle})"
     print(info_to_send)
     conn.send(info_to_send.encode())

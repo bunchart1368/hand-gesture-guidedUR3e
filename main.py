@@ -26,12 +26,14 @@ import math3d as m3d
 
 # Project-specific imports
 import URBasic
+import keyboard
+
 
 """SETTINGS AND VARIABLES ________________________________________________________________"""
 
 RASPBERRY_BOOL = False
 
-# ROBOT_IP = '192.168.1.120'
+# ROBOT_IP = '192.168.1.116'
 ROBOT_IP = '10.10.0.61'
 ACCELERATION = 0.5  # Robot acceleration value
 VELOCITY = 0.4  # Robot speed value
@@ -53,41 +55,6 @@ hor_rot_max = math.radians(45)
 vert_rot_max = math.radians(45)
 
 """FUNCTIONS _____________________________________________________________________________"""
-
-def check_max_xy(xy_coord: List[float]) -> List[float]:
-    """
-    Checks if the face is outside of the predefined maximum values on the lookaraound plane
-
-    Inputs:
-        xy_coord: list of 2 values: x and y value of the face in the lookaround plane.
-            These values will be evaluated against max_x and max_y
-
-    Return Value:
-        x_y: new x and y values
-            if the values were within the maximum values (max_x and max_y) these are the same as the input.
-            if one or both of the input values were over the maximum, the maximum will be returned instead
-    """
-    x_y = [0, 0]
-
-    if -max_x <= xy_coord[0] <= max_x:
-        x_y[0] = xy_coord[0]
-    elif -max_x > xy_coord[0]:
-        x_y[0] = -max_x
-    elif max_x < xy_coord[0]:
-        x_y[0] = max_x
-    else:
-        raise Exception(" x is wrong somehow:", xy_coord[0], -max_x, max_x)
-
-    if -max_y <= xy_coord[1] <= max_y:
-        x_y[1] = xy_coord[1]
-    elif -max_y > xy_coord[1]:
-        x_y[1] = -max_y
-    elif max_y < xy_coord[1]:
-        x_y[1] = max_y
-    else:
-        raise Exception(" y is wrong somehow", xy_coord[1], max_y)
-
-    return x_y
 
 def set_lookorigin() -> m3d.Transform:
     """
@@ -125,6 +92,41 @@ def get_from_server() -> str:
     print("Received from server: ", data)
     return data
 
+def check_max_xy(xy_coord: List[float]) -> List[float]:
+    """
+    Checks if the face is outside of the predefined maximum values on the lookaraound plane
+
+    Inputs:
+        xy_coord: list of 2 values: x and y value of the face in the lookaround plane.
+            These values will be evaluated against max_x and max_y
+
+    Return Value:
+        x_y: new x and y values
+            if the values were within the maximum values (max_x and max_y) these are the same as the input.
+            if one or both of the input values were over the maximum, the maximum will be returned instead
+    """
+    x_y = [0, 0]
+
+    if -max_x <= xy_coord[0] <= max_x:
+        x_y[0] = xy_coord[0]
+    elif -max_x > xy_coord[0]:
+        x_y[0] = -max_x
+    elif max_x < xy_coord[0]:
+        x_y[0] = max_x
+    else:
+        raise Exception(" x is wrong somehow:", xy_coord[0], -max_x, max_x)
+
+    if -max_y <= xy_coord[1] <= max_y:
+        x_y[1] = xy_coord[1]
+    elif -max_y > xy_coord[1]:
+        x_y[1] = -max_y
+    elif max_y < xy_coord[1]:
+        x_y[1] = max_y
+    else:
+        raise Exception(" y is wrong somehow", xy_coord[1], max_y)
+
+    return x_y
+
 """FACE TRACKING LOOP ____________________________________________________________________"""
 
 def robot_set_up():
@@ -142,17 +144,14 @@ def home():
     print("Set home")
 
 def set_new_tcp(offset: float):
-    print("Offset: ", offset)
     xyz_coords = m3d.Vector(0, 0, offset)
     tcp_orient = m3d.Orientation.new_euler([0,0,0], encoding='xyz')
     position_vec_coords = m3d.Transform(tcp_orient, xyz_coords)
-    origin = set_lookorigin()
+    origin = m3d.Transform([0,0,0,0,0,0])
     oriented_xyz = origin * position_vec_coords 
     coordinates = extract_coordinates_from_orientation(oriented_xyz)
-    print("Original Coordinates: ", extract_coordinates_from_orientation(origin))
-    print("TCP Coordinates: ", coordinates)
+    print("NEW TCP Coordinates: ", coordinates)
     robot.set_tcp(coordinates)
-    print("Set new tcp")
 
 def compute_target_pose(
     prev_pose: List[float],
@@ -175,17 +174,17 @@ def compute_target_pose(
     target_pose = prev_pose[:]
     position = int(position) 
     if command == 1:
-        position = -0 + (10 - (-0)) * (position - 50) / (130 - 50)
-        position = 10
-    elif command == 2:
-        position = -10 + (0 - (-10)) * (position - 50) / (130 - 50)
+        # position = -0 + (10 - (-0)) * (position - 50) / (130 - 50)
         position = -10
+    elif command == 2:
+        # position = -10 + (0 - (-10)) * (position - 50) / (130 - 50)
+        position = 10
     elif command == 3:
         position = 10
     elif command == 4:
         position = -10
     else:
-        position = -10 + (10 - (-10)) * (position - 50) / (130 - 50)
+        position = 0
 
     target_pose[0] += int(position) * scale_factor
     if detect_sign_change(prev_ampli, position):
@@ -257,16 +256,21 @@ def compute_pose_and_orientation(
         # z = target_pose[0]
         # tcp_rotation_rpy = [0, 0, 0]
         x_rot = target_pose[0]
-        tcp_rotation_rpy = [0, x_rot, 0]
+        # tcp_rotation_rpy = [0, x_rot, 0]
+        tcp_rotation_rpy = [x_rot, 0, 0]
     elif command == 2:
         x_rot = target_pose[0]
-        tcp_rotation_rpy = [0, x_rot, 0]
+        # tcp_rotation_rpy = [0, x_rot, 0]
+        tcp_rotation_rpy = [x_rot, 0, 0]
     elif command == 3:
         x_rot = target_pose[0]
-        tcp_rotation_rpy = [x_rot, 0, 0]
+        # tcp_rotation_rpy = [x_rot, 0, 0]
+        tcp_rotation_rpy = [0, x_rot, 0]
+
     elif command == 4:
         x_rot = target_pose[0]
-        tcp_rotation_rpy = [x_rot, 0, 0]
+        # tcp_rotation_rpy = [x_rot, 0, 0]
+        tcp_rotation_rpy = [0, x_rot, 0]
     else:
         tcp_rotation_rpy = [0, 0, 0]
     
@@ -299,7 +303,7 @@ def start_hand_tracking():
             command, position = extract_last_tuple(get_from_server())
             position = int(position)
             command = int(command)
-            if isinstance(position, int):
+            if isinstance(position, int) and keyboard.is_pressed("ctrl"):
                 robot_position, prev_ampli = compute_target_pose(robot_position, position, command, prev_ampli)
                 previous_command = apply_target_pose(robot, robot_position, origin, command, previous_command)
             else:
@@ -320,7 +324,7 @@ def end():
 if __name__ == '__main__':
     robot_set_up()
     home()
-    # set_new_tcp(offset= -0.00000015)
-    server_connection()
-    start_hand_tracking()
+    # set_new_tcp(offset= 0.3)
+    # server_connection()
+    # start_hand_tracking()
     end()

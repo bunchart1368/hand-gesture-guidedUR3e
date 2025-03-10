@@ -25,10 +25,10 @@ import re
 RASPBERRY_BOOL = False
 # If this is run on a linux system, a picamera will be used.
 # If you are using a linux system, with a webcam instead of a raspberry pi delete the following if-statement
-if sys.platform == "linux":
-    import picamera
-    from picamera.array import PiRGBArray
-    RASPBERRY_BOOL = True
+# if sys.platform == "linux":
+#     import picamera
+#     from picamera.array import PiRGBArray
+#     RASPBERRY_BOOL = True
 
 # ROBOT_IP = '192.168.1.112'
 ROBOT_IP = '10.10.0.61'
@@ -76,13 +76,13 @@ vs = VideoStream(src= 0 ,
 time.sleep(0.2)
 
 # Replace the VideoStream with cv2.VideoCapture
-# cap = cv2.VideoCapture(0)  # Open the default camera (index 0)
-# cap.set(cv2.CAP_PROP_FRAME_WIDTH, video_resolution[0])
-# cap.set(cv2.CAP_PROP_FRAME_HEIGHT, video_resolution[1])
-# cap.set(cv2.CAP_PROP_FPS, 13)  # Optional: Set the frame rate (if supported by the webcam)
+cap = cv2.VideoCapture(0)  # Open the default camera (index 0)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, video_resolution[0])
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, video_resolution[1])
+cap.set(cv2.CAP_PROP_FPS, 13)  # Optional: Set the frame rate (if supported by the webcam)
 
 
-# time.sleep(0.2)  # Allow the camera to warm up
+time.sleep(0.2)  # Allow the camera to warm up
 
 
 """FUNCTIONS _____________________________________________________________________________"""
@@ -249,11 +249,11 @@ def move_to_face(list_of_facepos,robot_pos):
     prev_robot_pos = robot_target_xy
     print("Robot Target: ", robot_target_xy)
 
-    # x = robot_target_xy[0]
-    # y = robot_target_xy[1]
+    x = robot_target_xy[0]
+    y = robot_target_xy[1]
     z = 0
-    x = 0
-    y = 0
+    # x = 0
+    # y = 0
     # z = robot_target_xy[0] #(-50,50)
     xyz_coords = m3d.Vector(x, y, z)
 
@@ -263,11 +263,11 @@ def move_to_face(list_of_facepos,robot_pos):
     x_rot = x_pos_perc * hor_rot_max
     y_rot = y_pos_perc * vert_rot_max * -1
 
-    # tcp_rotation_rpy = [y_rot, x_rot, 0]
+    tcp_rotation_rpy = [y_rot, x_rot, 0]
     # tcp_rotation_rpy = [0, 0, 0]
     # tcp_rotation_rpy = [0, 0, x_rot]
-    tcp_rotation_rpy = [robot_target_xy[0], 0, 0]
-    print("amplitude",robot_target_xy[0])
+    # tcp_rotation_rpy = [robot_target_xy[0], 0, 0]
+    # print("amplitude",robot_target_xy[0])
     # tcp_rotation_rpy = [0, robot_target_xy[0], 0]
 
     tcp_orient = m3d.Orientation.new_euler(tcp_rotation_rpy, encoding='xyz')
@@ -310,10 +310,10 @@ try:
     print("starting loop")
     while True:
 
-        # ret, frame = cap.read()
-        # if not ret:
-        #     print("Error: Could not read frame from camera.")
-        #     break
+        ret, frame = cap.read()
+        if not ret:
+            print("Error: Could not read frame from camera.")
+            break
         frame = vs.read()
         print("frame read")
         face_positions, new_frame = find_faces_dnn(frame)

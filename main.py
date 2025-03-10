@@ -42,8 +42,6 @@ VELOCITY = 0.4  # Robot speed value
 robot_startposition = [round(math.radians(degree), 3) for degree in [90, -90, -90, -30, 90, 0]]
 # robot_startposition = [round(math.radians(degree), 3) for degree in [128.08, -108.61, -80.04, -64.12, 57.74, 7.07]]
 
-# Variable which scales the robot movement from pixels to meters.
-m_per_pixel = 0.000009  # Add more 0  
 
 # Size of the robot view-window
 max_x = 0.1
@@ -67,7 +65,6 @@ def set_lookorigin() -> m3d.Transform:
             characterises location and rotation of the new coordinate system in reference to the base coordinate system
     """
     position = robot.get_actual_tcp_pose()
-    print("position", position)
     orig = m3d.Transform(position)
     return orig
 
@@ -89,7 +86,7 @@ def server_connection():
     
 def get_from_server() -> str:
     data = client_socket.recv(1024).decode()
-    print("Received from server: ", data)
+    # print("Received from server: ", data)
     return data
 
 def check_max_xy(xy_coord: List[float]) -> List[float]:
@@ -157,8 +154,7 @@ def compute_target_pose(
     prev_pose: List[float],
     position: float,
     command: int,
-    prev_ampli: float,
-    scale_factor: float = m_per_pixel
+    prev_ampli: float
 ) -> Tuple[List[float], float]:
     """
     Computes the target pose for the robot based on the previous pose and the current position input.
@@ -185,8 +181,10 @@ def compute_target_pose(
         position = -10
     else:
         position = 0
+    
+    scale_factor = 0.001
 
-    target_pose[0] += int(position) * scale_factor
+    target_pose[0] = int(position) * scale_factor
     if detect_sign_change(prev_ampli, position):
         print('prev_ampli', prev_ampli)
         print('Current ampli', position)
@@ -220,7 +218,7 @@ def apply_target_pose(
         print('previous_command', previous_command)
         print('command', command)
         origin = set_lookorigin()
-        print("Set new tcp")
+        print("Set new origin")
         target_pose[0] = 0
 
     x, y, z, tcp_rotation_rpy = compute_pose_and_orientation(target_pose, command)
@@ -252,23 +250,25 @@ def compute_pose_and_orientation(
         tuple: x, y, z coordinates and tcp_rotation_rpy list.
     """
     x, y, z = 0, 0, 0
+    rotation_factor = 10
+
     if command == 1:
         # z = target_pose[0]
         # tcp_rotation_rpy = [0, 0, 0]
-        x_rot = target_pose[0]
+        x_rot = math.radians(target_pose[0] * rotation_factor)
         # tcp_rotation_rpy = [0, x_rot, 0]
         tcp_rotation_rpy = [x_rot, 0, 0]
     elif command == 2:
-        x_rot = target_pose[0]
+        x_rot = math.radians(target_pose[0] * rotation_factor)
         # tcp_rotation_rpy = [0, x_rot, 0]
         tcp_rotation_rpy = [x_rot, 0, 0]
     elif command == 3:
-        x_rot = target_pose[0]
+        x_rot = math.radians(target_pose[0] * rotation_factor)
         # tcp_rotation_rpy = [x_rot, 0, 0]
         tcp_rotation_rpy = [0, x_rot, 0]
 
     elif command == 4:
-        x_rot = target_pose[0]
+        x_rot = math.radians(target_pose[0] * rotation_factor)
         # tcp_rotation_rpy = [x_rot, 0, 0]
         tcp_rotation_rpy = [0, x_rot, 0]
     else:
@@ -297,15 +297,19 @@ def start_hand_tracking():
     robot.init_realtime_control()
     time.sleep(1)
 
+    count_amplitude = 0
+
     try:
-        print("Starting hand tracking loop...")
         while True:
             command, position = extract_last_tuple(get_from_server())
             position = int(position)
             command = int(command)
-            if isinstance(position, int) and keyboard.is_pressed("ctrl"):
+            # and keyboard.is_pressed("ctrl")
+            if isinstance(position, int):
                 robot_position, prev_ampli = compute_target_pose(robot_position, position, command, prev_ampli)
                 previous_command = apply_target_pose(robot, robot_position, origin, command, previous_command)
+                count_amplitude += prev_ampli
+                print("Aplitude:", count_amplitude)
             else:
                 print("Invalid or no input received.")
     except KeyboardInterrupt:
@@ -324,7 +328,7 @@ def end():
 if __name__ == '__main__':
     robot_set_up()
     home()
-    # set_new_tcp(offset= 0.3)
+    # set_new_tcp(offset= 0.275)
     # server_connection()
     # start_hand_tracking()
     end()

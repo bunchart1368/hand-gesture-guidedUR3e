@@ -1,0 +1,76 @@
+# Robot Configuration Variables
+
+# General Robot Parameters
+robot:
+  name: "UR5cb"
+  manufacturer: "Universal Robots"
+  degrees_of_freedom: 6
+  payload: 5.0 # in kg
+  reach: 850 # in mm
+
+# Connection Settings
+connection:
+  ip_address: "10.10.0.61"
+  port: 30002
+  protocol: "TCP/IP"
+
+# Joint Limits (in degrees)
+joint_limits:
+  joint_1: [-360, 360]
+  joint_2: [-360, 360]
+  joint_3: [-360, 360]
+  joint_4: [-360, 360]
+  joint_5: [-360, 360]
+  joint_6: [-360, 360]
+
+# Default Speeds
+speed:
+  joint_speed: 0.4  # in rad/s
+  linear_speed: 0.25 # in m/s
+
+# Default Acceleration
+acceleration:
+  joint_acceleration: 0.5  # in rad/s^2
+  linear_acceleration: 0.5 # in m/s^2
+
+# End-Effector (Tool) Configuration
+end_effector:
+  type: "gripper"
+  max_force: 50  # in N
+  max_opening: 85 # in mm
+
+# Safety Parameters
+safety:
+  collision_detection: true
+  force_limit: 100 # in N
+  emergency_stop: true
+
+# Camera Parameters (if used for vision-based control)
+camera:
+  resolution: [1280, 720]
+  frame_rate: 30
+  field_of_view: 80 # in degrees
+  calibration_matrix: [
+    [1000, 0, 640],
+    [0, 1000, 360],
+    [0, 0, 1]
+  ]
+
+# Calibration Offsets
+calibration:
+  base_offset: [0.0, 0.0, 0.0] # in meters
+  tool_offset: [0.0, 0.0, 0.1]  # in meters
+
+# Face Tracking Settings
+face_tracking:
+  max_x: 0.1
+  max_y: 0.2
+  max_z: 0.2
+  hor_rot_max: 45 # in degrees
+  vert_rot_max: 45 # in degrees
+
+# Initial Joint Positions
+initial_position:
+  joint_angles: [90, -90, -90, -30, 90, 0] # in degrees
+  joint_angles_home: [-90, -90, -90, 0, 90, 0] # in degrees
+

@@ -27,20 +27,25 @@ import math3d as m3d
 # Project-specific imports
 import URBasic
 import keyboard
+import yaml
 
 
 """SETTINGS AND VARIABLES ________________________________________________________________"""
 
 RASPBERRY_BOOL = False
 
+# Load YAML configuration directly
+with open("robot_variables.yml", "r") as file:
+    config = yaml.safe_load(file)
+
 # ROBOT_IP = '192.168.1.116'
-ROBOT_IP = '10.10.0.61'
-ACCELERATION = 0.5  # Robot acceleration value
-VELOCITY = 0.4  # Robot speed value
+ROBOT_IP = config["connection"]["ip_address"]
+ACCELERATION = config["acceleration"]["joint_acceleration"]  # Robot acceleration value
+VELOCITY = config["speed"]["joint_speed"]  # Robot speed value
 
 # The Joint position the robot starts at
-robot_startposition = [round(math.radians(degree), 3) for degree in [90, -90, -90, -30, 90, 0]]
-# robot_startposition = [round(math.radians(degree), 3) for degree in [128.08, -108.61, -80.04, -64.12, 57.74, 7.07]]
+robot_startposition = [round(math.radians(degree), 3) for degree in config["initial_position"]["joint_angles_home"]]
+
 
 
 # Size of the robot view-window

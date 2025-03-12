@@ -46,9 +46,10 @@ VELOCITY = config["speed"]["joint_speed"]  # Robot speed value
 robot_startposition = [round(math.radians(degree), 3) for degree in config["initial_position"]["joint_angles"]]
 
 # Size of the robot view-window
-max_x = 0.1
-max_y = 0.2
-max_z = 0.2
+max_up = config["end_effector_limits"]["max_up"]
+max_down = config["end_effector_limits"]["max_down"]
+max_left = config["end_effector_limits"]["max_left"]
+max_right = config["end_effector_limits"]["max_right"]
 
 # Maximum Rotation of the robot at the edge of the view window
 hor_rot_max = math.radians(45)
@@ -116,6 +117,27 @@ def robot_set_up():
     print("robot initialised")
     time.sleep(1)
 
+def check_boundary(accumulated_pose: List[float], target_pose: List[float]):
+    accumulated_pose[:] = [x + y for x, y in zip(accumulated_pose, target_pose)]
+    for i, pose in enumerate(accumulated_pose):
+        if i == 0 and pose > max_right:
+            target_pose[i] = 0
+            # max_left += -max_right
+            # emergency_stop = True
+        elif i == 1 and pose < max_left:
+            target_pose[i] = 0
+            # max_right += -max_left
+            # emergency_stop = True
+        elif i == 2 and pose > max_up:
+            target_pose[i] = 0
+            # max_down += -max_up
+            # emergency_stop = True
+        elif i == 3 and pose < max_down:
+            target_pose[i] = 0
+            # max_up += -max_down
+            # emergency_stop = True
+    return target_pose
+
 def home():
     robot.movej(q=robot_startposition, a=ACCELERATION, v=VELOCITY)
     print("Set home")
@@ -168,6 +190,7 @@ def compute_target_pose(
 def apply_target_pose(
     robot: object,
     target_pose: List[float],
+    accumulated_pose: List[float],
     origin: m3d.Transform,
     command: int,
     previous_command: int
@@ -191,6 +214,13 @@ def apply_target_pose(
         origin = set_lookorigin()
         print("Set new origin")
         target_pose[:] = [0] * len(target_pose)
+        accumulated_pose = [0] * len(accumulated_pose)
+        print("Reset Target Pose and Accumulated Pose")
+    
+    # accumulated_pose = [x + y for x, y in zip(accumulated_pose, target_pose)]
+    # target_pose = check_boundary(accumulated_pose, target_pose)
+    # print("Target Pose: ", target_pose)
+    # print("Accumulated Pose: ", accumulated_pose)
 
     x, y, z, tcp_rotation_rpy = compute_pose_and_orientation(target_pose, command)
     previous_command = command
@@ -204,7 +234,7 @@ def apply_target_pose(
     coordinates = extract_coordinates_from_orientation(oriented_xyz)
 
     robot.set_realtime_pose(coordinates)
-    return previous_command
+    return accumulated_pose, previous_command
 
 def compute_pose_and_orientation(
     target_pose: List[float],
@@ -258,6 +288,7 @@ def start_hand_tracking():
     global origin, previous_command
     previous_command = 0
     prev_ampli = 0
+    accumulated_pose = [0, 0, 0, 0]
     robot_position = [0, 0, 0, 0]
     origin = set_lookorigin()
 
@@ -267,14 +298,14 @@ def start_hand_tracking():
     # count_amplitude = 0
 
     try:
-        while True:
+        while not(emergency_stop):
             command, position = extract_last_tuple(get_from_server())
             position = int(position)
             command = int(command)
             # and keyboard.is_pressed("ctrl")
             if isinstance(position, int):
                 robot_position, prev_ampli = compute_target_pose(robot_position, position, command, prev_ampli)
-                previous_command = apply_target_pose(robot, robot_position, origin, command, previous_command)
+                accumulated_pose, previous_command = apply_target_pose(robot, robot_position, accumulated_pose, origin, command, previous_command)
                 # count_amplitude += prev_ampli
                 # print("Aplitude:", count_amplitude)
             else:

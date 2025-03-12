@@ -35,7 +35,7 @@ import yaml
 RASPBERRY_BOOL = False
 
 # Load YAML configuration directly
-with open("robot_variables.yml", "r") as file:
+with open("./final-project-1/robot_variables.yml", "r") as file:
     config = yaml.safe_load(file)
 
 ROBOT_IP = config["connection"]["ip_address"]
@@ -45,8 +45,6 @@ VELOCITY = config["speed"]["joint_speed"]  # Robot speed value
 # The Joint position the robot starts at
 robot_startposition = [round(math.radians(degree), 3) for degree in config["initial_position"]["joint_angles"]]
 
-
-
 # Size of the robot view-window
 max_x = 0.1
 max_y = 0.2
@@ -55,6 +53,9 @@ max_z = 0.2
 # Maximum Rotation of the robot at the edge of the view window
 hor_rot_max = math.radians(45)
 vert_rot_max = math.radians(45)
+
+# Emergercy stop
+emergency_stop = False
 
 """FUNCTIONS _____________________________________________________________________________"""
 
@@ -93,49 +94,14 @@ def get_from_server() -> str:
     # print("Received from server: ", data)
     return data
 
-def check_max_xy(xy_coord: List[float]) -> List[float]:
-    """
-    Checks if the face is outside of the predefined maximum values on the lookaraound plane
-
-    Inputs:
-        xy_coord: list of 2 values: x and y value of the face in the lookaround plane.
-            These values will be evaluated against max_x and max_y
-
-    Return Value:
-        x_y: new x and y values
-            if the values were within the maximum values (max_x and max_y) these are the same as the input.
-            if one or both of the input values were over the maximum, the maximum will be returned instead
-    """
-    x_y = [0, 0]
-
-    if -max_x <= xy_coord[0] <= max_x:
-        x_y[0] = xy_coord[0]
-    elif -max_x > xy_coord[0]:
-        x_y[0] = -max_x
-    elif max_x < xy_coord[0]:
-        x_y[0] = max_x
-    else:
-        raise Exception(" x is wrong somehow:", xy_coord[0], -max_x, max_x)
-
-    if -max_y <= xy_coord[1] <= max_y:
-        x_y[1] = xy_coord[1]
-    elif -max_y > xy_coord[1]:
-        x_y[1] = -max_y
-    elif max_y < xy_coord[1]:
-        x_y[1] = max_y
-    else:
-        raise Exception(" y is wrong somehow", xy_coord[1], max_y)
-
-    return x_y
-
 
 """Main Program ____________________________________________________________________________"""
 def main():
     robot_set_up()
     home()
-    # set_new_tcp(offset= 0.275)
-    # server_connection()
-    # start_hand_tracking()
+    set_new_tcp(offset= 0.275)
+    server_connection()
+    start_hand_tracking()
     end()
 
 """FACE TRACKING LOOP ____________________________________________________________________"""
@@ -177,27 +143,25 @@ def compute_target_pose(
         list: Target position [x, y].
     """
     target_pose = prev_pose[:]
+    scale_factor = 0.005
     position = int(position) 
     if command == 1:
-        position = -10
-    elif command == 2:
         position = 10
+        target_pose[0] = int(position) * scale_factor
+    elif command == 2:
+        position = -10
+        target_pose[1] = int(position) * scale_factor
     elif command == 3:
         position = 10
+        target_pose[2] = int(position) * scale_factor
     elif command == 4:
         position = -10
+        target_pose[3] = int(position) * scale_factor
     else:
         position = 0
-    
-    scale_factor = 0.001
+        target_pose[:] = [0] * len(target_pose)
 
-    target_pose[0] = int(position) * scale_factor
-    if detect_sign_change(prev_ampli, position):
-        print('prev_ampli', prev_ampli)
-        print('Current ampli', position)
-        target_pose[0] = 0
     prev_ampli = position
-    target_pose = check_max_xy(target_pose)
     return target_pose, prev_ampli
 
 # SECTION: Apply Target Pose
@@ -226,7 +190,7 @@ def apply_target_pose(
         print('command', command)
         origin = set_lookorigin()
         print("Set new origin")
-        target_pose[0] = 0
+        target_pose[:] = [0] * len(target_pose)
 
     x, y, z, tcp_rotation_rpy = compute_pose_and_orientation(target_pose, command)
     previous_command = command
@@ -263,21 +227,17 @@ def compute_pose_and_orientation(
         # z = target_pose[0]
         # tcp_rotation_rpy = [0, 0, 0]
         x_rot = math.radians(target_pose[0] * rotation_factor)
-        # tcp_rotation_rpy = [0, x_rot, 0]
-        tcp_rotation_rpy = [x_rot, 0, 0]
-    elif command == 2:
-        x_rot = math.radians(target_pose[0] * rotation_factor)
-        # tcp_rotation_rpy = [0, x_rot, 0]
-        tcp_rotation_rpy = [x_rot, 0, 0]
-    elif command == 3:
-        x_rot = math.radians(target_pose[0] * rotation_factor)
-        # tcp_rotation_rpy = [x_rot, 0, 0]
         tcp_rotation_rpy = [0, x_rot, 0]
+    elif command == 2:
+        x_rot = math.radians(target_pose[1] * rotation_factor)
+        tcp_rotation_rpy = [0, x_rot, 0]
+    elif command == 3:
+        y_rot = math.radians(target_pose[2] * rotation_factor)
+        tcp_rotation_rpy = [y_rot, 0, 0]
 
     elif command == 4:
-        x_rot = math.radians(target_pose[0] * rotation_factor)
-        # tcp_rotation_rpy = [x_rot, 0, 0]
-        tcp_rotation_rpy = [0, x_rot, 0]
+        y_rot = math.radians(target_pose[3] * rotation_factor)
+        tcp_rotation_rpy = [y_rot, 0, 0]
     else:
         tcp_rotation_rpy = [0, 0, 0]
     
@@ -298,13 +258,13 @@ def start_hand_tracking():
     global origin, previous_command
     previous_command = 0
     prev_ampli = 0
-    robot_position = [0, 0]
+    robot_position = [0, 0, 0, 0]
     origin = set_lookorigin()
 
     robot.init_realtime_control()
     time.sleep(1)
 
-    count_amplitude = 0
+    # count_amplitude = 0
 
     try:
         while True:
@@ -315,8 +275,8 @@ def start_hand_tracking():
             if isinstance(position, int):
                 robot_position, prev_ampli = compute_target_pose(robot_position, position, command, prev_ampli)
                 previous_command = apply_target_pose(robot, robot_position, origin, command, previous_command)
-                count_amplitude += prev_ampli
-                print("Aplitude:", count_amplitude)
+                # count_amplitude += prev_ampli
+                # print("Aplitude:", count_amplitude)
             else:
                 print("Invalid or no input received.")
     except KeyboardInterrupt:

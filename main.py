@@ -38,13 +38,12 @@ RASPBERRY_BOOL = False
 with open("robot_variables.yml", "r") as file:
     config = yaml.safe_load(file)
 
-# ROBOT_IP = '192.168.1.116'
 ROBOT_IP = config["connection"]["ip_address"]
 ACCELERATION = config["acceleration"]["joint_acceleration"]  # Robot acceleration value
 VELOCITY = config["speed"]["joint_speed"]  # Robot speed value
 
 # The Joint position the robot starts at
-robot_startposition = [round(math.radians(degree), 3) for degree in config["initial_position"]["joint_angles_home"]]
+robot_startposition = [round(math.radians(degree), 3) for degree in config["initial_position"]["joint_angles"]]
 
 
 
@@ -129,6 +128,16 @@ def check_max_xy(xy_coord: List[float]) -> List[float]:
 
     return x_y
 
+
+"""Main Program ____________________________________________________________________________"""
+def main():
+    robot_set_up()
+    home()
+    # set_new_tcp(offset= 0.275)
+    # server_connection()
+    # start_hand_tracking()
+    end()
+
 """FACE TRACKING LOOP ____________________________________________________________________"""
 
 def robot_set_up():
@@ -146,12 +155,7 @@ def home():
     print("Set home")
 
 def set_new_tcp(offset: float):
-    xyz_coords = m3d.Vector(0, 0, offset)
-    tcp_orient = m3d.Orientation.new_euler([0,0,0], encoding='xyz')
-    position_vec_coords = m3d.Transform(tcp_orient, xyz_coords)
-    origin = m3d.Transform([0,0,0,0,0,0])
-    oriented_xyz = origin * position_vec_coords 
-    coordinates = extract_coordinates_from_orientation(oriented_xyz)
+    coordinates = [0, 0, offset, 0, 0, 0]
     print("NEW TCP Coordinates: ", coordinates)
     robot.set_tcp(coordinates)
 
@@ -175,10 +179,8 @@ def compute_target_pose(
     target_pose = prev_pose[:]
     position = int(position) 
     if command == 1:
-        # position = -0 + (10 - (-0)) * (position - 50) / (130 - 50)
         position = -10
     elif command == 2:
-        # position = -10 + (0 - (-10)) * (position - 50) / (130 - 50)
         position = 10
     elif command == 3:
         position = 10
@@ -331,9 +333,4 @@ def end():
     print("Program Ended")
 
 if __name__ == '__main__':
-    robot_set_up()
-    home()
-    # set_new_tcp(offset= 0.275)
-    # server_connection()
-    # start_hand_tracking()
-    end()
+    main()

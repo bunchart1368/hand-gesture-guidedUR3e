@@ -2,7 +2,7 @@
 
 # General Robot Parameters
 robot:
-  name: "UR5cb"
+  name: "UR3e"
   manufacturer: "Universal Robots"
   degrees_of_freedom: 6
   payload: 5.0 # in kg

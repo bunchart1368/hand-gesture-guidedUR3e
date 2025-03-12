@@ -118,25 +118,18 @@ def robot_set_up():
     time.sleep(1)
 
 def check_boundary(accumulated_pose: List[float], target_pose: List[float]):
-    accumulated_pose[:] = [x + y for x, y in zip(accumulated_pose, target_pose)]
-    for i, pose in enumerate(accumulated_pose):
-        if i == 0 and pose > max_right:
-            target_pose[i] = 0
-            # max_left += -max_right
+    temp_accumulated_pose = [sum(pair) + accumulated_pose[i] for i, pair in enumerate(zip(target_pose[::2], target_pose[1::2]))]
+    for i, pose in enumerate(temp_accumulated_pose):
+        # if i == 0 and (pose > max_right or pose < max_left):
+        #     # target_pose[:] = [0] * len(target_pose)
+        #     # emergency_stop = True
+        #     print("reach max right or max left")
+        if i == 1 and (pose > max_up or pose < max_down):
+            target_pose[:] = [0] * len(target_pose)
             # emergency_stop = True
-        elif i == 1 and pose < max_left:
-            target_pose[i] = 0
-            # max_right += -max_left
-            # emergency_stop = True
-        elif i == 2 and pose > max_up:
-            target_pose[i] = 0
-            # max_down += -max_up
-            # emergency_stop = True
-        elif i == 3 and pose < max_down:
-            target_pose[i] = 0
-            # max_up += -max_down
-            # emergency_stop = True
-    return target_pose
+            print("reach max up or max down")
+    accumulated_pose = [sum(pair) + accumulated_pose[i] for i, pair in enumerate(zip(target_pose[::2], target_pose[1::2]))]
+    return accumulated_pose, target_pose
 
 def home():
     robot.movej(q=robot_startposition, a=ACCELERATION, v=VELOCITY)
@@ -214,13 +207,12 @@ def apply_target_pose(
         origin = set_lookorigin()
         print("Set new origin")
         target_pose[:] = [0] * len(target_pose)
-        accumulated_pose = [0] * len(accumulated_pose)
-        print("Reset Target Pose and Accumulated Pose")
+        print("Reset Target Pose")
     
     # accumulated_pose = [x + y for x, y in zip(accumulated_pose, target_pose)]
-    # target_pose = check_boundary(accumulated_pose, target_pose)
-    # print("Target Pose: ", target_pose)
-    # print("Accumulated Pose: ", accumulated_pose)
+    accumulated_pose, target_pose = check_boundary(accumulated_pose, target_pose)
+    print("Target Pose: ", target_pose)
+    print("Accumulated Pose: ", accumulated_pose)
 
     x, y, z, tcp_rotation_rpy = compute_pose_and_orientation(target_pose, command)
     previous_command = command
@@ -288,7 +280,7 @@ def start_hand_tracking():
     global origin, previous_command
     previous_command = 0
     prev_ampli = 0
-    accumulated_pose = [0, 0, 0, 0]
+    accumulated_pose = [0, 0]
     robot_position = [0, 0, 0, 0]
     origin = set_lookorigin()
 

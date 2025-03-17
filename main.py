@@ -120,10 +120,10 @@ def robot_set_up():
 def check_boundary(accumulated_pose: List[float], target_pose: List[float]):
     temp_accumulated_pose = [sum(pair) + accumulated_pose[i] for i, pair in enumerate(zip(target_pose[::2], target_pose[1::2]))]
     for i, pose in enumerate(temp_accumulated_pose):
-        # if i == 0 and (pose > max_right or pose < max_left):
-        #     # target_pose[:] = [0] * len(target_pose)
-        #     # emergency_stop = True
-        #     print("reach max right or max left")
+        if i == 0 and (pose > max_right or pose < max_left):
+            target_pose[:] = [0] * len(target_pose)
+            # emergency_stop = True
+            print("reach max right or max left")
         if i == 1 and (pose > max_up or pose < max_down):
             target_pose[:] = [0] * len(target_pose)
             # emergency_stop = True
@@ -209,7 +209,6 @@ def apply_target_pose(
         target_pose[:] = [0] * len(target_pose)
         print("Reset Target Pose")
     
-    # accumulated_pose = [x + y for x, y in zip(accumulated_pose, target_pose)]
     accumulated_pose, target_pose = check_boundary(accumulated_pose, target_pose)
     print("Target Pose: ", target_pose)
     print("Accumulated Pose: ", accumulated_pose)

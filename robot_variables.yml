@@ -10,7 +10,7 @@ robot:
 
 # Connection Settings
 connection:
-  ip_address: "10.10.0.61"
+  ip_address: "10.10.0.61" #"10.10.0.61""172.20.10.2"
   port: 30002
   protocol: "TCP/IP"
 

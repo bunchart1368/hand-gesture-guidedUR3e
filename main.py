@@ -95,15 +95,21 @@ def get_from_server() -> str:
     # print("Received from server: ", data)
     return data
 
+def get_force_sensor_data():
+    robot_force_vector = robot.get_tcp_force()
+    print("Force Sensor Data: ", robot_force_vector)
+    return robot_force_vector
 
-"""Main Program ____________________________________________________________________________"""
-def main():
-    robot_set_up()
-    home()
-    set_new_tcp(offset= 0.275)
-    server_connection()
-    start_hand_tracking()
-    end()
+def euclidean_distance(v1, v2):
+    """Compute the Euclidean distance between two vectors."""
+    return math.sqrt(sum((a - b) ** 2 for a, b in zip(v1, v2)))
+
+def free_drive_mode():
+    robot.freedrive_mode()
+    print("Freedrive mode activated")
+    time.sleep(10)
+    latest_position = robot.end_freedrive_mode()
+    print("latest_position: ", latest_position)
 
 """FACE TRACKING LOOP ____________________________________________________________________"""
 
@@ -313,6 +319,34 @@ def end():
     client_socket.close()
     print("Client Connection Closed")
     print("Program Ended")
+
+def set_up_test_environment():
+    position1 = robot.get_actual_tcp_pose()
+    print("Current TCP Position: ", position1[:3])
+    free_drive_mode()
+    position2 = robot.get_actual_tcp_pose()
+    print("Current TCP Position: ", position2[:3])
+    distance = euclidean_distance(position1[:3], position2[:3])
+    print("Distance between positions: ", distance)
+    tcp_offset = config["end_effector"]["offset"] - distance
+    set_new_tcp(tcp_offset)
+
+def read_force_sensor_loop():
+    while True:
+        get_force_sensor_data()
+        time.sleep(0.1)
+
+
+def main():
+    robot_set_up()
+    home()
+    # set_new_tcp(offset= config["end_effector"]["offset"])
+    # set_up_test_environment()
+    # home()
+    server_connection()
+    start_hand_tracking()
+    # read_force_sensor_loop()
+    end()
 
 if __name__ == '__main__':
     main()

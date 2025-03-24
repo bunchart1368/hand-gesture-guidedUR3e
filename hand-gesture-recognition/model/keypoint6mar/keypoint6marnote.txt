@@ -1,0 +1,6 @@
+recorder: kungking
+camera:
+position: above head, look down
+amount of data: 
+    (0: 515 keypoints) 
+    (1: 516 keypoints)

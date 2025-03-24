@@ -21,6 +21,8 @@ from function import ( select_mode, calc_bounding_rect, calc_landmark_list,
                       draw_landmarks, draw_info_text, draw_point_history, draw_info )
 
 from utils.config import settings
+from model.keypoint_classifier.transformer import MaskFeatureSelector
+
 
 # model path hand gesture
 model_path = settings.keypoint_classifier.model_path
@@ -33,7 +35,7 @@ model_point_label_path = settings.point_history_classifier.label_path
 def get_args():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--device", type=int, default=0)
+    parser.add_argument("--device", type=int, default=3)
     parser.add_argument("--width", help='cap width', type=int, default=960)
     parser.add_argument("--height", help='cap height', type=int, default=540)
 
@@ -111,16 +113,16 @@ def main():
 
     #  ########################################################################
         # Server connection
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind(('localhost', 12345))
-    server_socket.listen(1)
-    print("Server is waiting for a connection...")
+    # server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # server_socket.bind(('localhost', 12345))
+    # server_socket.listen(1)
+    # print("Server is waiting for a connection...")
 
-    global conn
-    conn, addr = server_socket.accept()
+    # global conn
+    # conn, addr = server_socket.accept()
+    #  print(f"Connected to {addr}")
 
     #  ########################################################################
-    print(f"Connected to {addr}")
     mode = 0
 
     while True:
@@ -154,8 +156,8 @@ def main():
         if results.multi_hand_landmarks is not None:
             for hand_landmarks, handedness in zip(results.multi_hand_landmarks,
                                                   results.multi_handedness):
-                print('handedness', handedness)
-                print('hand landmarks',hand_landmarks)
+                # print('handedness', handedness)
+                # print('hand landmarks',hand_landmarks)
                 # Bounding box calculation
                 brect = calc_bounding_rect(debug_image, hand_landmarks)
                 # Landmark calculation
@@ -174,6 +176,7 @@ def main():
                             pre_processed_point_history_list)
 
                 # Hand sign classification
+                print('pre_processed_landmark_list', pre_processed_landmark_list)
                 hand_sign_id = keypoint_classifier(pre_processed_landmark_list)
 
                 # Assign hand sign based on handedness
@@ -233,7 +236,7 @@ def main():
 
             #send command to robot
             print(command_id, magnitude_angle)
-            send_command(command_id, magnitude_angle)
+            # send_command(command_id, magnitude_angle)
         else:
             point_history.append([0, 0])
 

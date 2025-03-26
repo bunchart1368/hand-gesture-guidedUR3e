@@ -31,3 +31,8 @@ development:
     model_path: model/point_history_classifier/point_history_classifier.tflite
     keypoint_csv_path: model/point_history_classifier/point_history.csv
     
+  ground_truth:
+    video_path: groundtruth/test_groundtruth.MOV
+    output_path: groundtruth/ground_truth.csv
+    gesture_names_path: model/keypoint_pinky_2class_miew/keypoint_pinky_label.csv
+    frame_step: 30

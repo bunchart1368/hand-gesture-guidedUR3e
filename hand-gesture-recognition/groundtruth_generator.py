@@ -35,10 +35,10 @@ def save_ground_truth(ground_truth, output_path):
             writer.writerow([frame_idx, left_gesture, right_gesture])
 
 def main():
-    video_path = settings.ground_truth.video_path
-    output_path = settings.ground_truth.output_path
-    gesture_names_path = settings.ground_truth.gesture_names_path
-    frame_step = settings.ground_truth.frame_step
+    video_path = settings.model_evaluation.video_path
+    output_path = settings.model_evaluation.prediction_output_path
+    gesture_names_path = settings.model_evaluation.gesture_names_path
+    frame_step = settings.model_evaluation.frame_step
     
     # Load gesture names
     gesture_names = load_gesture_names(gesture_names_path)

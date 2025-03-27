@@ -41,7 +41,7 @@ def save_prediction(prediction, output_path):
 def main():
     # Load paths from settings
     video_path = settings.model_evaluation.video_path
-    output_path = settings.model_evaluation.output_path
+    output_path = settings.model_evaluation.prediction_output_path
     gesture_names_path = settings.model_evaluation.gesture_names_path
     frame_step = settings.model_evaluation.frame_step
     model_path = settings.keypoint_classifier.model_path  # Add this to your settings
@@ -124,7 +124,7 @@ def main():
             if True:
                 # Draw results on frame (implement as needed)
                 cv2.imshow('Frame', frame)
-                key = cv2.waitKey(150)
+                key = cv2.waitKey(200)
                 if key == 27:  # ESC key
                     break
         

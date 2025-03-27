@@ -21,7 +21,7 @@ development:
 
     # lrc sklearn
     label_path: model/keypoint_pinky_2class_miew/keypoint_pinky_label.csv
-    model_path: model/keypoint6mar/keypoint_classifier_lrc_pipeline.pkl    
+    model_path: model/keypoint6mar/keypoint_classifier_dt.pkl    
     model_type: sklearn #tflite or sklearn
     keypoint_csv_path: model/keypoint_pinky_2class_kk/kk_keypoint.csv
     
@@ -31,14 +31,9 @@ development:
     model_path: model/point_history_classifier/point_history_classifier.tflite
     keypoint_csv_path: model/point_history_classifier/point_history.csv
     
-  ground_truth:
-    video_path: groundtruth/test_groundtruth.MOV
-    output_path: groundtruth/ground_truth.csv
-    gesture_names_path: model/keypoint_pinky_2class_miew/keypoint_pinky_label.csv
-    frame_step: 30
-  
   model_evaluation:
-    video_path: groundtruth/test_groundtruth.MOV
-    output_path: groundtruth/keypoint6mar_lrc_eval.csv
+    video_path: evaluation/kk_eval_video/kk_eval_vdo_flip.mov
+    groundtruth_output_path: evaluation/kk_eval_video/groundtruth_kk_eval_video.csv
+    prediction_output_path: evaluation/kk_eval_video/keypoint6mar_dt_eval_flip.csv
     gesture_names_path: model/keypoint_pinky_2class_miew/keypoint_pinky_label.csv
-    frame_step: 30
+    frame_step: 15

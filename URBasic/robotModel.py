@@ -198,7 +198,9 @@ class RobotModel(object):
             return n&self.dataDir['actual_digital_output_bits']==n
         else:
             return None
-
+        
+    
+    def ForceTorqueSensor(self):return self.dataDir['actual_tool_accelerometer']
     def RTDEProtocolVersion(self):raise NotImplementedError('Function Not yet implemented')
     def ActualTCPPose(self):return self.dataDir['actual_TCP_pose']
     def RobotModee(self):raise NotImplementedError('Function Not yet implemented')

@@ -816,6 +816,15 @@ end
 
         return self.robotConnector.RobotModel.ActualTCPSpeed()
 
+    def get_actual_forcetorque(self,wait=True):
+        '''
+        Returns the current measured tool accelerometer reading
+        '''
+        if(wait):
+            self.sync()
+
+        return self.robotConnector.RobotModel.ForceTorqueSensor()
+
     def get_actual_tool_flange_pose(self):
         '''
         Returns the current measured tool flange pose

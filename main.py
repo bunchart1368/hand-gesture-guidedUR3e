@@ -30,6 +30,7 @@ import keyboard
 import yaml
 
 
+
 """SETTINGS AND VARIABLES ________________________________________________________________"""
 
 RASPBERRY_BOOL = False
@@ -43,7 +44,7 @@ ACCELERATION = config["acceleration"]["joint_acceleration"]  # Robot acceleratio
 VELOCITY = config["speed"]["joint_speed"]  # Robot speed value
 
 # The Joint position the robot starts at
-robot_startposition = [round(math.radians(degree), 3) for degree in config["initial_position"]["joint_angles"]]
+robot_startposition = [round(math.radians(degree), 3) for degree in config["initial_position"]["joint_angles_home"]]
 
 # Size of the robot view-window
 max_up = config["end_effector_limits"]["max_up"]
@@ -97,8 +98,15 @@ def get_from_server() -> str:
 
 def get_force_sensor_data():
     robot_force_vector = robot.get_tcp_force()
-    print("Force Sensor Data: ", robot_force_vector)
+    # print("Force Sensor Data: ", robot_force_vector)
     return robot_force_vector
+
+def total_force_vector(force_vector) -> float:
+    """Compute the total force vector from the force sensor data."""
+    fx, fy, fz = force_vector[:3]
+    total_force = math.sqrt(fx**2 + fy**2 + fz**2)
+    rounted_total_force = round(total_force, 3)
+    return rounted_total_force
 
 def euclidean_distance(v1, v2):
     """Compute the Euclidean distance between two vectors."""
@@ -107,9 +115,10 @@ def euclidean_distance(v1, v2):
 def free_drive_mode():
     robot.freedrive_mode()
     print("Freedrive mode activated")
-    time.sleep(10)
-    latest_position = robot.end_freedrive_mode()
-    print("latest_position: ", latest_position)
+
+def end_free_drive_mode():
+    robot.end_freedrive_mode()
+    print("Freedrive mode deactivated")
 
 """FACE TRACKING LOOP ____________________________________________________________________"""
 
@@ -292,8 +301,6 @@ def start_hand_tracking():
     robot.init_realtime_control()
     time.sleep(1)
 
-    # count_amplitude = 0
-
     try:
         while not(emergency_stop):
             command, position = extract_last_tuple(get_from_server())
@@ -301,10 +308,12 @@ def start_hand_tracking():
             command = int(command)
             # and keyboard.is_pressed("ctrl")
             if isinstance(position, int):
+                # robot_force_vectors = get_force_sensor_data()
+                # total_force = total_force_vector(robot_force_vectors)
+                # if total_force > 20: continue
                 robot_position, prev_ampli = compute_target_pose(robot_position, position, command, prev_ampli)
                 accumulated_pose, previous_command = apply_target_pose(robot, robot_position, accumulated_pose, origin, command, previous_command)
-                # count_amplitude += prev_ampli
-                # print("Aplitude:", count_amplitude)
+
             else:
                 print("Invalid or no input received.")
     except KeyboardInterrupt:
@@ -324,6 +333,8 @@ def set_up_test_environment():
     position1 = robot.get_actual_tcp_pose()
     print("Current TCP Position: ", position1[:3])
     free_drive_mode()
+    time.sleep(10)
+    end_free_drive_mode()
     position2 = robot.get_actual_tcp_pose()
     print("Current TCP Position: ", position2[:3])
     distance = euclidean_distance(position1[:3], position2[:3])
@@ -333,19 +344,24 @@ def set_up_test_environment():
 
 def read_force_sensor_loop():
     while True:
-        get_force_sensor_data()
+        robot_force_vectors = get_force_sensor_data()
+        # print("Force Sensor Data: ", robot_force_vectors)
+        total_force = total_force_vector(robot_force_vectors)
+        print("Total Force: ", total_force)
         time.sleep(0.1)
+        
 
 
 def main():
     robot_set_up()
-    home()
+    # home()
     # set_new_tcp(offset= config["end_effector"]["offset"])
     # set_up_test_environment()
     # home()
-    server_connection()
-    start_hand_tracking()
-    # read_force_sensor_loop()
+    # server_connection()
+    # start_hand_tracking()
+    # free_drive_mode()
+    read_force_sensor_loop()
     end()
 
 if __name__ == '__main__':

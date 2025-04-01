@@ -1,0 +1,10 @@
+recorder: kungking
+camera:
+position: above head, look down
+amount of data: 
+    (0: 515 keypoints) 
+    (1: 516 keypoints)
+
+keypoint_classifier_lrc_pipeline.pkl : select features, scale MinMax
+keypoint_classifier_knn_pipeline.pkl : scale MinMax
+keypoint_classifier_dt.pkl : none

@@ -3,6 +3,8 @@ import tensorflow as tf
 import joblib
 from utils.config import settings
 from model.keypoint_classifier.transformer import MaskFeatureSelector
+from function import calc_bounding_rect, calc_landmark_list, pre_process_landmark
+
 
 class KeyPointClassifier(object):
     def __init__(

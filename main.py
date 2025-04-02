@@ -44,7 +44,7 @@ ACCELERATION = config["acceleration"]["joint_acceleration"]  # Robot acceleratio
 VELOCITY = config["speed"]["joint_speed"]  # Robot speed value
 
 # The Joint position the robot starts at
-robot_startposition = [round(math.radians(degree), 3) for degree in config["initial_position"]["joint_angles_home"]]
+robot_startposition = [round(math.radians(degree), 3) for degree in config["initial_position"]["joint_angles"]]
 
 # Size of the robot view-window
 max_up = config["end_effector_limits"]["max_up"]
@@ -133,16 +133,16 @@ def robot_set_up():
     time.sleep(1)
 
 def check_boundary(accumulated_pose: List[float], target_pose: List[float]):
-    temp_accumulated_pose = [sum(pair) + accumulated_pose[i] for i, pair in enumerate(zip(target_pose[::2], target_pose[1::2]))]
-    for i, pose in enumerate(temp_accumulated_pose):
-        if i == 0 and (pose > max_right or pose < max_left):
-            target_pose[:] = [0] * len(target_pose)
-            # emergency_stop = True
-            print("reach max right or max left")
-        if i == 1 and (pose > max_up or pose < max_down):
-            target_pose[:] = [0] * len(target_pose)
-            # emergency_stop = True
-            print("reach max up or max down")
+    # temp_accumulated_pose = [sum(pair) + accumulated_pose[i] for i, pair in enumerate(zip(target_pose[::2], target_pose[1::2]))]
+    # for i, pose in enumerate(temp_accumulated_pose):
+    #     if i == 0 and (pose > max_right or pose < max_left):
+    #         target_pose[:] = [0] * len(target_pose)
+    #         # emergency_stop = True
+    #         print("reach max right or max left")
+    #     if i == 1 and (pose > max_up or pose < max_down):
+    #         target_pose[:] = [0] * len(target_pose)
+    #         # emergency_stop = True
+    #         print("reach max up or max down")
     accumulated_pose = [sum(pair) + accumulated_pose[i] for i, pair in enumerate(zip(target_pose[::2], target_pose[1::2]))]
     return accumulated_pose, target_pose
 
@@ -307,7 +307,7 @@ def start_hand_tracking():
             position = int(position)
             command = int(command)
             # and keyboard.is_pressed("ctrl")
-            if isinstance(position, int):
+            if isinstance(position, int) and keyboard.is_pressed("ctrl"):
                 # robot_force_vectors = get_force_sensor_data()
                 # total_force = total_force_vector(robot_force_vectors)
                 # if total_force > 20: continue
@@ -333,7 +333,7 @@ def set_up_test_environment():
     position1 = robot.get_actual_tcp_pose()
     print("Current TCP Position: ", position1[:3])
     free_drive_mode()
-    time.sleep(10)
+    keyboard.wait('q')  # Blocks until 'q' is pressed
     print("10 seconds in free drive mode")
     end_free_drive_mode()
     position2 = robot.get_actual_tcp_pose()
@@ -362,21 +362,17 @@ def update_force_sensor_loop():
         print("Total Force:", total_force)
         time.sleep(0.1)
 
-        
-
-
 def main():
     robot_set_up()
     # update_force_sensor_loop()
-    home()
-    # set_new_tcp(offset= config["end_effector"]["offset"])
-    # set_up_test_environment()
     # home()
-    # server_connection()
-    # start_hand_tracking()
-    # free_drive_mode()
+    set_new_tcp(offset= config["end_effector"]["offset"])
+    set_up_test_environment()
+    server_connection()
+    start_hand_tracking()
     # read_force_sensor_loop()
     end()
 
 if __name__ == '__main__':
     main()
+q

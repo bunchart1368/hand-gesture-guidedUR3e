@@ -50,7 +50,7 @@ end_effector:
   type: "gripper"
   max_force: 50  # in N
   max_opening: 85 # in mm
-  offset: 0.327 # in meters 0.275, 0.157
+  offset: 0.420 # in meters 0.275, 0.157
 
 # Safety Parameters
 safety:

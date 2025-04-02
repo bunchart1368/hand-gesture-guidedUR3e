@@ -50,7 +50,7 @@ end_effector:
   type: "gripper"
   max_force: 50  # in N
   max_opening: 85 # in mm
-  offset: 0.275 # in meters 0.275, 0.157
+  offset: 0.327 # in meters 0.275, 0.157
 
 # Safety Parameters
 safety:
@@ -85,5 +85,5 @@ face_tracking:
 # Initial Joint Positions
 initial_position:
   joint_angles: [90, -90, -90, -30, 90, 0] # in degrees
-  joint_angles_home: [-90, -90, -90, 0, 90, 0] # in degrees
+  joint_angles_home: [90, -90, -90, -90, 90, 0] # in degrees
 

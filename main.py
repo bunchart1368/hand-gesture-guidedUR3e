@@ -334,6 +334,7 @@ def set_up_test_environment():
     print("Current TCP Position: ", position1[:3])
     free_drive_mode()
     time.sleep(10)
+    print("10 seconds in free drive mode")
     end_free_drive_mode()
     position2 = robot.get_actual_tcp_pose()
     print("Current TCP Position: ", position2[:3])
@@ -349,19 +350,32 @@ def read_force_sensor_loop():
         total_force = total_force_vector(robot_force_vectors)
         print("Total Force: ", total_force)
         time.sleep(0.1)
+
+# main.py
+total_force = 0.0  # Global variable to store the latest total force
+
+def update_force_sensor_loop():
+    global total_force
+    while True:
+        robot_force_vectors = get_force_sensor_data()
+        total_force = total_force_vector(robot_force_vectors)
+        print("Total Force:", total_force)
+        time.sleep(0.1)
+
         
 
 
 def main():
     robot_set_up()
-    # home()
+    # update_force_sensor_loop()
+    home()
     # set_new_tcp(offset= config["end_effector"]["offset"])
     # set_up_test_environment()
     # home()
     # server_connection()
     # start_hand_tracking()
     # free_drive_mode()
-    read_force_sensor_loop()
+    # read_force_sensor_loop()
     end()
 
 if __name__ == '__main__':

@@ -8,11 +8,11 @@ def calculate_angle(x, y):
     return angle
 
 # Start video capture
-# cap = cv2.VideoCapture(3)
+cap = cv2.VideoCapture(1)
 
 
 # Try macOS-specific backend
-cap = cv2.VideoCapture(0 + cv2.CAP_AVFOUNDATION)
+# cap = cv2.VideoCapture(3 + cv2.CAP_AVFOUNDATION)
 
 # If that doesn't work, try alternative methods
 if not cap.isOpened():

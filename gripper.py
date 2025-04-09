@@ -61,7 +61,7 @@ class Gripper:
         self.g = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.g.connect((self.ip, self.port))
         self.g.sendall(b'GET POS\n')
-        g_recv = str(self.g.recv(10), 'UTF-8')
+        g_recv = stqr(self.g.recv(10), 'UTF-8')
         if g_recv:
             self.g.send(b'SET ACT 1\n')
             g_recv = str(self.g.recv(10), 'UTF-8')

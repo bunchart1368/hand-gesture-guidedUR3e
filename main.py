@@ -225,8 +225,8 @@ def apply_target_pose(
         print("Reset Target Pose")
     
     accumulated_pose, target_pose = check_boundary(accumulated_pose, target_pose)
-    print("Target Pose: ", target_pose)
-    print("Accumulated Pose: ", accumulated_pose)
+    # print("Target Pose: ", target_pose)
+    # print("Accumulated Pose: ", accumulated_pose)
 
     x, y, z, tcp_rotation_rpy = compute_pose_and_orientation(target_pose, command)
     previous_command = command
@@ -308,14 +308,19 @@ def start_hand_tracking():
             command = int(command)
             # and keyboard.is_pressed("ctrl")
             if isinstance(position, int) and keyboard.is_pressed("ctrl"):
-                # robot_force_vectors = get_force_sensor_data()
-                # total_force = total_force_vector(robot_force_vectors)
-                # if total_force > 20: continue
+                robot_force_vectors = get_force_sensor_data()
+                print("Force Sensor Data: ", robot_force_vectors)
+                total_force = total_force_vector(robot_force_vectors)
+                print("Total Force: ", total_force)
+                if total_force > 30: 
+                    print("Stop! Force exceeded limit.")
+                    emergency_stop = True
+                    break
                 robot_position, prev_ampli = compute_target_pose(robot_position, position, command, prev_ampli)
                 accumulated_pose, previous_command = apply_target_pose(robot, robot_position, accumulated_pose, origin, command, previous_command)
-
             else:
-                print("Invalid or no input received.")
+                None
+
     except KeyboardInterrupt:
         print("Stopping hand tracking...")
     finally:
@@ -333,7 +338,8 @@ def set_up_test_environment():
     position1 = robot.get_actual_tcp_pose()
     print("Current TCP Position: ", position1[:3])
     free_drive_mode()
-    keyboard.wait('q')  # Blocks until 'q' is pressed
+    # keyboard.wait('q')  # Blocks until 'q' is pressed
+    time.sleep(10)  # Simulate free drive mode for 10 seconds
     print("10 seconds in free drive mode")
     end_free_drive_mode()
     position2 = robot.get_actual_tcp_pose()
@@ -351,28 +357,14 @@ def read_force_sensor_loop():
         print("Total Force: ", total_force)
         time.sleep(0.1)
 
-# main.py
-total_force = 0.0  # Global variable to store the latest total force
-
-def update_force_sensor_loop():
-    global total_force
-    while True:
-        robot_force_vectors = get_force_sensor_data()
-        total_force = total_force_vector(robot_force_vectors)
-        print("Total Force:", total_force)
-        time.sleep(0.1)
-
 def main():
     robot_set_up()
-    # update_force_sensor_loop()
     # home()
     set_new_tcp(offset= config["end_effector"]["offset"])
     set_up_test_environment()
     server_connection()
     start_hand_tracking()
-    # read_force_sensor_loop()
     end()
 
 if __name__ == '__main__':
     main()
-q

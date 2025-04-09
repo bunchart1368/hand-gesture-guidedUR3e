@@ -14,16 +14,16 @@ development:
     # keypoint_csv_path: model/keypoint_pinky_2class/keypoint_pinky.csv
 
     # nn tflite
-    # label_path: model/keypoint_pinky_2class_miew/keypoint_pinky_label.csv
-    # model_path: model/keypoint6mar/keypoint_classifier.tflite
-    # model_type: tflite #tflite or sklearn
-    # keypoint_csv_path: model/keypoint_pinky_2class_kk/kk_keypoint.csv
+    label_path: model/keypoint_pinky_2class_miew/keypoint_pinky_label.csv
+    model_path: model/keypoint6mar/keypoint_classifier.tflite
+    model_type: tflite #tflite or sklearn
+    keypoint_csv_path: model/keypoint_pinky_2class_kk/kk_keypoint.csv
 
     # lrc sklearn
-    label_path: model/keypoint_pinky_2class_miew/keypoint_pinky_label.csv
-    model_path: model/keypoint6mar/keypoint_classifier_lrc_pipeline.pkl 
-    model_type: sklearn #tflite or sklearn
-    keypoint_csv_path: model/keypoint_pinky_2class_kk/kk_keypoint.csv
+    # label_path: model/keypoint_pinky_2class_miew/keypoint_pinky_label.csv
+    # model_path: model/keypoint6mar/keypoint_classifier_lrc_pipeline.pkl 
+    # model_type: sklearn #tflite or sklearn
+    # keypoint_csv_path: model/keypoint_pinky_2class_kk/kk_keypoint.csv
     
 
   point_history_classifier:

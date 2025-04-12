@@ -4,3 +4,5 @@
 **/.DS_Store
 recordings/
 top-side-train-dataset/
+**.mov
+video/

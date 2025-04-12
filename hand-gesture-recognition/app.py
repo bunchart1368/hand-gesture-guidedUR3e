@@ -113,14 +113,14 @@ def main():
 
     #  ########################################################################
         # Server connection
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind(('localhost', 12345))
-    server_socket.listen(1)
-    print("Server is waiting for a connection...")
+    # server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # server_socket.bind(('localhost', 12345))
+    # server_socket.listen(1)
+    # print("Server is waiting for a connection...")
 
-    global conn
-    conn, addr = server_socket.accept()
-    print(f"Connected to {addr}")
+    # global conn
+    # conn, addr = server_socket.accept()
+    # print(f"Connected to {addr}")
 
     #  ########################################################################
     mode = 0
@@ -236,7 +236,7 @@ def main():
 
             #send command to robot
             print(command_id, magnitude_angle)
-            send_command(command_id, magnitude_angle)
+            # send_command(command_id, magnitude_angle)
         else:
             point_history.append([0, 0])
 

@@ -20,10 +20,10 @@ development:
     # keypoint_csv_path: model/keypoint_pinky_2class_kk/kk_keypoint.csv
 
     # lrc sklearn
-    label_path: model/keypoint_pinky_2class_miew/keypoint_pinky_label.csv
+    label_path: model/keypoint_upper/keypoint_label.csv
     model_path: model/keypoint_upper/lrc_upper_right_9apr_pipeline.pkl    
     model_type: sklearn #tflite or sklearn
-    keypoint_csv_path: model/keypoint_upper/keypoint_9apr_upper.csv
+    keypoint_csv_path: model/keypoint_upper/keypoint_9apr_upper_mun.csv
     
 
   point_history_classifier:

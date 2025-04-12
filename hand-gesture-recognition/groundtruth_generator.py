@@ -36,9 +36,12 @@ def save_ground_truth(ground_truth, output_path):
 
 def main():
     video_path = settings.model_evaluation.video_path
-    output_path = settings.model_evaluation.prediction_output_path
+    output_path = settings.model_evaluation.groundtruth_output_path
     gesture_names_path = settings.model_evaluation.gesture_names_path
     frame_step = settings.model_evaluation.frame_step
+
+    print('vdo source:', video_path)
+    print('output path:', output_path)
     
     # Load gesture names
     gesture_names = load_gesture_names(gesture_names_path)
@@ -131,6 +134,8 @@ def main():
                             break
         
         frame_idx += 1
+        print('frame_idx:', frame_idx)
+        print('ground_truth:', ground_truth)
         
         # Show progress
         if frame_idx % 100 == 0:

@@ -23,7 +23,7 @@ development:
     label_path: model/keypoint_upper/keypoint_label.csv
     model_path: model/keypoint_upper/training_0412_1736/pkl/lrc_upper_right_pipeline.pkl  
     model_type: sklearn #tflite or sklearn
-    keypoint_csv_path: model/keypoint_upper/keypoint_9apr_upper_mun.csv
+    keypoint_csv_path: model/keypoint_upper/keypoint_9apr_upper_right_mun.csv
     
 
   point_history_classifier:

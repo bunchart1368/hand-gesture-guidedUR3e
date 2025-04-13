@@ -85,8 +85,8 @@ pip install ultralytics opencv-python torch torchvision pillow numpy
 ```
 
 Also, you must have:
-- `kklast.pt` (your YOLO model)
-- `models/encoder.pth` and `models/depth.pth` (your Endo-Depth weights)
+- `kklast.pt` (kungking trained YOLO model)
+- `models/encoder.pth` and `models/depth.pth` (UZ-SLAM Lab Endo-Depth weights)
 
 ---
 

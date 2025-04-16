@@ -176,19 +176,19 @@ def main():
                             pre_processed_point_history_list)
 
                 # Hand sign classification
-                print('pre_processed_landmark_list', pre_processed_landmark_list)
+                # print('pre_processed_landmark_list', pre_processed_landmark_list)
                 hand_sign_id = keypoint_classifier(pre_processed_landmark_list)
 
                 # Assign hand sign based on handedness
                 if handedness.classification[0].label == "Right":
-                    print('-----a',handedness.classification[0].label)
+                    # print('-----a',handedness.classification[0].label)
                     hand_sign_id_right = hand_sign_id
                 if handedness.classification[0].label == "Left":
-                    print('-----b',handedness.classification[0].label)
+                    # print('-----b',handedness.classification[0].label)
                     hand_sign_id_left = hand_sign_id
 
-                print('hand_sign_id_right', hand_sign_id_right)
-                print('hand_sign_id_left', hand_sign_id_left)
+                # print('hand_sign_id_right', hand_sign_id_right)
+                # print('hand_sign_id_left', hand_sign_id_left)
 
                 # # Finger gesture classification
                 finger_gesture_id = 0
@@ -228,7 +228,7 @@ def main():
                 command = 'Down' # Down
                 command_id = 4
                 point_history.append([0, 0])
-            print('command', command)
+            # print('command', command)
 
             # Draw angle
             # debug_image = draw_finger_angles(debug_image, results, command) 
@@ -292,7 +292,7 @@ def draw_angles_command(image, results, command):
 
 def send_command(command_id, angle):
     info_to_send = f"({command_id},{angle})"
-    print(info_to_send)
+    # print(info_to_send)
     conn.send(info_to_send.encode())
 
 if __name__ == '__main__':

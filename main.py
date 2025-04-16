@@ -146,6 +146,26 @@ def check_boundary(accumulated_pose: List[float], target_pose: List[float]):
     accumulated_pose = [sum(pair) + accumulated_pose[i] for i, pair in enumerate(zip(target_pose[::2], target_pose[1::2]))]
     return accumulated_pose, target_pose
 
+
+def check_boundary_2(origin: m3d.Transform, first_position: List[float]):
+    max_x_offset = config["end_effector_limits"]["max_x_offset"]
+    max_y_offset = config["end_effector_limits"]["max_y_offset"]
+    max_z_offset = config["end_effector_limits"]["max_z_offset"]
+    max_right = first_position[0] + max_x_offset
+    max_left = first_position[0] - max_x_offset
+    max_forward = first_position[1] + max_y_offset
+    max_backward = first_position[1] - max_y_offset
+    max_down = first_position[2] - max_z_offset
+    current_x = origin.translation[0]
+    current_y = origin.translation[1]
+    current_z = origin.translation[2]
+    if current_x > max_right or current_x < max_left:
+        print("X out of bounds")
+    if current_y > max_forward or current_y < max_backward:
+        print("Y out of bounds")
+    if current_z > max_down:
+        print("Z out of bounds")
+
 def home():
     robot.movej(q=robot_startposition, a=ACCELERATION, v=VELOCITY)
     print("Set home")
@@ -231,6 +251,7 @@ def apply_target_pose(
     x, y, z, tcp_rotation_rpy = compute_pose_and_orientation(target_pose, command)
     previous_command = command
     origin = set_lookorigin()
+    check_boundary_2(origin, first_position)
     
     xyz_coords = m3d.Vector(x, y, z)
     tcp_orient = m3d.Orientation.new_euler(tcp_rotation_rpy, encoding='xyz')
@@ -348,6 +369,7 @@ def set_up_test_environment():
     print("Distance between positions: ", distance)
     tcp_offset = config["end_effector"]["offset"] - distance
     set_new_tcp(tcp_offset)
+    return position1, position2, tcp_offset
 
 def read_force_sensor_loop():
     while True:

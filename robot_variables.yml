@@ -31,6 +31,9 @@ end_effector_limits:
   max_left: -4 # in meters
   max_up: 6.5 # in meters
   max_down: -4 # in meters
+  max_x_offset: 0.01 # in meters
+  max_y_offset: 0.015 # in meters
+  max_z_offset: 0.02 # in meters
   max_forward: 0.1 # in meters
   max_backward: 0.1 # in meters
 

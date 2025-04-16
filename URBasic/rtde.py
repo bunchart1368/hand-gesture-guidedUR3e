@@ -448,6 +448,7 @@ class RTDE(threading.Thread): #, metaclass=Singleton
                     self._logger.info('RTDE paused')
                     self.__conn_state = ConnectionState.PAUSED
                 elif(packet_command == Command.RTDE_DATA_PACKAGE):
+                    # print(data)
                     self.__updateModel(data)
                 elif(packet_command == 0):
                     byte_buffer = bytes()
@@ -470,6 +471,8 @@ class RTDE(threading.Thread): #, metaclass=Singleton
             if(delta > 0.00800001):
                 self._logger.error("Lost some RTDE at " + str(rtde_data_package['timestamp']) + " - " + str(delta*1000) + " milliseconds since last package")
         for tagname in rtde_data_package.keys():
+            # print(tagname)
+            # if tagname == 'actual_TCP_force': print(rtde_data_package[tagname], 'gg')
             self.__robotModel.dataDir[tagname] = rtde_data_package[tagname]
 
     def __verifyControllerVersion(self, data):

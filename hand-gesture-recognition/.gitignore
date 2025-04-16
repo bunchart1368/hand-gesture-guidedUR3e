@@ -133,3 +133,12 @@ dmypy.json
 .idea/
 
 .DS_Store
+
+**/__pycache__/
+.venv/
+**.pyc
+**/.DS_Store
+recordings/
+top-side-train-dataset/
+**.mov
+video/

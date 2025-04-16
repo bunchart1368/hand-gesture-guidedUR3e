@@ -44,11 +44,7 @@ ACCELERATION = config["acceleration"]["joint_acceleration"]  # Robot acceleratio
 VELOCITY = config["speed"]["joint_speed"]  # Robot speed value
 
 # The Joint position the robot starts at
-robot_startposition = [round(math.radians(degree), 3) for degree in [90, -90, -90, -30, 90, 0]]
-# robot_startposition = [round(math.radians(degree), 3) for degree in [128.08, -108.61, -80.04, -64.12, 57.74, 7.07]]
-
-# Variable which scales the robot movement from pixels to meters.
-m_per_pixel = 0.000009  # Add more 0  
+robot_startposition = [round(math.radians(degree), 3) for degree in config["initial_position"]["joint_angles_home"]]
 
 # Size of the robot view-window
 max_up = config["end_effector_limits"]["max_up"]
@@ -371,10 +367,15 @@ def update_force_sensor_loop():
 
 def main():
     robot_set_up()
+    # update_force_sensor_loop()
     home()
-    # set_new_tcp(offset= -0.00000015)
+    # set_new_tcp(offset= config["end_effector"]["offset"])
+    # set_up_test_environment()
+    # home()
     # server_connection()
     # start_hand_tracking()
+    # free_drive_mode()
+    # read_force_sensor_loop()
     end()
 
 if __name__ == '__main__':

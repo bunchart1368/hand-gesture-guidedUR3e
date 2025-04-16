@@ -1,0 +1,39 @@
+default:
+  Title: hand gesture regconigtion
+
+development:
+  keypoint_classifier: 
+    # original
+    # lable_path: model/keypoint_classifier/keypoint_classifier_label.csv
+    # model_path: model/keypoint_classifier/keypoint_classifier.tflite
+    # keypoint_csv_path: model/keypoint_classifier/keypoint.csv
+
+    # miew's
+    # label_path: model/keypoint_pinky_2class/keypoint_pinky_label.csv
+    # model_path: model/keypoint_pinky_2class/keypoint_classifier_pinky_2class.tflite
+    # keypoint_csv_path: model/keypoint_pinky_2class/keypoint_pinky.csv
+
+    # nn tflite
+    # label_path: model/keypoint_pinky_2class_miew/keypoint_pinky_label.csv
+    # model_path: model/keypoint6mar/keypoint_classifier.tflite
+    # model_type: tflite #tflite or sklearn
+    # keypoint_csv_path: model/keypoint_pinky_2class_kk/kk_keypoint.csv
+
+    # lrc sklearn
+    label_path: model/keypoint_upper/keypoint_label.csv
+    model_path: model/keypoint_upper/training_right_0416_1321/pkl/lrc_upper_right_pipeline.pkl
+    model_type: sklearn #tflite or sklearn
+    keypoint_csv_path: model/keypoint_upper/keypoint_9apr_upper_right_miew.csv
+    
+
+  point_history_classifier:
+    label_path: model/point_history_classifier/point_history_classifier_label.csv
+    model_path: model/point_history_classifier/point_history_classifier.tflite
+    keypoint_csv_path: model/point_history_classifier/point_history.csv
+    
+  model_evaluation:
+    video_path: top-side-train-dataset/video/miew_upper.mov
+    groundtruth_output_path: top-side-train-dataset/groundtruth/miew_upper.csv
+    # prediction_output_path: top-side-train-dataset/kk_eval_video/keypoint6mar_dt_eval_flip.csv
+    gesture_names_path: model/keypoint_pinky_2class_miew/keypoint_pinky_label.csv
+    frame_step: 20

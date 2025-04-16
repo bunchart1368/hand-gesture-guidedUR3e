@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latest Command</title>
+    <script>
+        function fetchCommand() {
+            fetch('/get_command')
+                .then(response => response.json())
+                .then(data => {
+                    let commandElement = document.getElementById('command');
+                    if (data.latest_command) {
+                        commandElement.innerText = data.latest_command;
+                    } else {
+                        commandElement.innerText = "Waiting for command...";
+                    }
+                })
+                .catch(error => console.error('Error fetching command:', error));
+        }
+    
+        setInterval(fetchCommand, 1000); // Fetch every second
+        window.onload = fetchCommand; // Fetch immediately when page loads
+    </script>
+    
+</head>
+<body>
+    <h1>Latest Command</h1>
+    <p id="command">Waiting for command...</p>
+</body>
+</html>

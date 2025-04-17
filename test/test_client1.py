@@ -1,17 +1,17 @@
-import socket, time, re
+import socket
+import random
+import time
 
+def send_random_numbers(host='127.0.0.1', port=65432):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.connect((host, port))
+        print("[Client 1] Connected to server.")
 
-def start_client():
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.connect(('localhost', 12345))
-    print("Connected to the server.")
-
-    while True:
-        command = client_socket.recv(1024).decode()
-        print(f"Received Command: {command}")
-        # Perform actions based on the received command
-        # time.sleep(3)
-    client_socket.close()
-
+        while True:
+            number = random.randint(1, 100)
+            print(f"[Client 1] Sending number: {number}")
+            send_command = f"{number}gg"
+            s.sendall(send_command.encode())
+            
 if __name__ == "__main__":
-    start_client()
+    send_random_numbers()

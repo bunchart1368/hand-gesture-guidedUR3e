@@ -1,25 +1,64 @@
 import socket
-import time
-import random
+import threading
+
+def setup_server():
+    # Define server parameters
+    HOST = 'localhost'
+    PORT = 65432
+
+    # Create and configure server socket
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind((HOST, PORT))
+    server.listen()
+
+    return server, HOST, PORT
+
+def handle_client(conn, addr, client_id, print_lock):
+    with conn:
+        print(f"[CONNECTED] {addr} as Client {client_id}")
+        while True:
+            try:
+                data = conn.recv(1024).decode().strip()
+                if not data:
+                    break
+
+                with print_lock:
+                    print(f"[Client {client_id} | {addr}] Received: {data}")
+
+            except (ConnectionResetError, ConnectionAbortedError):
+                with print_lock:
+                    print(f"[DISCONNECTED] Client {client_id} at {addr}")
+                break
 
 def start_server():
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind(('localhost', 12345))
-    server_socket.listen(1)
-    print("Server is waiting for a connection...")
+    # Set up server
+    server, HOST, PORT = setup_server()
 
-    conn, addr = server_socket.accept()
-    print(f"Connected to {addr}")
+    print_lock = threading.Lock()
+    client_count = 0
+    client_lock = threading.Lock()
 
-    while True:
-        # Generate a random command (replace this with actual hand detection logic)
-        command = str(random.randint(10, 70))
-        command = f'(1,{command});'
-        conn.send(command.encode())
-        print(f"Sent Command: {command}")
-        time.sleep(0.1)  # Simulate delay for real-time command sending
-    conn.close()
-    server_socket.close()
+    print(f"[STARTING] Server is listening on {HOST}:{PORT}")
+    server.settimeout(0.1)
+
+    try:
+        while True:
+            try:
+                conn, addr = server.accept()
+
+                with client_lock:
+                    client_count += 1
+                    client_id = client_count
+
+                thread = threading.Thread(target=handle_client, args=(conn, addr, client_id, print_lock), daemon=True)
+                thread.start()
+
+            except socket.timeout:
+                continue
+
+    except KeyboardInterrupt:
+        print("\n[SHUTDOWN] Server stopped by user.")
+        server.close()
 
 if __name__ == "__main__":
     start_server()

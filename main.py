@@ -28,6 +28,152 @@ import math3d as m3d
 import URBasic
 import keyboard
 import yaml
+import threading
+
+"""SERVER FUNCTIONS ______________________________________________________________________"""
+
+def setup_server():
+    HOST = 'localhost'
+    PORT = 65432
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind((HOST, PORT))
+    server.listen()
+    return server, HOST, PORT
+
+def handle_client(conn, addr, client_id, start_event, print_lock, client_data, data_lock):
+    with conn:
+        with print_lock:
+            print(f"[CONNECTED] {addr} as Client {client_id}")
+
+        # Wait until start_event is set (i.e. 2 clients are connected)
+        start_event.wait()
+
+        # After start_event is released, flush the initial data
+        with data_lock:
+            if client_id in client_data:
+                client_data[client_id] = []
+
+        while True:
+            try:
+                data = conn.recv(1024).decode().strip()
+                if not data:
+                    with print_lock:
+                        print(f"[DISCONNECTED] Client {client_id} at {addr} (Graceful)")
+                    break
+
+                with data_lock:
+                    if client_id not in client_data:
+                        client_data[client_id] = []
+                    client_data[client_id].append(data)
+
+                with print_lock:
+                    process_client_data(data)
+                    # print(f"[Client {client_id} | {addr}] Received: {data}")
+
+            except (ConnectionResetError, ConnectionAbortedError):
+                with print_lock:
+                    print(f"[DISCONNECTED] Client {client_id} at {addr} (Error)")
+                break
+
+def process_client_data(data: str):
+    """
+    Process data received from the client.
+    """
+    print(f"Received data: {data}")
+    global emergency_stop
+
+
+    try:
+        command, position = extract_last_tuple(data)
+        print(f"Processing Command: {command}, Position: {position}")
+
+        if emergency_stop:
+            print("[EMERGENCY STOP] Robot is stopped.")
+            return
+
+        # and keyboard.is_pressed("ctrl")
+        if isinstance(position, int) and keyboard.is_pressed("ctrl"):
+            robot_force_vectors = get_force_sensor_data()
+            print("Force Sensor Data: ", robot_force_vectors)
+            total_force = total_force_vector(robot_force_vectors)
+            print("Total Force: ", total_force)
+            if total_force > 30: 
+                print("Stop! Force exceeded limit.")
+                emergency_stop = True
+                return
+            robot_position, prev_ampli = compute_target_pose(robot_position, position, command, prev_ampli)
+            accumulated_pose, previous_command = apply_target_pose(robot, robot_position, accumulated_pose, origin, command, previous_command)
+        else:
+            print('Not pressing ctrl')
+
+    except ValueError:
+        print("[ERROR] Invalid data format received from client.")
+
+def start_server():
+    """
+    Start the server to handle client connections.
+    """
+    server, HOST, PORT = setup_server()
+
+    print_lock = threading.Lock()
+    client_lock = threading.Lock()
+    data_lock = threading.Lock()
+    client_data = {}
+    client_threads = []
+    client_count = 0
+    required_clients = 1
+    start_event = threading.Event()  # Used to release clients simultaneously
+
+    global origin, previous_command, prev_ampli, accumulated_pose, robot_position
+    previous_command = 0
+    prev_ampli = 0
+    accumulated_pose = [0, 0]
+    robot_position = [0, 0, 0, 0]
+    # origin = set_lookorigin()
+
+    # robot.init_realtime_control()
+    time.sleep(1)
+
+    print(f"[STARTING] Server is listening on {HOST}:{PORT}")
+    server.settimeout(0.1)
+
+    try:
+        while True:
+            try:
+                conn, addr = server.accept()
+
+                with client_lock:
+                    client_count += 1
+                    client_id = client_count
+
+                thread = threading.Thread(
+                    target=handle_client,
+                    args=(conn, addr, client_id, start_event, print_lock, client_data, data_lock),
+                    daemon=True
+                )
+                thread.start()
+                client_threads.append(thread)
+
+                if client_count == required_clients:
+                    print(f"[READY] {required_clients} clients connected. Starting message processing...")
+                    start_event.set()  # Signal all clients to begin receiving messages
+
+            except socket.timeout:
+                continue
+
+    except KeyboardInterrupt:
+        print("\n[SHUTDOWN] Server stopped by user.")
+        server.close()
+
+        # Print all client data received
+        print("\n[CLIENT DATA DUMP]")
+        with data_lock:
+            for cid, messages in client_data.items():
+                print(f"Client {cid}: {messages}")
+    finally:
+        robot.close()
+        print("Robot connection closed.")
+
 
 
 
@@ -378,12 +524,13 @@ def read_force_sensor_loop():
         time.sleep(0.1)
 
 def main():
-    robot_set_up()
+    # robot_set_up()
     # home()
-    set_new_tcp(offset= config["end_effector"]["offset"])
-    set_up_test_environment()
-    server_connection()
-    start_hand_tracking()
+    # set_new_tcp(offset= config["end_effector"]["offset"])
+    # set_up_test_environment()
+    # server_connection()
+    # start_hand_tracking()
+    start_server()
     end()
 
 if __name__ == '__main__':

@@ -10,7 +10,8 @@ def send_random_numbers(host='127.0.0.1', port=65432):
         while True:
             number = random.randint(1, 100)
             print(f"[Client 1] Sending number: {number}")
-            send_command = f"{number}gg"
+            # send_command = f"{number}gg"
+            send_command = f"(2, {number})"
             s.sendall(send_command.encode())
             
 if __name__ == "__main__":

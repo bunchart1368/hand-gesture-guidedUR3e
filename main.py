@@ -44,7 +44,7 @@ ACCELERATION = config["acceleration"]["joint_acceleration"]  # Robot acceleratio
 VELOCITY = config["speed"]["joint_speed"]  # Robot speed value
 
 # The Joint position the robot starts at
-robot_startposition = [round(math.radians(degree), 3) for degree in config["initial_position"]["joint_angles_home"]]
+robot_startposition = [round(math.radians(degree), 3) for degree in config["initial_position"]["joint_angles"]]
 
 # Size of the robot view-window
 max_up = config["end_effector_limits"]["max_up"]
@@ -133,18 +133,38 @@ def robot_set_up():
     time.sleep(1)
 
 def check_boundary(accumulated_pose: List[float], target_pose: List[float]):
-    temp_accumulated_pose = [sum(pair) + accumulated_pose[i] for i, pair in enumerate(zip(target_pose[::2], target_pose[1::2]))]
-    for i, pose in enumerate(temp_accumulated_pose):
-        if i == 0 and (pose > max_right or pose < max_left):
-            target_pose[:] = [0] * len(target_pose)
-            # emergency_stop = True
-            print("reach max right or max left")
-        if i == 1 and (pose > max_up or pose < max_down):
-            target_pose[:] = [0] * len(target_pose)
-            # emergency_stop = True
-            print("reach max up or max down")
+    # temp_accumulated_pose = [sum(pair) + accumulated_pose[i] for i, pair in enumerate(zip(target_pose[::2], target_pose[1::2]))]
+    # for i, pose in enumerate(temp_accumulated_pose):
+    #     if i == 0 and (pose > max_right or pose < max_left):
+    #         target_pose[:] = [0] * len(target_pose)
+    #         # emergency_stop = True
+    #         print("reach max right or max left")
+    #     if i == 1 and (pose > max_up or pose < max_down):
+    #         target_pose[:] = [0] * len(target_pose)
+    #         # emergency_stop = True
+    #         print("reach max up or max down")
     accumulated_pose = [sum(pair) + accumulated_pose[i] for i, pair in enumerate(zip(target_pose[::2], target_pose[1::2]))]
     return accumulated_pose, target_pose
+
+
+def check_boundary_2(origin: m3d.Transform, first_position: List[float]):
+    max_x_offset = config["end_effector_limits"]["max_x_offset"]
+    max_y_offset = config["end_effector_limits"]["max_y_offset"]
+    max_z_offset = config["end_effector_limits"]["max_z_offset"]
+    max_right = first_position[0] + max_x_offset
+    max_left = first_position[0] - max_x_offset
+    max_forward = first_position[1] + max_y_offset
+    max_backward = first_position[1] - max_y_offset
+    max_down = first_position[2] - max_z_offset
+    current_x = origin.translation[0]
+    current_y = origin.translation[1]
+    current_z = origin.translation[2]
+    if current_x > max_right or current_x < max_left:
+        print("X out of bounds")
+    if current_y > max_forward or current_y < max_backward:
+        print("Y out of bounds")
+    if current_z > max_down:
+        print("Z out of bounds")
 
 def home():
     robot.movej(q=robot_startposition, a=ACCELERATION, v=VELOCITY)
@@ -225,12 +245,13 @@ def apply_target_pose(
         print("Reset Target Pose")
     
     accumulated_pose, target_pose = check_boundary(accumulated_pose, target_pose)
-    print("Target Pose: ", target_pose)
-    print("Accumulated Pose: ", accumulated_pose)
+    # print("Target Pose: ", target_pose)
+    # print("Accumulated Pose: ", accumulated_pose)
 
     x, y, z, tcp_rotation_rpy = compute_pose_and_orientation(target_pose, command)
     previous_command = command
     origin = set_lookorigin()
+    # check_boundary_2(origin, first_position)
     
     xyz_coords = m3d.Vector(x, y, z)
     tcp_orient = m3d.Orientation.new_euler(tcp_rotation_rpy, encoding='xyz')
@@ -260,8 +281,6 @@ def compute_pose_and_orientation(
     rotation_factor = 10
 
     if command == 1:
-        # z = target_pose[0]
-        # tcp_rotation_rpy = [0, 0, 0]
         x_rot = math.radians(target_pose[0] * rotation_factor)
         tcp_rotation_rpy = [0, x_rot, 0]
     elif command == 2:
@@ -307,15 +326,20 @@ def start_hand_tracking():
             position = int(position)
             command = int(command)
             # and keyboard.is_pressed("ctrl")
-            if isinstance(position, int):
-                # robot_force_vectors = get_force_sensor_data()
-                # total_force = total_force_vector(robot_force_vectors)
-                # if total_force > 20: continue
+            if isinstance(position, int) and keyboard.is_pressed("ctrl"):
+                robot_force_vectors = get_force_sensor_data()
+                print("Force Sensor Data: ", robot_force_vectors)
+                total_force = total_force_vector(robot_force_vectors)
+                print("Total Force: ", total_force)
+                if total_force > 30: 
+                    print("Stop! Force exceeded limit.")
+                    emergency_stop = True
+                    break
                 robot_position, prev_ampli = compute_target_pose(robot_position, position, command, prev_ampli)
                 accumulated_pose, previous_command = apply_target_pose(robot, robot_position, accumulated_pose, origin, command, previous_command)
-
             else:
-                print("Invalid or no input received.")
+                None
+
     except KeyboardInterrupt:
         print("Stopping hand tracking...")
     finally:
@@ -333,7 +357,8 @@ def set_up_test_environment():
     position1 = robot.get_actual_tcp_pose()
     print("Current TCP Position: ", position1[:3])
     free_drive_mode()
-    time.sleep(10)
+    # keyboard.wait('q')  # Blocks until 'q' is pressed
+    time.sleep(10)  # Simulate free drive mode for 10 seconds
     print("10 seconds in free drive mode")
     end_free_drive_mode()
     position2 = robot.get_actual_tcp_pose()
@@ -342,6 +367,7 @@ def set_up_test_environment():
     print("Distance between positions: ", distance)
     tcp_offset = config["end_effector"]["offset"] - distance
     set_new_tcp(tcp_offset)
+    return position1, position2, tcp_offset
 
 def read_force_sensor_loop():
     while True:
@@ -351,31 +377,13 @@ def read_force_sensor_loop():
         print("Total Force: ", total_force)
         time.sleep(0.1)
 
-# main.py
-total_force = 0.0  # Global variable to store the latest total force
-
-def update_force_sensor_loop():
-    global total_force
-    while True:
-        robot_force_vectors = get_force_sensor_data()
-        total_force = total_force_vector(robot_force_vectors)
-        print("Total Force:", total_force)
-        time.sleep(0.1)
-
-        
-
-
 def main():
     robot_set_up()
-    # update_force_sensor_loop()
-    home()
-    # set_new_tcp(offset= config["end_effector"]["offset"])
-    # set_up_test_environment()
     # home()
-    # server_connection()
-    # start_hand_tracking()
-    # free_drive_mode()
-    # read_force_sensor_loop()
+    set_new_tcp(offset= config["end_effector"]["offset"])
+    set_up_test_environment()
+    server_connection()
+    start_hand_tracking()
     end()
 
 if __name__ == '__main__':

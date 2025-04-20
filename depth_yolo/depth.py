@@ -63,7 +63,7 @@ def run_depth_demo():
     depth_model = EndoStereoDepth(encoder_path, decoder_path)
     yolo_model = YOLO("18aprkkyolo.pt")
 
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(3)
     if not cap.isOpened():
         print("❌ Failed to open webcam.")
         return

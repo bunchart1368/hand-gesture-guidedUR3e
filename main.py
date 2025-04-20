@@ -33,8 +33,8 @@ import threading
 """SERVER FUNCTIONS ______________________________________________________________________"""
 
 def setup_server():
-    HOST = '127.0.0.2'  # Standard loopback interface address (localhost)
-    PORT = 65432
+    HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
+    PORT = 12345
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((HOST, PORT))
     server.listen()
@@ -88,7 +88,10 @@ def process_client_data(data: str):
         print("Hand command received")
         try:
             command, position = extract_last_tuple(data)
+            command = int(command)
+            position = int(position)
             print(f"Processing Command: {command}, Position: {position}")
+            command_collection.append(command)
 
             if emergency_stop:
                 print("[EMERGENCY STOP] Robot is stopped.")
@@ -106,7 +109,11 @@ def process_client_data(data: str):
                     return
                 robot_position, prev_ampli = compute_target_pose(robot_position, position, command, prev_ampli)
                 accumulated_pose, previous_command = apply_target_pose(robot, robot_position, accumulated_pose, origin, command, previous_command)
+
+                previous_command = command
+                print("Command and Position processed", command, previous_command)
             else:
+                print(len(command_collection))
                 None
                 # print('Not pressing ctrl')
 
@@ -135,7 +142,10 @@ def start_server():
     robot_position = [0, 0, 0, 0]
     # origin = set_lookorigin()
 
-    # robot.init_realtime_control()
+    global command_collection
+    command_collection = list()
+
+    robot.init_realtime_control()
     time.sleep(1)
 
     print(f"[STARTING] Server is listening on {HOST}:{PORT}")
@@ -329,7 +339,6 @@ def compute_target_pose(
     prev_pose: List[float],
     position: float,
     command: int,
-    prev_ampli: float
 ) -> Tuple[List[float], float]:
     """
     Computes the target pose for the robot based on the previous pose and the current position input.
@@ -361,8 +370,7 @@ def compute_target_pose(
         position = 0
         target_pose[:] = [0] * len(target_pose)
 
-    prev_ampli = position
-    return target_pose, prev_ampli
+    return target_pose
 
 # SECTION: Apply Target Pose
 def apply_target_pose(
@@ -462,6 +470,7 @@ def start_hand_tracking():
     Main loop for receiving server input and moving the robot based on hand tracking.
     """
     global origin, previous_command
+    emergency_stop = False
     previous_command = 0
     prev_ampli = 0
     accumulated_pose = [0, 0]
@@ -486,7 +495,7 @@ def start_hand_tracking():
                     print("Stop! Force exceeded limit.")
                     emergency_stop = True
                     break
-                robot_position, prev_ampli = compute_target_pose(robot_position, position, command, prev_ampli)
+                robot_position = compute_target_pose(robot_position, position, command)
                 accumulated_pose, previous_command = apply_target_pose(robot, robot_position, accumulated_pose, origin, command, previous_command)
             else:
                 None
@@ -529,13 +538,13 @@ def read_force_sensor_loop():
         time.sleep(0.1)
 
 def main():
-    # robot_set_up()
+    robot_set_up()
     # home()
-    # set_new_tcp(offset= config["end_effector"]["offset"])
+    set_new_tcp(offset= config["end_effector"]["offset"])
     # set_up_test_environment()
-    # server_connection()
-    # start_hand_tracking()
-    start_server()
+    server_connection()
+    start_hand_tracking()
+    # start_server()
     end()
 
 if __name__ == '__main__':

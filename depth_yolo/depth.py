@@ -49,18 +49,19 @@ def run_depth_demo():
     #💜💙🩵💚💛🧡❤️🩷💜💙🩵💚💛🧡❤️🩷
     #CHANGE THRESHOLDS HERE WHEN TESTING IN NEW ENVIRONMENT
     ORGAN_THRESHOLDS = {
-        "gallbladder": 5.2,
-        "liver": 5.5,
-        "abdominal wall": 5.5,
+        "gallbladder": 6.1, # 7 = 4 cm, , 6.2 = 3 cm
+        "liver": 5.5, #liver 5.9 = 2 cm, 6.2 = 2.5cm, 6.3 = 3 cm
+        "abdominal wall": 6.0, #6.4 = 4.5 cm,, 6.1 = 3.7 cm, 5.9 = 3 cm
+        #1.5 inch 6.5 abdominal wall
         # Add more if needed
     }
-    DEFAULT_THRESHOLD = 5.3  # fallback if organ not listed
+    DEFAULT_THRESHOLD = 6.0  # fallback if organ not listed
     #💜💙🩵💚💛🧡❤️🩷💜💙🩵💚💛🧡❤️🩷
 
     encoder_path = "models/stereo/test1/epoch1/encoder.pth"
     decoder_path = "models/stereo/test1/epoch1/depth.pth"
     depth_model = EndoStereoDepth(encoder_path, decoder_path)
-    yolo_model = YOLO("kklast.pt")
+    yolo_model = YOLO("18aprkkyolo.pt")
 
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():

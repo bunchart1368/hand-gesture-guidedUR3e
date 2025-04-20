@@ -33,7 +33,7 @@ import threading
 """SERVER FUNCTIONS ______________________________________________________________________"""
 
 def setup_server():
-    HOST = 'localhost'
+    HOST = '127.0.0.2'  # Standard loopback interface address (localhost)
     PORT = 65432
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((HOST, PORT))
@@ -79,35 +79,39 @@ def process_client_data(data: str):
     """
     Process data received from the client.
     """
-    print(f"Received data: {data}")
     global emergency_stop
 
+    if ':' in data:
+        print("Emergency command received")
 
-    try:
-        command, position = extract_last_tuple(data)
-        print(f"Processing Command: {command}, Position: {position}")
+    if ';' in data:
+        print("Hand command received")
+        try:
+            command, position = extract_last_tuple(data)
+            print(f"Processing Command: {command}, Position: {position}")
 
-        if emergency_stop:
-            print("[EMERGENCY STOP] Robot is stopped.")
-            return
-
-        # and keyboard.is_pressed("ctrl")
-        if isinstance(position, int) and keyboard.is_pressed("ctrl"):
-            robot_force_vectors = get_force_sensor_data()
-            print("Force Sensor Data: ", robot_force_vectors)
-            total_force = total_force_vector(robot_force_vectors)
-            print("Total Force: ", total_force)
-            if total_force > 30: 
-                print("Stop! Force exceeded limit.")
-                emergency_stop = True
+            if emergency_stop:
+                print("[EMERGENCY STOP] Robot is stopped.")
                 return
-            robot_position, prev_ampli = compute_target_pose(robot_position, position, command, prev_ampli)
-            accumulated_pose, previous_command = apply_target_pose(robot, robot_position, accumulated_pose, origin, command, previous_command)
-        else:
-            print('Not pressing ctrl')
 
-    except ValueError:
-        print("[ERROR] Invalid data format received from client.")
+            # and keyboard.is_pressed("ctrl")
+            if isinstance(position, int) and keyboard.is_pressed("ctrl"):
+                robot_force_vectors = get_force_sensor_data()
+                print("Force Sensor Data: ", robot_force_vectors)
+                total_force = total_force_vector(robot_force_vectors)
+                print("Total Force: ", total_force)
+                if total_force > 30: 
+                    print("Stop! Force exceeded limit.")
+                    emergency_stop = True
+                    return
+                robot_position, prev_ampli = compute_target_pose(robot_position, position, command, prev_ampli)
+                accumulated_pose, previous_command = apply_target_pose(robot, robot_position, accumulated_pose, origin, command, previous_command)
+            else:
+                None
+                # print('Not pressing ctrl')
+
+        except ValueError:
+            print("[ERROR] Invalid data format received from client.")
 
 def start_server():
     """
@@ -445,7 +449,8 @@ def compute_pose_and_orientation(
     return x, y, z, tcp_rotation_rpy
 
 def extract_last_tuple(s: str) -> Tuple[float, float]:
-    tuples = re.findall(r'\(-?\d+\.?\d*,-?\d+\.?\d*\)', s)
+    # Match (int_or_float, int_or_float) pattern even if repeated with no separators
+    tuples = re.findall(r'\(-?\d+\.?\d*,\s*-?\d+\.?\d*\)', s)
     if tuples:
         last_tuple_str = tuples[-1]
         last_tuple = last_tuple_str.strip('()').split(',')

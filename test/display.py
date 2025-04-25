@@ -36,8 +36,8 @@ while True:
         print("Failed to capture frame.")
         break
 
-    frame = cv2.flip(frame, 1)
-    frame = cv2.flip(frame, 0)
+    # frame = cv2.flip(frame, 1)
+    # frame = cv2.flip(frame, 0)
     # Get frame dimensions
     height, width, _ = frame.shape
     mid_x, mid_y = width // 2, height // 2

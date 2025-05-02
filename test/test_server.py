@@ -3,7 +3,7 @@ import threading
 
 def setup_server():
     HOST = 'localhost'
-    PORT = 65432
+    PORT = 12345
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((HOST, PORT))
     server.listen()

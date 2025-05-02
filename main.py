@@ -541,7 +541,7 @@ def main():
     robot_set_up()
     # home()
     set_new_tcp(offset= config["end_effector"]["offset"])
-    # set_up_test_environment()
+    set_up_test_environment()
     server_connection()
     start_hand_tracking()
     # start_server()

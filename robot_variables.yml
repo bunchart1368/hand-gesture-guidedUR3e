@@ -10,8 +10,8 @@ robot:
 
 # Connection Settings
 connection:
-  ip_address: "10.10.0.61"
-  port: 30002
+  ip_address: "192.168.1.125" #192.168.1.125 , 10.10.0.61
+  port: 30005
   protocol: "TCP/IP"
 
 # Joint Limits (in degrees)

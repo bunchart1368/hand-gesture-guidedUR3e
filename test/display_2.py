@@ -3,6 +3,8 @@ import cv2
 import numpy as np
 import json
 import time
+import imutils
+
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QHBoxLayout
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
@@ -12,12 +14,15 @@ class CameraThread(QThread):
     change_pixmap = pyqtSignal(QImage)
 
     def run(self):
-        cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture(1)
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 960)
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+
+
         while True:
             ret, frame = cap.read()
             if not ret:
                 break
-
             frame = cv2.flip(frame, 1)
             frame = cv2.flip(frame, 0)
 
@@ -49,15 +54,23 @@ class RobotDataThread(QThread):
             try:
                 with open("./final-project-1/robot_state.json", "r") as f:
                     data = json.load(f)
+                    
+                    def parse_array(string_val):
+                        try:
+                            return tuple(np.round(np.fromstring(string_val.strip("[]"), sep=' '), 3))
+                        except:
+                            return (0.0, 0.0, 0.0)
+
                     robot_data = {
                         "command": data.get("command", 0),
-                        "speed": data.get("speed", 0.0),
-                        "force": tuple(data.get("force", (0, 0, 0))),
-                        "torque": tuple(data.get("torque", (0, 0, 0))),
-                        "position": tuple(data.get("position", (0, 0, 0))),
-                        "foot_pedal": data.get("foot_pedal", False),
-                        "depth_estimation": data.get("depth_estimation", False)
+                        "speed": round(data.get("speed", 0.0), 3),
+                        "force": parse_array(data.get("force", "")),
+                        "torque": parse_array(data.get("torque", "")),
+                        "position": parse_array(data.get("position", "")),
+                        "foot_pedal": data.get("foot_pedal", True),
+                        "depth_estimation": data.get("depth_estimation", True)
                     }
+
             except:
                 robot_data = {
                     "command": 0,
@@ -65,8 +78,8 @@ class RobotDataThread(QThread):
                     "force": (0, 0, 0),
                     "torque": (0, 0, 0),
                     "position": (0, 0, 0),
-                    "foot_pedal": False,
-                    "depth_estimation": False
+                    "foot_pedal": True,
+                    "depth_estimation": True
                 }
 
             self.update_data.emit(robot_data)
@@ -80,7 +93,7 @@ class MainWindow(QWidget):
 
         self.image_label = QLabel(self)
         self.image_label.setAlignment(Qt.AlignCenter)
-        self.image_label.setFixedSize(640, 480)
+        self.image_label.setFixedSize(960, 720)
 
         # Robot Data Labels
         self.command_label = QLabel("Command: 0")
@@ -102,7 +115,7 @@ class MainWindow(QWidget):
         ]
 
         for label in self.data_labels:
-            label.setStyleSheet("font-size: 16px;")
+            label.setStyleSheet("font-size: 28px;")
 
         # Layout for data
         data_layout = QVBoxLayout()
@@ -111,8 +124,9 @@ class MainWindow(QWidget):
 
         # Main layout
         main_layout = QHBoxLayout()
-        main_layout.addWidget(self.image_label)
-        main_layout.addLayout(data_layout)
+        main_layout.addWidget(self.image_label, stretch=1)
+        main_layout.addLayout(data_layout, stretch=1)
+
 
         self.setLayout(main_layout)
 
@@ -135,8 +149,23 @@ class MainWindow(QWidget):
         self.position_label.setText(f"Position: {data['position']}")
         self.force_label.setText(f"Force: {data['force']}")
         self.torque_label.setText(f"Torque: {data['torque']}")
-        self.foot_pedal_label.setText(f"Foot Pedal: {data['foot_pedal']}")
-        self.depth_estimation_label.setText(f"Depth Estimation: {data['depth_estimation']}")
+
+        # Foot Pedal display with color
+        foot_pedal = data['foot_pedal']
+        self.foot_pedal_label.setText(f"Foot Pedal: {foot_pedal}")
+        if foot_pedal:
+            self.foot_pedal_label.setStyleSheet("font-size: 24px; color: white; background-color: green;")
+        else:
+            self.foot_pedal_label.setStyleSheet("font-size: 24px; color: white; background-color: red;")
+
+        # Depth Estimation display with color
+        depth_estimation = data['depth_estimation']
+        self.depth_estimation_label.setText(f"Depth Estimation: {depth_estimation}")
+        if depth_estimation:
+            self.depth_estimation_label.setStyleSheet("font-size: 24px; color: white; background-color: green;")
+        else:
+            self.depth_estimation_label.setStyleSheet("font-size: 24px; color: white; background-color: red;")
+
 
 # ----- App Runner -----
 if __name__ == "__main__":

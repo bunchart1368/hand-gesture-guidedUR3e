@@ -1,1 +1,1 @@
-{"command": 1, "speed": 0.64, "force": [6.29, 5.17, 2.855], "torque": [1.921, 4.234, 8.899], "position": [7.151, 9.924, 2.095], "foot_pedal": false, "depth_estimation": false}
+{"command": 3, "speed": 7.785402274159295e-24, "force": "[ 0.64593745 -0.08798494  2.00220281]", "torque": "[ 0.02694563 -0.09149811  0.10806533]", "position": "[0.12999706 0.45099907 0.12898944]", "foot_pedal": false, "depth_estimation": true}

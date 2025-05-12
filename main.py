@@ -16,6 +16,7 @@ import time
 import re
 import socket
 from typing import Tuple, List, Dict
+import json
 
 # Third-party library imports
 import numpy as np
@@ -490,61 +491,105 @@ def start_hand_tracking():
     prev_time = time.time()
 
     # Open CSV log file
-    with open('hand_tracking_detailed_log.csv', mode='w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow([
-            'Timestamp', 
-            'Command', 'Position',
-            'Omega_X (rad/s)', 'Omega_Y (rad/s)',
-            'Curr_Rx', 'Prev_Rx',
-            'Curr_Ry', 'Prev_Ry',
-            'TCP_X', 'TCP_Y', 'TCP_Z', 'TCP_Rx', 'TCP_Ry', 'TCP_Rz'
-        ])
+    # with open('hand_tracking_detailed_log_4.csv', mode='w', newline='') as file:
+    #     writer = csv.writer(file)
+    #     writer.writerow([
+    #         'Timestamp', 
+    #         'Command', 'Position',
+    #         'Omega_X (rad/s)', 'Omega_Y (rad/s)',
+    #         'Curr_Rx', 'Prev_Rx',
+    #         'Curr_Ry', 'Prev_Ry',
+    #         'TCP_X', 'TCP_Y', 'TCP_Z', 'TCP_Rx', 'TCP_Ry', 'TCP_Rz'
+    #     ])
 
-        try:
-            while not emergency_stop:
-                command, position = extract_last_tuple(get_from_server())
-                command = int(command)
-                position = int(position)
+    try:
+        while not emergency_stop:
+            command, position = extract_last_tuple(get_from_server())
+            command = int(command)
+            position = int(position)
 
-                if isinstance(position, int) and keyboard.is_pressed("ctrl"):
-                    robot_force_vectors = get_force_sensor_data()
-                    total_force = total_force_vector(robot_force_vectors)
-                    if total_force > 30:
-                        print("Stop! Force exceeded limit.")
-                        emergency_stop = True
-                        break
+            if isinstance(position, int) and keyboard.is_pressed("ctrl"):
+                robot_force_vectors = get_force_sensor_data()
+                total_force = total_force_vector(robot_force_vectors)
+                if total_force > 30:
+                    print("Stop! Force exceeded limit.")
+                    emergency_stop = True
+                    break
 
-                    # Get current TCP pose
-                    tcp_pose = robot.get_actual_tcp_pose()
-                    curr_rx, curr_ry = tcp_pose[3:5]
-                    curr_time = time.time()
-                    dt = max(curr_time - prev_time, 1e-5)
+                # Get current TCP pose
+                tcp_pose = robot.get_actual_tcp_pose()
+                curr_rx, curr_ry = tcp_pose[3:5]
+                curr_time = time.time()
+                dt = max(curr_time - prev_time, 1e-5)
 
-                    omega_x = (curr_rx - prev_rx) / dt
-                    omega_y = (curr_ry - prev_ry) / dt
+                omega_x = (curr_rx - prev_rx) / dt
+                omega_y = (curr_ry - prev_ry) / dt
 
-                    # Write to CSV
-                    writer.writerow([
-                        curr_time,
-                        command, position,
-                        omega_x, omega_y,
-                        curr_rx, prev_rx,
-                        curr_ry, prev_ry,
-                        *tcp_pose
-                    ])
+                # Write to CSV
+                # writer.writerow([
+                #     curr_time,
+                #     command, position,
+                #     omega_x, omega_y,
+                #     curr_rx, prev_rx,
+                #     curr_ry, prev_ry,
+                #     *tcp_pose
+                # ])
 
-                    # Update previous values
-                    prev_rx, prev_ry = curr_rx, curr_ry
-                    prev_time = curr_time
+                                    # Simulate robot state
+                speed = robot.get_actual_tcp_speed()
+                speed = math.sqrt(sum([s**2 for s in speed[:3]]))
+                force = robot_force_vectors[:3]  # Force values
+                torque = robot_force_vectors[3:6]  # Torque values
+                data = {
+                    "command": command,
+                    "speed": speed,  # Speed between 0.1 and 1.0
+                    "force": str(force),  # Force values
+                    "torque": str(torque),  # Torque values
+                    "position": str(tcp_pose[:3]),  # Current TCP position
+                    "foot_pedal": True,  # Random foot pedal activation
+                    "depth_estimation": True  # Random depth estimation status
+                }
 
-                    # Apply movement
-                    robot_position = compute_target_pose(robot_position, position, command)
-                    accumulated_pose, previous_command = apply_target_pose(
-                        robot, robot_position, accumulated_pose, origin, command, previous_command
-                    )
-        except KeyboardInterrupt:
-            print("Tracking interrupted by user.")
+                # Print the simulated robot state
+                print("Simulated Robot State: ", data)
+
+                # Save data to the JSON file
+                with open("./final-project-1/robot_state.json", "w") as json_file:
+                    json.dump(data, json_file)
+
+                # Update previous values
+                prev_rx, prev_ry = curr_rx, curr_ry
+                prev_time = curr_time
+
+                # Apply movement
+                robot_position = compute_target_pose(robot_position, position, command)
+                accumulated_pose, previous_command = apply_target_pose(
+                    robot, robot_position, accumulated_pose, origin, command, previous_command
+                )
+            else:
+                force_vector = robot.get_tcp_force()
+                speed = robot.get_actual_tcp_speed()
+                speed = math.sqrt(sum([s**2 for s in speed[:3]]))
+                force = force_vector[:3]
+                torque = force_vector[3:6]
+                position = robot.get_actual_tcp_pose()[:3]
+                data = {
+                    "command": command,
+                    "speed": speed,
+                    "force": str(force),
+                    "torque": str(torque),
+                    "position": str(position),
+                    "foot_pedal": False,
+                    "depth_estimation": True
+                }
+                # Print the simulated robot state
+                print("Simulated Robot State: ", data)
+                # Save data to the JSON file
+                with open("./final-project-1/robot_state.json", "w") as json_file:
+                    json.dump(data, json_file)
+    except KeyboardInterrupt:
+        print("Tracking interrupted by user.")
+
 
 
 
@@ -583,7 +628,7 @@ def main():
     robot_set_up()
     # home()
     set_new_tcp(offset= config["end_effector"]["offset"])
-    # set_up_test_environment()
+    set_up_test_environment()
     server_connection()
     start_hand_tracking()
     # start_server()

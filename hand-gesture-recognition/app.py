@@ -5,6 +5,7 @@ import copy
 import argparse
 import socket
 import itertools
+import time
 from collections import Counter
 from collections import deque
 
@@ -113,14 +114,14 @@ def main():
 
     #  ########################################################################
         # Server connection
-    # server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    # server_socket.bind(('localhost', 12345))
-    # server_socket.listen(1)
-    # print("Server is waiting for a connection...")
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind(('localhost', 12345))
+    server_socket.listen(1)
+    print("Server is waiting for a connection...")
 
-    # global conn
-    # conn, addr = server_socket.accept()
-    # print(f"Connected to {addr}")
+    global conn
+    conn, addr = server_socket.accept()
+    print(f"Connected to {addr}")
 
     #  ########################################################################
     mode = 0
@@ -154,6 +155,7 @@ def main():
         
         #  ####################################################################
         if results.multi_hand_landmarks is not None:
+            t2 = time.time()
             for hand_landmarks, handedness in zip(results.multi_hand_landmarks,
                                                   results.multi_handedness):
                 # print('handedness', handedness)
@@ -236,7 +238,7 @@ def main():
 
             #send command to robot
             print(command_id, magnitude_angle)
-            # send_command(command_id, magnitude_angle)
+            send_command(command_id, t2)
         else:
             point_history.append([0, 0])
 
@@ -290,8 +292,8 @@ def draw_angles_command(image, results, command):
 
     return image, angle
 
-def send_command(command_id, angle):
-    info_to_send = f"({command_id},{angle})"
+def send_command(command_id, t2):
+    info_to_send = f"({command_id},{t2})"
     # print(info_to_send)
     conn.send(info_to_send.encode())
 

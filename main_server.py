@@ -19,6 +19,9 @@ import keyboard
 import yaml
 import threading
 
+import random
+import json
+
 """SETTINGS AND VARIABLES ________________________________________________________________"""
 
 RASPBERRY_BOOL = False
@@ -158,6 +161,36 @@ def end():
 def home():
     robot.movej(q=robot_startposition, a=ACCELERATION, v=VELOCITY)
     print("Set home")
+
+# Simulated update loop
+
+import random
+import json
+import time
+
+def update_robot_state():
+    while True:
+        # Simulated data
+        data = {
+            "command": random.randint(1, 4),  # Command as an integer between 1 and 4
+            "speed": round(random.uniform(0.1, 1.0), 2),  # Speed between 0.1 and 1.0
+            "force": [round(random.uniform(1, 10), 3) for _ in range(3)],  # Force values
+            "torque": [round(random.uniform(1, 10), 3) for _ in range(3)],  # Torque values
+            "position": [round(random.uniform(1, 10), 3) for _ in range(3)],  # Position values
+            "foot_pedal": random.choice([True, False]),  # Random foot pedal activation
+            "depth_estimation": random.choice([True, False])  # Random depth estimation status
+        }
+        
+        # Print the simulated robot state
+        print("Simulated Robot State: ", data)
+
+        # Save data to the JSON file
+        with open("./final-project-1/robot_state.json", "w") as f:
+            json.dump(data, f)
+
+        # Wait for 0.1 seconds before updating the state again
+        time.sleep(0.1)
+
 
 """SERVER FUNCTIONS ______________________________________________________________________"""
 
@@ -469,12 +502,13 @@ def start_server():
         print("Robot connection closed.")
 
 def main():
-    robot_set_up()
+    # robot_set_up()
     # home()
     # set_new_tcp(offset= config["end_effector"]["offset"])
     # set_up_test_environment()
-    start_server()
-    end()
+    # start_server()
+    update_robot_state()
+    # end()
 
 if __name__ == '__main__':
     main()

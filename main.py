@@ -465,14 +465,18 @@ def extract_last_tuple(s: str) -> Tuple[float, float]:
         return tuple(map(float, last_tuple))
     return None
 
+import csv
+import time
+import keyboard
+
 def start_hand_tracking():
     """
     Main loop for receiving server input and moving the robot based on hand tracking.
+    Records command, angular velocity, rotation values, and full TCP pose in a CSV file.
     """
     global origin, previous_command
     emergency_stop = False
     previous_command = 0
-    prev_ampli = 0
     accumulated_pose = [0, 0]
     robot_position = [0, 0, 0, 0]
     origin = set_lookorigin()
@@ -480,31 +484,69 @@ def start_hand_tracking():
     robot.init_realtime_control()
     time.sleep(1)
 
-    try:
-        while not(emergency_stop):
-            command, position = extract_last_tuple(get_from_server())
-            position = int(position)
-            command = int(command)
-            # and keyboard.is_pressed("ctrl")
-            if isinstance(position, int) and keyboard.is_pressed("ctrl"):
-                robot_force_vectors = get_force_sensor_data()
-                print("Force Sensor Data: ", robot_force_vectors)
-                total_force = total_force_vector(robot_force_vectors)
-                print("Total Force: ", total_force)
-                if total_force > 30: 
-                    print("Stop! Force exceeded limit.")
-                    emergency_stop = True
-                    break
-                robot_position = compute_target_pose(robot_position, position, command)
-                accumulated_pose, previous_command = apply_target_pose(robot, robot_position, accumulated_pose, origin, command, previous_command)
-            else:
-                None
+    # Initialize rotation and time
+    prev_tcp = robot.get_actual_tcp_pose()
+    prev_rx, prev_ry = prev_tcp[3:5]
+    prev_time = time.time()
 
-    except KeyboardInterrupt:
-        print("Stopping hand tracking...")
-    finally:
-        robot.close()
-        print("Robot connection closed.")
+    # Open CSV log file
+    with open('hand_tracking_detailed_log.csv', mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([
+            'Timestamp', 
+            'Command', 'Position',
+            'Omega_X (rad/s)', 'Omega_Y (rad/s)',
+            'Curr_Rx', 'Prev_Rx',
+            'Curr_Ry', 'Prev_Ry',
+            'TCP_X', 'TCP_Y', 'TCP_Z', 'TCP_Rx', 'TCP_Ry', 'TCP_Rz'
+        ])
+
+        try:
+            while not emergency_stop:
+                command, position = extract_last_tuple(get_from_server())
+                command = int(command)
+                position = int(position)
+
+                if isinstance(position, int) and keyboard.is_pressed("ctrl"):
+                    robot_force_vectors = get_force_sensor_data()
+                    total_force = total_force_vector(robot_force_vectors)
+                    if total_force > 30:
+                        print("Stop! Force exceeded limit.")
+                        emergency_stop = True
+                        break
+
+                    # Get current TCP pose
+                    tcp_pose = robot.get_actual_tcp_pose()
+                    curr_rx, curr_ry = tcp_pose[3:5]
+                    curr_time = time.time()
+                    dt = max(curr_time - prev_time, 1e-5)
+
+                    omega_x = (curr_rx - prev_rx) / dt
+                    omega_y = (curr_ry - prev_ry) / dt
+
+                    # Write to CSV
+                    writer.writerow([
+                        curr_time,
+                        command, position,
+                        omega_x, omega_y,
+                        curr_rx, prev_rx,
+                        curr_ry, prev_ry,
+                        *tcp_pose
+                    ])
+
+                    # Update previous values
+                    prev_rx, prev_ry = curr_rx, curr_ry
+                    prev_time = curr_time
+
+                    # Apply movement
+                    robot_position = compute_target_pose(robot_position, position, command)
+                    accumulated_pose, previous_command = apply_target_pose(
+                        robot, robot_position, accumulated_pose, origin, command, previous_command
+                    )
+        except KeyboardInterrupt:
+            print("Tracking interrupted by user.")
+
+
 
 def end():
     robot.close()
@@ -541,7 +583,7 @@ def main():
     robot_set_up()
     # home()
     set_new_tcp(offset= config["end_effector"]["offset"])
-    set_up_test_environment()
+    # set_up_test_environment()
     server_connection()
     start_hand_tracking()
     # start_server()
